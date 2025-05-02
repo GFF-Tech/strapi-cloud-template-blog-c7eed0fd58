@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "delegates",
+  "info": {
+    "singularName": "delegate",
+    "pluralName": "delegates",
+    "displayName": "Delegate",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "country": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::country.country"
+    },
+    "mobileNumber": {
+      "type": "string"
+    },
+    "officialEmailAddress": {
+      "type": "email"
+    },
+    "companyName": {
+      "type": "string"
+    },
+    "wcProductId": {
+      "type": "string"
+    },
+    "wcProductName": {
+      "type": "string"
+    },
+    "cognitoId": {
+      "type": "string"
+    },
+    "isFacilitator": {
+      "type": "boolean"
+    },
+    "facilitator": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::facilitator.facilitator"
+    },
+    "isActive": {
+      "type": "boolean"
+    },
+    "sector": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::sector.sector"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "kind": "collectionType",
+  "collectionName": "facilitators",
+  "info": {
+    "singularName": "facilitator",
+    "pluralName": "facilitators",
+    "displayName": "Facilitator",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "country": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::country.country"
+    },
+    "mobileNumber": {
+      "type": "string"
+    },
+    "cognitoId": {
+      "type": "string"
+    },
+    "officialEmailAddress": {
+      "type": "email"
+    },
+    "companyName": {
+      "type": "string"
+    },
+    "wcOrderId": {
+      "type": "string"
+    },
+    "wcOrderStatus": {
+      "type": "string"
+    },
+    "paymentStatus": {
+      "type": "string"
+    },
+    "paymentMode": {
+      "type": "string"
+    },
+    "totalAmount": {
+      "type": "decimal"
+    },
+    "gstDetails": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common.gst-details"
+    },
+    "isActive": {
+      "type": "boolean"
+    },
+    "sector": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::sector.sector"
+    }
+  }
+}

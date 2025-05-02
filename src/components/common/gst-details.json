@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_common_gst_details",
+  "info": {
+    "displayName": "GstDetails"
+  },
+  "options": {},
+  "attributes": {
+    "companyName": {
+      "type": "string"
+    },
+    "companyGstNo": {
+      "type": "string"
+    },
+    "companyPOC": {
+      "type": "string"
+    },
+    "billingAddress": {
+      "type": "text"
+    },
+    "pincode": {
+      "type": "string"
+    },
+    "companyAddress": {
+      "type": "text"
+    }
+  }
+}
