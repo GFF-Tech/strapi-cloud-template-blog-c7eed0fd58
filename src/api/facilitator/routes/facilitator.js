@@ -35,6 +35,16 @@ module.exports = {
       },
     },
 
+    {
+      method: 'POST',
+      path: '/facilitators/verify',
+      handler: 'facilitator.verifyFacilitator',
+      config: {
+        policies: [],
+        middlewares: [],
+      }
+    },
+
     // PUT update a facilitator by ID
     {
       method: 'PUT',

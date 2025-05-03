@@ -418,7 +418,7 @@ export interface ApiDelegateDelegate extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    facilitator: Schema.Attribute.Relation<
+    facilitatorId: Schema.Attribute.Relation<
       'oneToOne',
       'api::facilitator.facilitator'
     >;
@@ -463,6 +463,8 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     gstDetails: Schema.Attribute.Component<'common.gst-details', false>;
     isActive: Schema.Attribute.Boolean;
+    isCognitoVerified: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
