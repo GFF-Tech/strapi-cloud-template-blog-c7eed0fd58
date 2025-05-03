@@ -40,7 +40,7 @@
     "isFacilitator": {
       "type": "boolean"
     },
-    "facilitator": {
+    "facilitatorId": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::facilitator.facilitator"
