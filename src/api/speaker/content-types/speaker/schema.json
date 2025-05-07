@@ -16,7 +16,8 @@
       "enum": [
         "Shri",
         "Mr",
-        "Mrs"
+        "Mrs",
+        "Dr"
       ]
     },
     "fullName": {
