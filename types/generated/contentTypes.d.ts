@@ -547,7 +547,7 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    salutation: Schema.Attribute.Enumeration<['Shri', 'Mr', 'Mrs']>;
+    salutation: Schema.Attribute.Enumeration<['Shri', 'Mr', 'Mrs', 'Dr']>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

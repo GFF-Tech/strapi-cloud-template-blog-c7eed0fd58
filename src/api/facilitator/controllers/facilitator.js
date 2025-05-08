@@ -17,22 +17,59 @@ const client = new CognitoIdentityProviderClient({ region: process.env.AWS_REGIO
 module.exports = createCoreController('api::facilitator.facilitator', ({ strapi }) => ({
 
   async find(ctx) {
-    const { data, meta } = await super.find(ctx);
-    return { data, meta };
+    try {
+      const entities = await strapi.entityService.findMany('api::facilitator.facilitator', {
+        populate: {
+          sector: {
+            fields: ['sector'],
+          },
+          country: {
+            fields: ['country','countryCode'],
+          },
+        },
+        filters: ctx.query.filters,
+        sort: ctx.query.sort,
+        pagination: ctx.query.pagination,
+      });
+  
+      const count = await strapi.entityService.count('api::facilitator.facilitator', {
+        filters: ctx.query.filters,
+      });
+  
+      return {
+        data: entities,
+        meta: {
+          pagination: {
+            total: count,
+          },
+        },
+      };
+    } catch (error) {
+      console.error('Error fetching facilitators:', error);
+      return ctx.internalServerError('Failed to fetch facilitators');
+    }
   },
 
   async findOne(ctx) {
     const { id } = ctx.params;
-
+  
     try {
       const result = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
-        populate: ['gstDetails'],
+        populate: {
+          gstDetails: true,
+          country: {
+            fields: ['country', 'countryCode'],
+          },
+          sector: {
+            fields: ['name'],
+          },
+        },
       });
-
+  
       if (!result) {
         return ctx.notFound('Facilitator not found');
       }
-
+  
       return result;
     } catch (error) {
       console.log(error);
@@ -71,6 +108,14 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         data: {
           ...data,
           cognitoId,
+        },
+        populate: {
+          country: {
+            fields: ['country', 'countryCode'],
+          },
+          sector: {
+            fields: ['name'],
+          },
         },
       });
   
@@ -144,7 +189,15 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       });
 
       const updated = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
-        populate: ['gstDetails'],
+        populate: {
+          gstDetails: true,
+          country: {
+            fields: ['country', 'countryCode'],
+          },
+          sector: {
+            fields: ['name'],
+          },
+        },
       });
 
       return updated;
