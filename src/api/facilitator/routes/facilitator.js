@@ -94,15 +94,6 @@ module.exports = {
         middlewares: [],
       },
     },
-    {
-      method: 'POST',
-      path: '/facilitators/orderDetails',
-      handler: 'facilitator.orderDetails',
-      config: {
-        policies: [],
-        middlewares: [],
-      },
-    },
 
   ],
 };

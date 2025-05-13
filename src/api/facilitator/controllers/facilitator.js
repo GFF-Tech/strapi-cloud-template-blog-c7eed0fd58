@@ -252,12 +252,24 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
   async login(ctx) {
     const { officialEmailAddress } = ctx.request.body;
-
+  
     if (!officialEmailAddress) {
       return ctx.badRequest('Missing email');
     }
-
+  
     try {
+      // Check if facilitator exists using entityService
+
+      const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
+        where: { officialEmailAddress }
+      });
+  
+      if (!facilitator) {
+        return ctx.notFound('Facilitator not found');
+      }
+  
+      // Commented out real Cognito logic
+      /*
       const command = new InitiateAuthCommand({
         AuthFlow: 'CUSTOM_AUTH',
         ClientId: process.env.COGNITO_CLIENT_ID,
@@ -265,80 +277,62 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           USERNAME: officialEmailAddress,
         },
       });
-
+  
       const response = await client.send(command);
-      return { message: 'OTP sent to email', session: response.Session };
+      return ctx.send({ message: 'OTP sent to email', session: response.Session });
+      */
+  
+      // Dummy session logic
+      const dummySession = `dummy-session-${Date.now()}`;
+      return ctx.send({ message: 'OTP sent to email', session: dummySession });
+  
     } catch (error) {
-      console.error('Error initiating auth:', error);
-      return ctx.internalServerError('Failed to send OTP');
+      console.error('Login error:', error);
+      return ctx.internalServerError('Failed to process login');
     }
   },
 
   async verifyLoginOtp(ctx) {
     const { officialEmailAddress, otp, session } = ctx.request.body;
-
+  
     if (!officialEmailAddress || !otp || !session) {
       return ctx.badRequest('Missing data');
     }
-
+  
     try {
-      const command = new RespondToAuthChallengeCommand({
-        ClientId: process.env.COGNITO_CLIENT_ID,
-        ChallengeName: 'CUSTOM_CHALLENGE',
-        Session: session,
-        ChallengeResponses: {
-          USERNAME: officialEmailAddress,
-          ANSWER: otp,
-        },
-      });
-
-      const response = await client.send(command);
-
-      // Optional: store or return tokens
-      return {
-        message: 'Login successful',
-        idToken: response.AuthenticationResult?.IdToken,
-        accessToken: response.AuthenticationResult?.AccessToken,
-        refreshToken: response.AuthenticationResult?.RefreshToken,
-      };
-    } catch (error) {
-      console.error('OTP verification failed:', error);
-      return ctx.unauthorized('Invalid OTP');
-    }
-  },
-
-  async orderDetails(ctx) {
-    try {
-      const { officialEmailAddress } = ctx.request.body;
-
-      if (!officialEmailAddress) {
-        return ctx.badRequest('Email is required');
+      // Dummy OTP validation
+      if (otp !== '1234') {
+        return ctx.unauthorized('Invalid OTP');
       }
-
+  
+      // Fetch facilitator and delegates using findOne
       const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
         where: { officialEmailAddress },
         populate: { delegates: true },
       });
-
+  
       if (!facilitator) {
         return ctx.notFound('Facilitator not found');
       }
-
+  
       const wooOrderDetails = await fetchWooOrder(facilitator.wcOrderId);
-
-      ctx.send({
+  
+      return ctx.send({
+        message: 'Login successful',
+        idToken: 'dummy-id-token',
+        accessToken: 'dummy-access-token',
+        refreshToken: 'dummy-refresh-token',
         data: {
           ...facilitator,
           wooOrderDetails,
         },
       });
-
+  
     } catch (error) {
-      console.error('Error in orderDetails:', error);
+      console.error('OTP verification failed:', error);
       return ctx.internalServerError('An unexpected error occurred');
     }
   },
-
 
 }));
 
