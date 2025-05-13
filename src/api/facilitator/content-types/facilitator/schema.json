@@ -52,7 +52,8 @@
       "component": "common.gst-details"
     },
     "isActive": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": true
     },
     "sector": {
       "type": "relation",
@@ -62,6 +63,12 @@
     "isCognitoVerified": {
       "type": "boolean",
       "default": false
+    },
+    "delegates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::delegate.delegate",
+      "mappedBy": "facilitatorId"
     }
   }
 }

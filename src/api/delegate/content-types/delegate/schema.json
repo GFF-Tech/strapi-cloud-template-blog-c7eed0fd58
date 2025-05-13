@@ -42,11 +42,13 @@
     },
     "facilitatorId": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::facilitator.facilitator"
+      "relation": "manyToOne",
+      "target": "api::facilitator.facilitator",
+      "inversedBy": "delegates"
     },
     "isActive": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": true
     },
     "sector": {
       "type": "relation",

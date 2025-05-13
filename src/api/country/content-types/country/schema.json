@@ -18,7 +18,8 @@
       "type": "string"
     },
     "isActive": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": true
     }
   }
 }

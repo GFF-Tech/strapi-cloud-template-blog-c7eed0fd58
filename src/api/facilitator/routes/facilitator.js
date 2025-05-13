@@ -45,6 +45,16 @@ module.exports = {
       }
     },
 
+    {
+      method: 'POST',
+      path: '/facilitators/resendOtp',
+      handler: 'facilitator.resendFacilitatorOtp',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+
     // PUT update a facilitator by ID
     {
       method: 'PUT',
@@ -66,5 +76,33 @@ module.exports = {
         middlewares: [],
       },
     },
+    {
+      method: 'POST',
+      path: '/facilitators/login',
+      handler: 'facilitator.login',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
+      method: 'POST',
+      path: '/facilitators/verifyLoginOtp',
+      handler: 'facilitator.verifyLoginOtp',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
+      method: 'POST',
+      path: '/facilitators/orderDetails',
+      handler: 'facilitator.orderDetails',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+
   ],
 };
