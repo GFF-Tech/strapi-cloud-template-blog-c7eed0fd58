@@ -308,7 +308,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       // Fetch facilitator and delegates using findOne
       const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
         where: { officialEmailAddress },
-        populate: { delegates: true },
+        populate: {
+          delegates: {
+            populate: ['sector', 'country'],
+          },
+        },
       });
   
       if (!facilitator) {
