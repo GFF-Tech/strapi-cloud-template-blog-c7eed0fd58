@@ -258,7 +258,18 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
     }
   
     try {
-      // Check if facilitator exists using entityService
+
+      // Commented out real Cognito logic
+      
+      // const command = new InitiateAuthCommand({
+      //   AuthFlow: 'CUSTOM_AUTH',
+      //   ClientId: process.env.COGNITO_CLIENT_ID,
+      //   AuthParameters: {
+      //     USERNAME: officialEmailAddress,
+      //   },
+      // });
+  
+      // const response = await client.send(command);
 
       const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
         where: { officialEmailAddress }
@@ -267,21 +278,9 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       if (!facilitator) {
         return ctx.notFound('Facilitator not found');
       }
-  
-      // Commented out real Cognito logic
-      /*
-      const command = new InitiateAuthCommand({
-        AuthFlow: 'CUSTOM_AUTH',
-        ClientId: process.env.COGNITO_CLIENT_ID,
-        AuthParameters: {
-          USERNAME: officialEmailAddress,
-        },
-      });
-  
-      const response = await client.send(command);
-      return ctx.send({ message: 'OTP sent to email', session: response.Session });
-      */
-  
+
+      // return ctx.send({ message: 'OTP sent to email', session: response.Session });
+     
       // Dummy session logic
       const dummySession = `dummy-session-${Date.now()}`;
       return ctx.send({ message: 'OTP sent to email', session: dummySession });
@@ -304,6 +303,30 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       if (otp !== '1234') {
         return ctx.unauthorized('Invalid OTP');
       }
+
+      // const command = new RespondToAuthChallengeCommand({
+      //   ClientId: process.env.COGNITO_CLIENT_ID,
+      //   ChallengeName: 'CUSTOM_CHALLENGE',
+      //   Session: session,
+      //   ChallengeResponses: {
+      //     USERNAME: officialEmailAddress,
+      //     ANSWER: otp,
+      //   },
+      // });
+
+      // const response = await client.send(command);
+
+      // // Optional: store or return tokens
+      // return {
+      //   message: 'Login successful',
+      //   idToken: response.AuthenticationResult?.IdToken,
+      //   accessToken: response.AuthenticationResult?.AccessToken,
+      //   refreshToken: response.AuthenticationResult?.RefreshToken,
+      // };
+
+      // if (!response.AuthenticationResult) {
+      //   return ctx.unauthorized('Authentication failed');
+      // }
   
       // Fetch facilitator and delegates using findOne
       const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
@@ -326,6 +349,9 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         idToken: 'dummy-id-token',
         accessToken: 'dummy-access-token',
         refreshToken: 'dummy-refresh-token',
+        // idToken: response.AuthenticationResult?.IdToken,
+        // accessToken: response.AuthenticationResult?.AccessToken,
+        // refreshToken: response.AuthenticationResult?.RefreshToken,
         data: {
           ...facilitator,
           wooOrderDetails,

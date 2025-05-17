@@ -369,6 +369,87 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAreaOfExpertiseAreaOfExpertise
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'area_of_expertises';
+  info: {
+    description: '';
+    displayName: 'AreaOfExpertise';
+    pluralName: 'area-of-expertises';
+    singularName: 'area-of-expertise';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::area-of-expertise.area-of-expertise'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiBecomeASpeakerBecomeASpeaker
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'become_a_speakers';
+  info: {
+    description: '';
+    displayName: 'BecomeASpeaker';
+    pluralName: 'become-a-speakers';
+    singularName: 'become-a-speaker';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    aboutSpeaker: Schema.Attribute.Text;
+    additionalMessage: Schema.Attribute.Text;
+    areaOfExpertise: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::area-of-expertise.area-of-expertise'
+    >;
+    bioProfile: Schema.Attribute.Media<'files'>;
+    city: Schema.Attribute.String;
+    companyName: Schema.Attribute.String;
+    country: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
+    countryCode: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    designation: Schema.Attribute.String;
+    firstName: Schema.Attribute.String;
+    fullName: Schema.Attribute.String;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    lastName: Schema.Attribute.String;
+    linkedinUrl: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::become-a-speaker.become-a-speaker'
+    > &
+      Schema.Attribute.Private;
+    mobileNumber: Schema.Attribute.String;
+    officialEmailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
+    profilePhoto: Schema.Attribute.Media<'images'>;
+    publishedAt: Schema.Attribute.DateTime;
+    spokenAtOtherConference: Schema.Attribute.Enumeration<['Yes', 'No']>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCountryCountry extends Struct.CollectionTypeSchema {
   collectionName: 'countries';
   info: {
@@ -443,6 +524,45 @@ export interface ApiDelegateDelegate extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiExpressInterestExpressInterest
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'express_interests';
+  info: {
+    description: '';
+    displayName: 'ExpressInterest';
+    pluralName: 'express-interests';
+    singularName: 'express-interest';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    companyName: Schema.Attribute.String;
+    countryCode: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    designation: Schema.Attribute.String;
+    email: Schema.Attribute.Email & Schema.Attribute.Unique;
+    firstName: Schema.Attribute.String;
+    fullName: Schema.Attribute.String;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    lastName: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::express-interest.express-interest'
+    > &
+      Schema.Attribute.Private;
+    mobileNumber: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    wantToAssociatedWith: Schema.Attribute.JSON;
+  };
+}
+
 export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
   collectionName: 'facilitators';
   info: {
@@ -462,10 +582,12 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     delegates: Schema.Attribute.Relation<'oneToMany', 'api::delegate.delegate'>;
+    firstName: Schema.Attribute.String;
     gstDetails: Schema.Attribute.Component<'common.gst-details', false>;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     isCognitoVerified: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
+    lastName: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -485,6 +607,36 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     wcOrderId: Schema.Attribute.String;
     wcOrderStatus: Schema.Attribute.String;
+  };
+}
+
+export interface ApiNewsletterNewsletter extends Struct.CollectionTypeSchema {
+  collectionName: 'newsletters';
+  info: {
+    description: '';
+    displayName: 'Newsletter';
+    pluralName: 'newsletters';
+    singularName: 'newsletter';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.Email & Schema.Attribute.Unique;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::newsletter.newsletter'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1064,9 +1216,13 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::area-of-expertise.area-of-expertise': ApiAreaOfExpertiseAreaOfExpertise;
+      'api::become-a-speaker.become-a-speaker': ApiBecomeASpeakerBecomeASpeaker;
       'api::country.country': ApiCountryCountry;
       'api::delegate.delegate': ApiDelegateDelegate;
+      'api::express-interest.express-interest': ApiExpressInterestExpressInterest;
       'api::facilitator.facilitator': ApiFacilitatorFacilitator;
+      'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::sector.sector': ApiSectorSector;
       'api::speaker.speaker': ApiSpeakerSpeaker;
       'plugin::content-releases.release': PluginContentReleasesRelease;

@@ -1,0 +1,91 @@
+{
+  "kind": "collectionType",
+  "collectionName": "become_a_speakers",
+  "info": {
+    "singularName": "become-a-speaker",
+    "pluralName": "become-a-speakers",
+    "displayName": "BecomeASpeaker",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "fullName": {
+      "type": "string"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "countryCode": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::country.country"
+    },
+    "mobileNumber": {
+      "type": "string"
+    },
+    "officialEmailAddress": {
+      "type": "email",
+      "unique": true
+    },
+    "companyName": {
+      "type": "string"
+    },
+    "designation": {
+      "type": "string"
+    },
+    "country": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::country.country"
+    },
+    "city": {
+      "type": "string"
+    },
+    "linkedinUrl": {
+      "type": "string"
+    },
+    "spokenAtOtherConference": {
+      "type": "enumeration",
+      "enum": [
+        "Yes",
+        "No"
+      ]
+    },
+    "profilePhoto": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "aboutSpeaker": {
+      "type": "text"
+    },
+    "bioProfile": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "additionalMessage": {
+      "type": "text"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    },
+    "areaOfExpertise": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::area-of-expertise.area-of-expertise"
+    }
+  }
+}
