@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-05-17T06:34:21.353Z"
+    "x-generation-date": "2025-05-17T07:37:46.183Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -6510,6 +6510,9 @@
                 ],
                 "example": "string or id"
               },
+              "consent": {
+                "type": "boolean"
+              },
               "locale": {
                 "type": "string"
               },
@@ -7461,6 +7464,9 @@
               }
             }
           },
+          "consent": {
+            "type": "boolean"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -7843,6 +7849,9 @@
                       "type": "string"
                     }
                   }
+                },
+                "consent": {
+                  "type": "boolean"
                 },
                 "createdAt": {
                   "type": "string",
@@ -9322,8 +9331,22 @@
               "designation": {
                 "type": "string"
               },
-              "wantToAssociatedWith": {},
               "isActive": {
+                "type": "boolean"
+              },
+              "IsSpeaker": {
+                "type": "boolean"
+              },
+              "IsPartnerOrExhibitor": {
+                "type": "boolean"
+              },
+              "IsSupporter": {
+                "type": "boolean"
+              },
+              "IsDelegate": {
+                "type": "boolean"
+              },
+              "consent": {
                 "type": "boolean"
               },
               "locale": {
@@ -9736,8 +9759,22 @@
           "designation": {
             "type": "string"
           },
-          "wantToAssociatedWith": {},
           "isActive": {
+            "type": "boolean"
+          },
+          "IsSpeaker": {
+            "type": "boolean"
+          },
+          "IsPartnerOrExhibitor": {
+            "type": "boolean"
+          },
+          "IsSupporter": {
+            "type": "boolean"
+          },
+          "IsDelegate": {
+            "type": "boolean"
+          },
+          "consent": {
             "type": "boolean"
           },
           "createdAt": {
@@ -9821,8 +9858,22 @@
                 "designation": {
                   "type": "string"
                 },
-                "wantToAssociatedWith": {},
                 "isActive": {
+                  "type": "boolean"
+                },
+                "IsSpeaker": {
+                  "type": "boolean"
+                },
+                "IsPartnerOrExhibitor": {
+                  "type": "boolean"
+                },
+                "IsSupporter": {
+                  "type": "boolean"
+                },
+                "IsDelegate": {
+                  "type": "boolean"
+                },
+                "consent": {
                   "type": "boolean"
                 },
                 "createdAt": {
