@@ -422,6 +422,7 @@ export interface ApiBecomeASpeakerBecomeASpeaker
     bioProfile: Schema.Attribute.Media<'files'>;
     city: Schema.Attribute.String;
     companyName: Schema.Attribute.String;
+    consent: Schema.Attribute.Boolean;
     country: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
     countryCode: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
     createdAt: Schema.Attribute.DateTime;
@@ -538,6 +539,7 @@ export interface ApiExpressInterestExpressInterest
   };
   attributes: {
     companyName: Schema.Attribute.String;
+    consent: Schema.Attribute.Boolean;
     countryCode: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -547,6 +549,10 @@ export interface ApiExpressInterestExpressInterest
     firstName: Schema.Attribute.String;
     fullName: Schema.Attribute.String;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    IsDelegate: Schema.Attribute.Boolean;
+    IsPartnerOrExhibitor: Schema.Attribute.Boolean;
+    IsSpeaker: Schema.Attribute.Boolean;
+    IsSupporter: Schema.Attribute.Boolean;
     lastName: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -559,7 +565,6 @@ export interface ApiExpressInterestExpressInterest
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    wantToAssociatedWith: Schema.Attribute.JSON;
   };
 }
 

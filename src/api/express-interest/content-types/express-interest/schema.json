@@ -38,12 +38,24 @@
     "designation": {
       "type": "string"
     },
-    "wantToAssociatedWith": {
-      "type": "json"
-    },
     "isActive": {
       "type": "boolean",
       "default": true
+    },
+    "IsSpeaker": {
+      "type": "boolean"
+    },
+    "IsPartnerOrExhibitor": {
+      "type": "boolean"
+    },
+    "IsSupporter": {
+      "type": "boolean"
+    },
+    "IsDelegate": {
+      "type": "boolean"
+    },
+    "consent": {
+      "type": "boolean"
     }
   }
 }
