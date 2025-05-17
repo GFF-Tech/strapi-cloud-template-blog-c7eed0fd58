@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "area_of_expertises",
+  "info": {
+    "singularName": "area-of-expertise",
+    "pluralName": "area-of-expertises",
+    "displayName": "AreaOfExpertise",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}
