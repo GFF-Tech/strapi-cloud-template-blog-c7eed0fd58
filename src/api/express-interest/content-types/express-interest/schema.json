@@ -20,11 +20,6 @@
     "lastName": {
       "type": "string"
     },
-    "countryCode": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::country.country"
-    },
     "mobileNumber": {
       "type": "string"
     },
@@ -56,6 +51,9 @@
     },
     "consent": {
       "type": "boolean"
+    },
+    "countryCode": {
+      "type": "string"
     }
   }
 }

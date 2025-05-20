@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "registration_faqs",
+  "info": {
+    "singularName": "registration-faq",
+    "pluralName": "registration-faqs",
+    "displayName": "RegistrationFaq",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "question": {
+      "type": "string"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    },
+    "answer": {
+      "type": "text"
+    }
+  }
+}

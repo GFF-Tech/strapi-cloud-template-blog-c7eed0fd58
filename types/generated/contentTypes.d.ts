@@ -424,7 +424,7 @@ export interface ApiBecomeASpeakerBecomeASpeaker
     companyName: Schema.Attribute.String;
     consent: Schema.Attribute.Boolean;
     country: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
-    countryCode: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
+    countryCode: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -540,7 +540,7 @@ export interface ApiExpressInterestExpressInterest
   attributes: {
     companyName: Schema.Attribute.String;
     consent: Schema.Attribute.Boolean;
-    countryCode: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
+    countryCode: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -639,6 +639,38 @@ export interface ApiNewsletterNewsletter extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiRegistrationFaqRegistrationFaq
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'registration_faqs';
+  info: {
+    description: '';
+    displayName: 'RegistrationFaq';
+    pluralName: 'registration-faqs';
+    singularName: 'registration-faq';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    answer: Schema.Attribute.Text;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::registration-faq.registration-faq'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    question: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1228,6 +1260,7 @@ declare module '@strapi/strapi' {
       'api::express-interest.express-interest': ApiExpressInterestExpressInterest;
       'api::facilitator.facilitator': ApiFacilitatorFacilitator;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
+      'api::registration-faq.registration-faq': ApiRegistrationFaqRegistrationFaq;
       'api::sector.sector': ApiSectorSector;
       'api::speaker.speaker': ApiSpeakerSpeaker;
       'plugin::content-releases.release': PluginContentReleasesRelease;
