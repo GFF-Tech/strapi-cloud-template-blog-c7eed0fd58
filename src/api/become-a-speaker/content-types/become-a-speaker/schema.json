@@ -33,11 +33,6 @@
     "designation": {
       "type": "string"
     },
-    "country": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::country.country"
-    },
     "city": {
       "type": "string"
     },
@@ -86,6 +81,9 @@
       "type": "boolean"
     },
     "countryCode": {
+      "type": "string"
+    },
+    "country": {
       "type": "string"
     }
   }
