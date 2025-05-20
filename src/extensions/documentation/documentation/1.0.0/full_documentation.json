@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-05-20T07:19:23.378Z"
+    "x-generation-date": "2025-05-20T07:37:53.093Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -6926,17 +6926,6 @@
               "lastName": {
                 "type": "string"
               },
-              "countryCode": {
-                "oneOf": [
-                  {
-                    "type": "integer"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ],
-                "example": "string or id"
-              },
               "mobileNumber": {
                 "type": "string"
               },
@@ -7019,6 +7008,9 @@
               "consent": {
                 "type": "boolean"
               },
+              "countryCode": {
+                "type": "string"
+              },
               "locale": {
                 "type": "string"
               },
@@ -7058,7 +7050,20 @@
           "lastName": {
             "type": "string"
           },
-          "countryCode": {
+          "mobileNumber": {
+            "type": "string"
+          },
+          "officialEmailAddress": {
+            "type": "string",
+            "format": "email"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "designation": {
+            "type": "string"
+          },
+          "country": {
             "type": "object",
             "properties": {
               "id": {
@@ -7378,30 +7383,6 @@
                     }
                   }
                 }
-              }
-            }
-          },
-          "mobileNumber": {
-            "type": "string"
-          },
-          "officialEmailAddress": {
-            "type": "string",
-            "format": "email"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "designation": {
-            "type": "string"
-          },
-          "country": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "number"
-              },
-              "documentId": {
-                "type": "string"
               }
             }
           },
@@ -7973,6 +7954,9 @@
           "consent": {
             "type": "boolean"
           },
+          "countryCode": {
+            "type": "string"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -8029,17 +8013,6 @@
                 },
                 "lastName": {
                   "type": "string"
-                },
-                "countryCode": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "number"
-                    },
-                    "documentId": {
-                      "type": "string"
-                    }
-                  }
                 },
                 "mobileNumber": {
                   "type": "string"
@@ -8358,6 +8331,9 @@
                 },
                 "consent": {
                   "type": "boolean"
+                },
+                "countryCode": {
+                  "type": "string"
                 },
                 "createdAt": {
                   "type": "string",
