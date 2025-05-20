@@ -423,7 +423,7 @@ export interface ApiBecomeASpeakerBecomeASpeaker
     city: Schema.Attribute.String;
     companyName: Schema.Attribute.String;
     consent: Schema.Attribute.Boolean;
-    country: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
+    country: Schema.Attribute.String;
     countryCode: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
