@@ -375,55 +375,55 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
     }
   },
 
-  async wooOrderSync(ctx) {
-    try {
-      const wooOrder = ctx.request.body;
-      const metaData = Array.isArray(wooOrder.meta_data) ? wooOrder.meta_data : [];
-      const getMetaValue = (key) => metaData.find(m => m.key === key)?.value ?? null;
+  // async wooOrderSync(ctx) {
+  //   try {
+  //     const wooOrder = ctx.request.body;
+  //     const metaData = Array.isArray(wooOrder.meta_data) ? wooOrder.meta_data : [];
+  //     const getMetaValue = (key) => metaData.find(m => m.key === key)?.value ?? null;
   
-      const strapiUserId = getMetaValue('strapiUserId');
+  //     const strapiUserId = getMetaValue('strapiUserId');
   
-      if (!strapiUserId) {
-        return ctx.send({ warning: 'Strapi user ID missing in order' });
-      }
+  //     if (!strapiUserId) {
+  //       return ctx.send({ warning: 'Strapi user ID missing in order' });
+  //     }
   
-      const numericUserId = parseInt(strapiUserId, 10);
-      if (isNaN(numericUserId)) {
-         return ctx.send({ warning: 'Invalid Strapi user ID' });
-      }
+  //     const numericUserId = parseInt(strapiUserId, 10);
+  //     if (isNaN(numericUserId)) {
+  //        return ctx.send({ warning: 'Invalid Strapi user ID' });
+  //     }
   
-      const existingFacilitator = await strapi.entityService.findOne('api::facilitator.facilitator', numericUserId);
+  //     const existingFacilitator = await strapi.entityService.findOne('api::facilitator.facilitator', numericUserId);
       
-      if (!existingFacilitator) {
-        return ctx.send({ warning: 'Facilitator not found' });
-      }
+  //     if (!existingFacilitator) {
+  //       return ctx.send({ warning: 'Facilitator not found' });
+  //     }
      
-      const totalAmount = getMetaValue('totalAmount');
-      const gstDetails = {
-        companyName: getMetaValue('companyName'),
-        companyAddress: getMetaValue('companyAddress'),
-        companyPOC: getMetaValue('companyPOC'),
-        billingAddress: getMetaValue('billingAddress'),
-        pincode: getMetaValue('pincode'),
-      };
+  //     const totalAmount = getMetaValue('totalAmount');
+  //     const gstDetails = {
+  //       companyName: getMetaValue('companyName'),
+  //       companyAddress: getMetaValue('companyAddress'),
+  //       companyPOC: getMetaValue('companyPOC'),
+  //       billingAddress: getMetaValue('billingAddress'),
+  //       pincode: getMetaValue('pincode'),
+  //     };
   
-      // Update facilitator
-      await strapi.entityService.update('api::facilitator.facilitator', numericUserId, {
-        data: {
-          wcOrderStatus: wooOrder.status,
-          wcOrderId: String(wooOrder.id),
-          totalAmount: totalAmount,
-          gstDetails: gstDetails,
-        },
-      });
+  //     // Update facilitator
+  //     await strapi.entityService.update('api::facilitator.facilitator', numericUserId, {
+  //       data: {
+  //         wcOrderStatus: wooOrder.status,
+  //         wcOrderId: String(wooOrder.id),
+  //         totalAmount: totalAmount,
+  //         gstDetails: gstDetails,
+  //       },
+  //     });
   
-      return ctx.send({ message: 'Order synced and GST data saved successfully' });
+  //     return ctx.send({ message: 'Order synced and GST data saved successfully' });
   
-    } catch (err) {
-      // console.error('❌ Webhook error:', err);
-      return ctx.send({ error: 'Internal error occurred. Logged for review.' });
-    }
-  },
+  //   } catch (err) {
+  //     // console.error('❌ Webhook error:', err);
+  //     return ctx.send({ error: 'Internal error occurred. Logged for review.' });
+  //   }
+  // },
 
 }));
 
