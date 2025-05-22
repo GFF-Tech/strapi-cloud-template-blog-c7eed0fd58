@@ -94,6 +94,15 @@ module.exports = {
         middlewares: [],
       },
     },
-
+    {
+      method: 'POST',
+      path: '/facilitators/wooOrderSync',
+      handler: 'facilitator.wooOrderSync',
+      config: {
+        policies: [],
+        middlewares: [],
+        auth: false
+      },
+    },
   ],
 };
