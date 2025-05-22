@@ -56,7 +56,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
   
       let cognitoId = null;
   
-      // If not facilitator, add to Cognito
+      // If not a facilitator, add to Cognito
       if (!data.isFacilitator) {
         const command = new AdminCreateUserCommand({
           UserPoolId: process.env.COGNITO_USER_POOL_ID,
@@ -71,25 +71,36 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         });
   
         const response = await client.send(command);
-        cognitoId =  response.User.Username;
+        cognitoId = response.User.Username;
       }
   
-      const createdDelegate = await strapi.entityService.create('api::delegate.delegate', {
+      // Create the delegate (sector may be optional)
+      const created = await strapi.entityService.create('api::delegate.delegate', {
         data: {
           ...data,
           cognitoId,
         },
-        populate: {
-          country: { fields: ['country', 'countryCode'] },
-          sector: { fields: ['name'] },
-        },
       });
   
+      // Re-fetch with population
+      const createdDelegate = await strapi.entityService.findOne(
+        'api::delegate.delegate',
+        created.id,
+        {
+          populate: {
+            country: { fields: ['country', 'countryCode'] },
+            sector: { fields: ['name'] },
+          },
+        }
+      );
+  
       return createdDelegate;
+  
     } catch (error) {
       if (error.name === 'UsernameExistsException') {
         return ctx.conflict('Delegate already exists in Cognito');
       }
+  
       console.error('Delegate creation error:', error);
       return ctx.internalServerError('Failed to create Delegate');
     }

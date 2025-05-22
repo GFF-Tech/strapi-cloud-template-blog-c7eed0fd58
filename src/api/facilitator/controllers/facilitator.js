@@ -3,6 +3,7 @@
 // @ts-ignore
 const { createCoreController } = require('@strapi/strapi').factories;
 const axios = require('axios');
+const crypto = require('crypto');
 
 const {
   // @ts-ignore
@@ -89,18 +90,21 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
   async create(ctx) {
     const { data } = ctx.request.body;
-
+  
     try {
+      // 1. Fetch and validate country code
       const country = await strapi.entityService.findOne('api::country.country', data.country, {
         fields: ['countryCode'],
       });
-
+  
       if (!country || !country.countryCode) {
         return ctx.badRequest('Invalid or missing country');
       }
-
+  
+      // 2. Format phone number for Cognito
       const formattedPhoneNumber = `${country.countryCode}${data.mobileNumber}`;
-
+  
+      // 3. Sign up user in Cognito
       const command = new SignUpCommand({
         ClientId: process.env.COGNITO_CLIENT_ID,
         Username: data.officialEmailAddress,
@@ -110,33 +114,40 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           { Name: 'phone_number', Value: formattedPhoneNumber },
         ],
       });
-
+  
       const response = await client.send(command);
       const cognitoId = response.UserSub;
-
-      const createdFacilitator = await strapi.entityService.create('api::facilitator.facilitator', {
+  
+     const createdFacilitator = await strapi.entityService.create('api::facilitator.facilitator', {
         data: {
           ...data,
           cognitoId,
         },
-        populate: {
-          country: {
-            fields: ['country', 'countryCode'],
-          },
-          sector: {
-            fields: ['name'],
-          },
-        },
       });
-
-      return createdFacilitator;
+  
+       const populatedFacilitator = await strapi.entityService.findOne(
+        'api::facilitator.facilitator',
+        createdFacilitator.id,
+        {
+          populate: {
+            country: {
+              fields: ['country', 'countryCode'],
+            },
+            sector: {
+              fields: ['name'],
+            },
+          },
+        }
+      );
+  
+      return populatedFacilitator;
     } catch (error) {
       const errCode = error.name;
-
+  
       if (errCode === 'UsernameExistsException') {
         return ctx.conflict('User already exists in Cognito');
       }
-
+  
       console.error('Cognito SignUp error:', error);
       return ctx.internalServerError('Failed to create facilitator with Cognito');
     }
@@ -300,7 +311,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
   
     try {
       // Dummy OTP validation
-      if (otp !== '1234') {
+      if (otp !== '123456') {
         return ctx.unauthorized('Invalid OTP');
       }
 
@@ -363,6 +374,56 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       return ctx.internalServerError('An unexpected error occurred');
     }
   },
+
+  // async wooOrderSync(ctx) {
+  //   try {
+  //     const wooOrder = ctx.request.body;
+  //     const metaData = Array.isArray(wooOrder.meta_data) ? wooOrder.meta_data : [];
+  //     const getMetaValue = (key) => metaData.find(m => m.key === key)?.value ?? null;
+  
+  //     const strapiUserId = getMetaValue('strapiUserId');
+  
+  //     if (!strapiUserId) {
+  //       return ctx.send({ warning: 'Strapi user ID missing in order' });
+  //     }
+  
+  //     const numericUserId = parseInt(strapiUserId, 10);
+  //     if (isNaN(numericUserId)) {
+  //        return ctx.send({ warning: 'Invalid Strapi user ID' });
+  //     }
+  
+  //     const existingFacilitator = await strapi.entityService.findOne('api::facilitator.facilitator', numericUserId);
+      
+  //     if (!existingFacilitator) {
+  //       return ctx.send({ warning: 'Facilitator not found' });
+  //     }
+     
+  //     const totalAmount = getMetaValue('totalAmount');
+  //     const gstDetails = {
+  //       companyName: getMetaValue('companyName'),
+  //       companyAddress: getMetaValue('companyAddress'),
+  //       companyPOC: getMetaValue('companyPOC'),
+  //       billingAddress: getMetaValue('billingAddress'),
+  //       pincode: getMetaValue('pincode'),
+  //     };
+  
+  //     // Update facilitator
+  //     await strapi.entityService.update('api::facilitator.facilitator', numericUserId, {
+  //       data: {
+  //         wcOrderStatus: wooOrder.status,
+  //         wcOrderId: String(wooOrder.id),
+  //         totalAmount: totalAmount,
+  //         gstDetails: gstDetails,
+  //       },
+  //     });
+  
+  //     return ctx.send({ message: 'Order synced and GST data saved successfully' });
+  
+  //   } catch (err) {
+  //     // console.error('❌ Webhook error:', err);
+  //     return ctx.send({ error: 'Internal error occurred. Logged for review.' });
+  //   }
+  // },
 
 }));
 
