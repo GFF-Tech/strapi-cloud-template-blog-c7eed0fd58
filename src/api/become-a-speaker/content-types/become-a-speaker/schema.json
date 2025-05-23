@@ -11,9 +11,6 @@
     "draftAndPublish": false
   },
   "attributes": {
-    "fullName": {
-      "type": "string"
-    },
     "firstName": {
       "type": "string"
     },
@@ -33,49 +30,12 @@
     "designation": {
       "type": "string"
     },
-    "city": {
-      "type": "string"
-    },
     "linkedinUrl": {
       "type": "string"
-    },
-    "spokenAtOtherConference": {
-      "type": "enumeration",
-      "enum": [
-        "Yes",
-        "No"
-      ]
-    },
-    "profilePhoto": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images"
-      ]
-    },
-    "aboutSpeaker": {
-      "type": "text"
-    },
-    "bioProfile": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "files"
-      ]
-    },
-    "additionalMessage": {
-      "type": "text"
     },
     "isActive": {
       "type": "boolean",
       "default": true
-    },
-    "areaOfExpertise": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::area-of-expertise.area-of-expertise"
     },
     "consent": {
       "type": "boolean"

@@ -413,14 +413,6 @@ export interface ApiBecomeASpeakerBecomeASpeaker
     draftAndPublish: false;
   };
   attributes: {
-    aboutSpeaker: Schema.Attribute.Text;
-    additionalMessage: Schema.Attribute.Text;
-    areaOfExpertise: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::area-of-expertise.area-of-expertise'
-    >;
-    bioProfile: Schema.Attribute.Media<'files'>;
-    city: Schema.Attribute.String;
     companyName: Schema.Attribute.String;
     consent: Schema.Attribute.Boolean;
     country: Schema.Attribute.String;
@@ -430,7 +422,6 @@ export interface ApiBecomeASpeakerBecomeASpeaker
       Schema.Attribute.Private;
     designation: Schema.Attribute.String;
     firstName: Schema.Attribute.String;
-    fullName: Schema.Attribute.String;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     lastName: Schema.Attribute.String;
     linkedinUrl: Schema.Attribute.String;
@@ -442,9 +433,7 @@ export interface ApiBecomeASpeakerBecomeASpeaker
       Schema.Attribute.Private;
     mobileNumber: Schema.Attribute.String;
     officialEmailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
-    profilePhoto: Schema.Attribute.Media<'images'>;
     publishedAt: Schema.Attribute.DateTime;
-    spokenAtOtherConference: Schema.Attribute.Enumeration<['Yes', 'No']>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
