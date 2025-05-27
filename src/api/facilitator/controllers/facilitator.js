@@ -371,11 +371,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       });
   
       const cognitoId = attributes['sub'];
-      const firstName = attributes['custom:firstName'];
-      const lastName = attributes['custom:lastName'];
-      const email = attributes['email'];
-      const phone = attributes['phone_number'];
-      const companyName = attributes['custom:companyName'] || null;
+      const facilitatorFirstName  = attributes['custom:firstName'];
+      const facilitatorLastName  = attributes['custom:lastName'];
+      const facilitatorEmail  = attributes['email'];
+      const facilitatorPhone  = attributes['phone_number'];
+      const facilitatorCompany  = attributes['custom:companyName'] || null;
   
       if (!cognitoId) {
         return ctx.internalServerError('Cognito ID missing');
@@ -397,10 +397,10 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         return ctx.notFound('Facilitator not found');
       }
   
-      let mobileNumber = phone;
-      if (phone && facilitator?.country?.countryCode) {
+      let mobileNumber = facilitatorPhone;
+      if (facilitatorPhone && facilitator?.country?.countryCode) {
         const code = facilitator.country.countryCode.replace('+', '');
-        mobileNumber = phone.replace(`+${code}`, '');
+        mobileNumber = facilitatorPhone.replace(`+${code}`, '');
       }
   
       // 4. Enrich delegates with Cognito details
@@ -415,16 +415,16 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         let companyName = null;
   
         if (delegate.isFacilitator) {
-          firstName = firstName ?? facilitator.firstName;
-          lastName = lastName ?? facilitator.lastName;
-          officialEmailAddress = officialEmailAddress ?? facilitator.officialEmailAddress;
-          companyName = companyName ?? facilitator.companyName;
+          firstName = facilitatorFirstName;
+          lastName = facilitatorLastName;
+          officialEmailAddress = facilitatorEmail;
+          companyName = facilitatorCompany;
       
-          if (facilitator.mobileNumber && delegate?.country?.countryCode) {
+          if (facilitatorPhone  && delegate?.country?.countryCode) {
             const code = delegate.country.countryCode.replace('+', '');
-            mobileNumber = facilitator.mobileNumber.replace(`+${code}`, '');
+            mobileNumber = facilitatorPhone.replace(`+${code}`, '');
           } else {
-            mobileNumber = facilitator.mobileNumber;
+            mobileNumber = facilitatorPhone;
           }
       
         } else if (delegate.cognitoId) {
@@ -477,11 +477,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         refreshToken: response.AuthenticationResult?.RefreshToken,
         data: {
           cognitoId,
-          officialEmailAddress: email,
+          officialEmailAddress: facilitatorEmail,
           mobileNumber,
-          firstName,
-          lastName,
-          companyName,
+          firstName: facilitatorFirstName,
+          lastName: facilitatorLastName,
+          companyName: facilitatorCompany,
           ...facilitator,
           delegates: enrichedDelegates,
           wooOrderDetails,
