@@ -60,5 +60,23 @@ module.exports = {
         middlewares: [],
       },
     },
+    {
+      method: 'POST',
+      path: '/delegates/login',
+      handler: 'delegate.login',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
+      method: 'POST',
+      path: '/delegates/verifyLoginOtp',
+      handler: 'delegate.verifyLoginOtp',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
   ],
 };

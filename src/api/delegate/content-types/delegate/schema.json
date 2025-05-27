@@ -11,22 +11,10 @@
     "draftAndPublish": false
   },
   "attributes": {
-    "name": {
-      "type": "string"
-    },
     "country": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::country.country"
-    },
-    "mobileNumber": {
-      "type": "string"
-    },
-    "officialEmailAddress": {
-      "type": "email"
-    },
-    "companyName": {
-      "type": "string"
     },
     "wcProductId": {
       "type": "string"
@@ -54,6 +42,9 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::sector.sector"
+    },
+    "confirmationId": {
+      "type": "string"
     }
   }
 }

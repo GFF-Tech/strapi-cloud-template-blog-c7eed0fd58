@@ -11,24 +11,12 @@
     "draftAndPublish": false
   },
   "attributes": {
-    "name": {
-      "type": "string"
-    },
     "country": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::country.country"
     },
-    "mobileNumber": {
-      "type": "string"
-    },
     "cognitoId": {
-      "type": "string"
-    },
-    "officialEmailAddress": {
-      "type": "email"
-    },
-    "companyName": {
       "type": "string"
     },
     "wcOrderId": {
@@ -69,12 +57,6 @@
       "relation": "oneToMany",
       "target": "api::delegate.delegate",
       "mappedBy": "facilitatorId"
-    },
-    "firstName": {
-      "type": "string"
-    },
-    "lastName": {
-      "type": "string"
     }
   }
 }

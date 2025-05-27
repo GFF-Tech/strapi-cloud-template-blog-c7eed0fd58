@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-05-23T07:30:53.515Z"
+    "x-generation-date": "2025-05-27T08:14:06.516Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -2060,6 +2060,168 @@
           }
         ],
         "operationId": "delete/delegates/{id}"
+      }
+    },
+    "/delegates/login": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DelegateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Delegate"
+        ],
+        "parameters": [],
+        "operationId": "post/delegates/login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DelegateRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delegates/verifyLoginOtp": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DelegateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Delegate"
+        ],
+        "parameters": [],
+        "operationId": "post/delegates/verifyLoginOtp",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DelegateRequest"
+              }
+            }
+          }
+        }
       }
     },
     "/express-interests": {
@@ -7894,6 +8056,12 @@
               "isActive": {
                 "type": "boolean"
               },
+              "mobileMinLength": {
+                "type": "integer"
+              },
+              "mobileMaxLength": {
+                "type": "integer"
+              },
               "locale": {
                 "type": "string"
               },
@@ -7967,6 +8135,12 @@
           },
           "isActive": {
             "type": "boolean"
+          },
+          "mobileMinLength": {
+            "type": "integer"
+          },
+          "mobileMaxLength": {
+            "type": "integer"
           },
           "createdAt": {
             "type": "string",
@@ -8277,6 +8451,12 @@
                 "isActive": {
                   "type": "boolean"
                 },
+                "mobileMinLength": {
+                  "type": "integer"
+                },
+                "mobileMaxLength": {
+                  "type": "integer"
+                },
                 "createdAt": {
                   "type": "string",
                   "format": "date-time"
@@ -8353,9 +8533,6 @@
           "data": {
             "type": "object",
             "properties": {
-              "name": {
-                "type": "string"
-              },
               "country": {
                 "oneOf": [
                   {
@@ -8366,16 +8543,6 @@
                   }
                 ],
                 "example": "string or id"
-              },
-              "mobileNumber": {
-                "type": "string"
-              },
-              "officialEmailAddress": {
-                "type": "string",
-                "format": "email"
-              },
-              "companyName": {
-                "type": "string"
               },
               "wcProductId": {
                 "type": "string"
@@ -8413,6 +8580,9 @@
                   }
                 ],
                 "example": "string or id"
+              },
+              "confirmationId": {
+                "type": "string"
               },
               "locale": {
                 "type": "string"
@@ -8479,9 +8649,6 @@
           "documentId": {
             "type": "string"
           },
-          "name": {
-            "type": "string"
-          },
           "country": {
             "type": "object",
             "properties": {
@@ -8499,6 +8666,12 @@
               },
               "isActive": {
                 "type": "boolean"
+              },
+              "mobileMinLength": {
+                "type": "integer"
+              },
+              "mobileMaxLength": {
+                "type": "integer"
               },
               "createdAt": {
                 "type": "string",
@@ -8805,16 +8978,6 @@
               }
             }
           },
-          "mobileNumber": {
-            "type": "string"
-          },
-          "officialEmailAddress": {
-            "type": "string",
-            "format": "email"
-          },
-          "companyName": {
-            "type": "string"
-          },
           "wcProductId": {
             "type": "string"
           },
@@ -8836,9 +8999,6 @@
               "documentId": {
                 "type": "string"
               },
-              "name": {
-                "type": "string"
-              },
               "country": {
                 "type": "object",
                 "properties": {
@@ -8850,17 +9010,7 @@
                   }
                 }
               },
-              "mobileNumber": {
-                "type": "string"
-              },
               "cognitoId": {
-                "type": "string"
-              },
-              "officialEmailAddress": {
-                "type": "string",
-                "format": "email"
-              },
-              "companyName": {
                 "type": "string"
               },
               "wcOrderId": {
@@ -8967,9 +9117,6 @@
                     "documentId": {
                       "type": "string"
                     },
-                    "name": {
-                      "type": "string"
-                    },
                     "country": {
                       "type": "object",
                       "properties": {
@@ -8980,16 +9127,6 @@
                           "type": "string"
                         }
                       }
-                    },
-                    "mobileNumber": {
-                      "type": "string"
-                    },
-                    "officialEmailAddress": {
-                      "type": "string",
-                      "format": "email"
-                    },
-                    "companyName": {
-                      "type": "string"
                     },
                     "wcProductId": {
                       "type": "string"
@@ -9027,6 +9164,9 @@
                           "type": "string"
                         }
                       }
+                    },
+                    "confirmationId": {
+                      "type": "string"
                     },
                     "createdAt": {
                       "type": "string",
@@ -9081,12 +9221,6 @@
                     }
                   }
                 }
-              },
-              "firstName": {
-                "type": "string"
-              },
-              "lastName": {
-                "type": "string"
               },
               "createdAt": {
                 "type": "string",
@@ -9154,6 +9288,9 @@
                 "type": "string"
               }
             }
+          },
+          "confirmationId": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -9824,9 +9961,6 @@
           "data": {
             "type": "object",
             "properties": {
-              "name": {
-                "type": "string"
-              },
               "country": {
                 "oneOf": [
                   {
@@ -9838,17 +9972,7 @@
                 ],
                 "example": "string or id"
               },
-              "mobileNumber": {
-                "type": "string"
-              },
               "cognitoId": {
-                "type": "string"
-              },
-              "officialEmailAddress": {
-                "type": "string",
-                "format": "email"
-              },
-              "companyName": {
                 "type": "string"
               },
               "wcOrderId": {
@@ -9900,12 +10024,6 @@
                   ],
                   "example": "string or id"
                 }
-              },
-              "firstName": {
-                "type": "string"
-              },
-              "lastName": {
-                "type": "string"
               },
               "locale": {
                 "type": "string"
@@ -9972,9 +10090,6 @@
           "documentId": {
             "type": "string"
           },
-          "name": {
-            "type": "string"
-          },
           "country": {
             "type": "object",
             "properties": {
@@ -9992,6 +10107,12 @@
               },
               "isActive": {
                 "type": "boolean"
+              },
+              "mobileMinLength": {
+                "type": "integer"
+              },
+              "mobileMaxLength": {
+                "type": "integer"
               },
               "createdAt": {
                 "type": "string",
@@ -10298,17 +10419,7 @@
               }
             }
           },
-          "mobileNumber": {
-            "type": "string"
-          },
           "cognitoId": {
-            "type": "string"
-          },
-          "officialEmailAddress": {
-            "type": "string",
-            "format": "email"
-          },
-          "companyName": {
             "type": "string"
           },
           "wcOrderId": {
@@ -10415,9 +10526,6 @@
                 "documentId": {
                   "type": "string"
                 },
-                "name": {
-                  "type": "string"
-                },
                 "country": {
                   "type": "object",
                   "properties": {
@@ -10428,16 +10536,6 @@
                       "type": "string"
                     }
                   }
-                },
-                "mobileNumber": {
-                  "type": "string"
-                },
-                "officialEmailAddress": {
-                  "type": "string",
-                  "format": "email"
-                },
-                "companyName": {
-                  "type": "string"
                 },
                 "wcProductId": {
                   "type": "string"
@@ -10460,9 +10558,6 @@
                     "documentId": {
                       "type": "string"
                     },
-                    "name": {
-                      "type": "string"
-                    },
                     "country": {
                       "type": "object",
                       "properties": {
@@ -10474,17 +10569,7 @@
                         }
                       }
                     },
-                    "mobileNumber": {
-                      "type": "string"
-                    },
                     "cognitoId": {
-                      "type": "string"
-                    },
-                    "officialEmailAddress": {
-                      "type": "string",
-                      "format": "email"
-                    },
-                    "companyName": {
                       "type": "string"
                     },
                     "wcOrderId": {
@@ -10536,12 +10621,6 @@
                           }
                         }
                       }
-                    },
-                    "firstName": {
-                      "type": "string"
-                    },
-                    "lastName": {
-                      "type": "string"
                     },
                     "createdAt": {
                       "type": "string",
@@ -10610,6 +10689,9 @@
                     }
                   }
                 },
+                "confirmationId": {
+                  "type": "string"
+                },
                 "createdAt": {
                   "type": "string",
                   "format": "date-time"
@@ -10663,12 +10745,6 @@
                 }
               }
             }
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -12281,6 +12357,12 @@
               },
               "isActive": {
                 "type": "boolean"
+              },
+              "mobileMinLength": {
+                "type": "integer"
+              },
+              "mobileMaxLength": {
+                "type": "integer"
               },
               "createdAt": {
                 "type": "string",
