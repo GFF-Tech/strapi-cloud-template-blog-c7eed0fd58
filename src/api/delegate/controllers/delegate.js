@@ -96,6 +96,8 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         data: {
           facilitatorId: data.facilitatorId,
           isFacilitator: data.isFacilitator || false,
+          wcProductId: data.wcProductId,
+          wcProductName: data.wcProductName,
           cognitoId,
           country: data.country,
           sector: data.sector || null,
