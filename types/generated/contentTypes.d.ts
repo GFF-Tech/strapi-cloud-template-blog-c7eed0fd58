@@ -434,6 +434,7 @@ export interface ApiBecomeASpeakerBecomeASpeaker
     mobileNumber: Schema.Attribute.String;
     officialEmailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
     publishedAt: Schema.Attribute.DateTime;
+    sector: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -550,6 +551,7 @@ export interface ApiExpressInterestExpressInterest
       Schema.Attribute.Private;
     mobileNumber: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    sector: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
