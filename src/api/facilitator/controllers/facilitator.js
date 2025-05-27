@@ -101,7 +101,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           { Name: 'email', Value: data.officialEmailAddress },
           { Name: 'phone_number', Value: formattedPhoneNumber },
           { Name: 'custom:firstName', Value: data.firstName },
-          { Name: 'custom:lastName', Value: data.firstName },
+          { Name: 'custom:lastName', Value: data.lastName },
           { Name: 'custom:delegate', Value: 'false' },
           ...(data.companyName ? [{ Name: 'custom:companyName', Value: data.companyName }] : []),
         ],
@@ -414,31 +414,45 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         let mobileNumber = null;
         let companyName = null;
   
-        if (cognitoDelegateId) {
+        if (delegate.isFacilitator) {
+          firstName = firstName ?? facilitator.firstName;
+          lastName = lastName ?? facilitator.lastName;
+          officialEmailAddress = officialEmailAddress ?? facilitator.officialEmailAddress;
+          companyName = companyName ?? facilitator.companyName;
+      
+          if (facilitator.mobileNumber && delegate?.country?.countryCode) {
+            const code = delegate.country.countryCode.replace('+', '');
+            mobileNumber = facilitator.mobileNumber.replace(`+${code}`, '');
+          } else {
+            mobileNumber = facilitator.mobileNumber;
+          }
+      
+        } else if (delegate.cognitoId) {
+          // If not isFacilitator, fetch from Cognito
           try {
             const delegateUser = await client.send(new AdminGetUserCommand({
               UserPoolId: process.env.COGNITO_USER_POOL_ID,
-              Username: cognitoDelegateId,
+              Username: delegate.cognitoId,
             }));
-  
+      
             const delegateAttrs = {};
             delegateUser.UserAttributes.forEach(attr => {
               delegateAttrs[attr.Name] = attr.Value;
             });
-  
+      
             firstName = delegateAttrs['custom:firstName'];
             lastName = delegateAttrs['custom:lastName'];
             officialEmailAddress = delegateAttrs['email'];
             mobileNumber = delegateAttrs['phone_number'];
             companyName = delegateAttrs['custom:companyName'] || null;
-  
+      
             if (mobileNumber && delegate?.country?.countryCode) {
               const code = delegate.country.countryCode.replace('+', '');
               mobileNumber = mobileNumber.replace(`+${code}`, '');
             }
-  
+      
           } catch (e) {
-            console.warn(`Failed to fetch Cognito data for delegate ${cognitoDelegateId}:`, e.message);
+            console.warn(`Failed to fetch Cognito data for delegate ${delegate.cognitoId}:`, e.message);
           }
         }
   
