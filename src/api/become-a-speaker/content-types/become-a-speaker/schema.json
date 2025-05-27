@@ -45,6 +45,9 @@
     },
     "country": {
       "type": "string"
+    },
+    "sector": {
+      "type": "string"
     }
   }
 }
