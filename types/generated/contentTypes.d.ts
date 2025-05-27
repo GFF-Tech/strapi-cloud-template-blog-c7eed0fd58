@@ -464,6 +464,8 @@ export interface ApiCountryCountry extends Struct.CollectionTypeSchema {
       'api::country.country'
     > &
       Schema.Attribute.Private;
+    mobileMaxLength: Schema.Attribute.Integer;
+    mobileMinLength: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -484,7 +486,7 @@ export interface ApiDelegateDelegate extends Struct.CollectionTypeSchema {
   };
   attributes: {
     cognitoId: Schema.Attribute.String;
-    companyName: Schema.Attribute.String;
+    confirmationId: Schema.Attribute.String;
     country: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -501,9 +503,6 @@ export interface ApiDelegateDelegate extends Struct.CollectionTypeSchema {
       'api::delegate.delegate'
     > &
       Schema.Attribute.Private;
-    mobileNumber: Schema.Attribute.String;
-    name: Schema.Attribute.String;
-    officialEmailAddress: Schema.Attribute.Email;
     publishedAt: Schema.Attribute.DateTime;
     sector: Schema.Attribute.Relation<'oneToOne', 'api::sector.sector'>;
     updatedAt: Schema.Attribute.DateTime;
@@ -570,27 +569,21 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
   };
   attributes: {
     cognitoId: Schema.Attribute.String;
-    companyName: Schema.Attribute.String;
     country: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     delegates: Schema.Attribute.Relation<'oneToMany', 'api::delegate.delegate'>;
-    firstName: Schema.Attribute.String;
     gstDetails: Schema.Attribute.Component<'common.gst-details', false>;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     isCognitoVerified: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
-    lastName: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::facilitator.facilitator'
     > &
       Schema.Attribute.Private;
-    mobileNumber: Schema.Attribute.String;
-    name: Schema.Attribute.String;
-    officialEmailAddress: Schema.Attribute.Email;
     paymentMode: Schema.Attribute.String;
     paymentStatus: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
