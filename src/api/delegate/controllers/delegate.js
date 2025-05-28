@@ -89,6 +89,17 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         });
   
         await client.send(setPasswordCommand);
+      }else {
+        // Fetch cognitoId from facilitator
+        const facilitator = await strapi.entityService.findOne('api::facilitator.facilitator', data.facilitatorId, {
+          fields: ['cognitoId'],
+        });
+      
+        if (!facilitator || !facilitator.cognitoId) {
+          return ctx.badRequest('Invalid facilitator or missing Cognito ID');
+        }
+      
+        cognitoId = facilitator.cognitoId;
       }
   
       // 5. Store initial delegate without confirmationId
