@@ -9,7 +9,7 @@ const {
   // @ts-ignore
   CognitoIdentityProviderClient, AdminCreateUserCommand, AdminSetUserPasswordCommand,
   // @ts-ignore
-  InitiateAuthCommand, RespondToAuthChallengeCommand, AdminConfirmSignUpCommand, AdminGetUserCommand 
+  InitiateAuthCommand, RespondToAuthChallengeCommand, AdminUpdateUserAttributesCommand, AdminGetUserCommand 
 } = require('@aws-sdk/client-cognito-identity-provider');
 const facilitator = require('../../facilitator/controllers/facilitator');
 
@@ -160,26 +160,33 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
   async update(ctx) {
     const { id } = ctx.params;
     const { data } = ctx.request.body;
-
+  
     if (!id || typeof id !== 'string') {
       return ctx.badRequest('Invalid ID');
     }
-
+  
     try {
       const existing = await strapi.entityService.findOne('api::delegate.delegate', id);
       if (!existing) {
         return ctx.notFound('Delegate not found');
       }
-
-      await strapi.entityService.update('api::delegate.delegate', id, {
-        data: {
-          ...data,
-        },
-      });
-
-      const updated = await strapi.entityService.findOne('api::delegate.delegate', id);
-      return updated;
-
+  
+      // Only update in Cognito
+      if (existing.cognitoId) {
+        const updateCommand = new AdminUpdateUserAttributesCommand({
+          UserPoolId: process.env.COGNITO_USER_POOL_ID,
+          Username: existing.cognitoId,
+          UserAttributes: [
+            { Name: 'custom:firstName', Value: data.firstName },
+            { Name: 'custom:lastName', Value: data.lastName },
+          ],
+        });
+  
+        await client.send(updateCommand);
+      }
+  
+      return { message: 'Delegate name updated in Cognito successfully' };
+  
     } catch (error) {
       console.error('Update error:', error);
       return ctx.internalServerError('An error occurred while updating the delegate');
