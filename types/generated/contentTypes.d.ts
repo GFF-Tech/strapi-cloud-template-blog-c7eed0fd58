@@ -524,7 +524,7 @@ export interface ApiEarlyStagePitchEarlyStagePitch
     singularName: 'early-stage-pitch';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     companyName: Schema.Attribute.String;
