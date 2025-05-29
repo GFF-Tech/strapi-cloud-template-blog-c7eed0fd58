@@ -514,6 +514,46 @@ export interface ApiDelegateDelegate extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiEarlyStagePitchEarlyStagePitch
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'early_stage_pitches';
+  info: {
+    description: '';
+    displayName: 'EarlyStagePitch';
+    pluralName: 'early-stage-pitches';
+    singularName: 'early-stage-pitch';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    companyName: Schema.Attribute.String;
+    companyWebsite: Schema.Attribute.String;
+    consent: Schema.Attribute.Boolean;
+    countryCode: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    emailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
+    firstName: Schema.Attribute.String;
+    fullName: Schema.Attribute.String;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    lastName: Schema.Attribute.String;
+    linkedinUrl: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::early-stage-pitch.early-stage-pitch'
+    > &
+      Schema.Attribute.Private;
+    mobileNumber: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiExpressInterestExpressInterest
   extends Struct.CollectionTypeSchema {
   collectionName: 'express_interests';
@@ -1241,6 +1281,7 @@ declare module '@strapi/strapi' {
       'api::become-a-speaker.become-a-speaker': ApiBecomeASpeakerBecomeASpeaker;
       'api::country.country': ApiCountryCountry;
       'api::delegate.delegate': ApiDelegateDelegate;
+      'api::early-stage-pitch.early-stage-pitch': ApiEarlyStagePitchEarlyStagePitch;
       'api::express-interest.express-interest': ApiExpressInterestExpressInterest;
       'api::facilitator.facilitator': ApiFacilitatorFacilitator;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
