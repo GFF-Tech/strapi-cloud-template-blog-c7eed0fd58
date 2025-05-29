@@ -45,7 +45,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
     const { data } = ctx.request.body;
   
     try {
-      // 1. Get country code
+      // 1. Get country details
       const country = await strapi.entityService.findOne('api::country.country', data.country, {
         fields: ['country', 'countryCode'],
       });
@@ -54,56 +54,63 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         return ctx.badRequest('Invalid or missing country');
       }
   
-      const formattedPhoneNumber = `${country.countryCode}${data.mobileNumber}`;
-  
-      // 3. Register delegate in Cognito if not facilitator
-      let cognitoId = null;
+      const formattedPhone = `${country.countryCode}${data.mobileNumber}`;
+      let cognitoId;
   
       if (!data.isFacilitator) {
-        const command = new AdminCreateUserCommand({
-          UserPoolId: process.env.COGNITO_USER_POOL_ID,
-          Username: data.officialEmailAddress,
-          TemporaryPassword: 'Temp@123',
-          MessageAction: 'SUPPRESS',
-          DesiredDeliveryMediums: ['EMAIL'],
-          UserAttributes: [
-            { Name: 'email', Value: data.officialEmailAddress },
-            { Name: 'phone_number', Value: formattedPhoneNumber },
-            { Name: 'email_verified', Value: 'true' },
-            { Name: 'custom:firstName', Value: data.firstName },
-            { Name: 'custom:lastName', Value: data.lastName },
-            { Name: 'custom:delegate', Value: 'true' },
-            ...(data.companyName ? [{ Name: 'custom:companyName', Value: data.companyName }] : []),
-          ],
-        });
+        // 2. Register delegate in Cognito
+        try {
+          const createCommand = new AdminCreateUserCommand({
+            UserPoolId: process.env.COGNITO_USER_POOL_ID,
+            Username: data.officialEmailAddress,
+            TemporaryPassword: 'Temp@123',
+            MessageAction: 'SUPPRESS',
+            DesiredDeliveryMediums: ['EMAIL'],
+            UserAttributes: [
+              { Name: 'email', Value: data.officialEmailAddress },
+              { Name: 'phone_number', Value: formattedPhone },
+              { Name: 'email_verified', Value: 'true' },
+              { Name: 'custom:firstName', Value: data.firstName },
+              { Name: 'custom:lastName', Value: data.lastName },
+              { Name: 'custom:delegate', Value: 'true' },
+              ...(data.companyName ? [{ Name: 'custom:companyName', Value: data.companyName }] : []),
+            ],
+          });
   
-        const response = await client.send(command);
-        cognitoId = response.User.Username;
+          const response = await client.send(createCommand);
+          cognitoId = response.User.Username;
   
-        // 4. Set permanent password
-        const setPasswordCommand = new AdminSetUserPasswordCommand({
-          UserPoolId: process.env.COGNITO_USER_POOL_ID,
-          Username: data.officialEmailAddress,
-          Password: 'Temp@123',
-          Permanent: true,
-        });
+          // 3. Set permanent password
+          const passwordCommand = new AdminSetUserPasswordCommand({
+            UserPoolId: process.env.COGNITO_USER_POOL_ID,
+            Username: data.officialEmailAddress,
+            Password: 'Temp@123',
+            Permanent: true,
+          });
   
-        await client.send(setPasswordCommand);
-      }else {
-        // Fetch cognitoId from facilitator
-        const facilitator = await strapi.entityService.findOne('api::facilitator.facilitator', data.facilitatorId, {
+          await client.send(passwordCommand);
+        } catch (error) {
+          if (error.name === 'UsernameExistsException') {
+            return ctx.conflict('Delegate already exists in Cognito');
+          }
+          throw error;
+        }
+  
+      } else {
+        // 4. Use Cognito ID of the primary account
+        const primary = await strapi.entityService.findOne('api::facilitator.facilitator', data.facilitatorId, {
           fields: ['cognitoId'],
         });
-      
-        if (!facilitator || !facilitator.cognitoId) {
-          return ctx.badRequest('Invalid facilitator or missing Cognito ID');
+  
+        if (!primary?.cognitoId) {
+          return ctx.badRequest('Invalid parent or missing Cognito ID');
         }
-      
-        cognitoId = facilitator.cognitoId;
+  
+        cognitoId = primary.cognitoId;
       }
   
-      // 5. Store initial delegate without confirmationId
-      const created = await strapi.entityService.create('api::delegate.delegate', {
+      // 5. Create delegate entry
+      const delegateEntry = await strapi.entityService.create('api::delegate.delegate', {
         data: {
           facilitatorId: data.facilitatorId,
           isFacilitator: data.isFacilitator || false,
@@ -115,30 +122,22 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         },
       });
   
-      // 6. Generate confirmationId from created.id
-      const paddedId = String(created.id).padStart(6, '0'); // e.g. 1 → 000001
-      const confirmationId = `GFF25${paddedId}`;
-  
-      // 7. Update delegate with confirmationId
-      await strapi.entityService.update('api::delegate.delegate', created.id, {
+      // 6. Generate and update confirmationId
+      const confirmationId = `GFF25${String(delegateEntry.id).padStart(6, '0')}`;
+      await strapi.entityService.update('api::delegate.delegate', delegateEntry.id, {
         data: { confirmationId },
       });
   
-      // 8. Fetch populated delegate
-      const populatedDelegate = await strapi.entityService.findOne(
-        'api::delegate.delegate',
-        created.id,
-        {
-          populate: {
-            country: { fields: ['country', 'countryCode'] },
-            sector: { fields: ['name'] },
-          },
-        }
-      );
+      // 7. Fetch full delegate record with relations
+      const fullDelegate = await strapi.entityService.findOne('api::delegate.delegate', delegateEntry.id, {
+        populate: {
+          country: { fields: ['country', 'countryCode'] },
+          sector: { fields: ['name'] },
+        },
+      });
   
-      // 9. Return full response
       return {
-        ...populatedDelegate,
+        ...fullDelegate,
         confirmationId,
         firstName: data.firstName,
         lastName: data.lastName,
@@ -148,12 +147,8 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       };
   
     } catch (error) {
-      if (error.name === 'UsernameExistsException') {
-        return ctx.conflict('Delegate already exists in Cognito');
-      }
-  
-      console.error('Delegate creation error:', error);
-      return ctx.internalServerError('Failed to create Delegate');
+      console.error('Delegate creation failed:', error);
+      return ctx.internalServerError('Failed to create delegate');
     }
   },
 

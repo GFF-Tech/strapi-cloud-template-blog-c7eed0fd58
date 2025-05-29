@@ -82,16 +82,20 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
   async create(ctx) {
     const { data } = ctx.request.body;
-
+  
     try {
       // 1. Fetch and validate country code
       const country = await strapi.entityService.findOne('api::country.country', data.country, {
         fields: ['countryCode'],
       });
-
+  
+      if (!country || !country.countryCode) {
+        return ctx.badRequest('Invalid or missing country code.');
+      }
+  
       // 2. Format phone number for Cognito
       const formattedPhoneNumber = `${country.countryCode}${data.mobileNumber}`;
-
+  
       // 3. Sign up user in Cognito
       const command = new SignUpCommand({
         ClientId: process.env.COGNITO_CLIENT_ID,
@@ -106,18 +110,37 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           ...(data.companyName ? [{ Name: 'custom:companyName', Value: data.companyName }] : []),
         ],
       });
-
-      const response = await client.send(command);
+  
+      let response;
+      try {
+        response = await client.send(command);
+      } catch (error) {
+        if (error.name === 'UsernameExistsException') {
+          return ctx.conflict('A user with this email already exists.');
+        }
+  
+        console.error('Cognito SignUp error:', error);
+        return ctx.internalServerError(`Registration failed: ${error.message || 'Unknown error'}`);
+      }
+  
       const cognitoId = response.UserSub;
-
-      const createdFacilitator = await strapi.entityService.create('api::facilitator.facilitator', {
-        data: {
-          country: data.country,
-          sector: data.sector || null,
-          cognitoId,
-        },
-      });
-
+  
+      // 4. Create facilitator entry
+      let createdFacilitator;
+      try {
+        createdFacilitator = await strapi.entityService.create('api::facilitator.facilitator', {
+          data: {
+            country: data.country,
+            sector: data.sector || null,
+            cognitoId,
+          },
+        });
+      } catch (error) {
+        console.error('Failed to create facilitator:', error);
+        return ctx.internalServerError('Failed to save user information to the system.');
+      }
+  
+      // 5. Populate facilitator with relations
       const populatedFacilitator = await strapi.entityService.findOne(
         'api::facilitator.facilitator',
         createdFacilitator.id,
@@ -128,7 +151,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           },
         }
       );
-
+  
       return {
         ...populatedFacilitator,
         firstName: data.firstName,
@@ -138,15 +161,10 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         companyName: data.companyName,
         session: response.Session,
       };
+  
     } catch (error) {
-      const errCode = error.name;
-
-      if (errCode === 'UsernameExistsException') {
-        return ctx.conflict('User already exists in Cognito');
-      }
-
-      console.error('Cognito SignUp error:', error);
-      return ctx.internalServerError('Failed to create facilitator with Cognito');
+      console.error('Unexpected error in facilitator creation:', error);
+      return ctx.internalServerError('An unexpected error occurred while registering.');
     }
   },
 
@@ -154,7 +172,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
     const { officialEmailAddress, otp } = ctx.request.body;
 
     if (!officialEmailAddress || !otp) {
-      return ctx.badRequest('Missing email or OTP');
+      return ctx.badRequest('Email and OTP are required.');
     }
 
     try {
@@ -198,8 +216,17 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       };
 
     } catch (error) {
-      console.error('Cognito verify error:', error);
-      return ctx.internalServerError('Verification failed');
+      console.error('Cognito verification error:', error);
+
+    if (error.name === 'CodeMismatchException') {
+      return ctx.badRequest('The provided OTP is incorrect.');
+    }
+
+    if (error.name === 'ExpiredCodeException') {
+      return ctx.badRequest('The OTP has expired. Please request a new one.');
+    }
+
+    return ctx.internalServerError('Verification failed due to an unexpected error.');
     }
   },
 
@@ -207,7 +234,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
     const { officialEmailAddress, session } = ctx.request.body;
 
     if (!officialEmailAddress) {
-      return ctx.badRequest('Missing email address');
+      return ctx.badRequest('Email address is required.');
     }
 
     try {
@@ -221,8 +248,17 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
       return { message: 'OTP resent successfully', data: response };
     } catch (error) {
-      console.error('Cognito resend error:', error);
-      return ctx.internalServerError('Failed to resend OTP');
+      console.error('Cognito OTP resend error:', error);
+
+    if (error.name === 'UserNotFoundException') {
+      return ctx.notFound('No user found with the provided email address.');
+    }
+
+    if (error.name === 'InvalidParameterException') {
+      return ctx.badRequest('Cannot resend OTP at this stage. The user might already be confirmed.');
+    }
+
+    return ctx.internalServerError('Failed to resend OTP due to an unexpected error.');
     }
   },
 
@@ -281,11 +317,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
   async login(ctx) {
     const { officialEmailAddress } = ctx.request.body;
-
+  
     if (!officialEmailAddress) {
-      return ctx.badRequest('Missing email');
+      return ctx.badRequest('Email address is required.');
     }
-
+  
     try {
       // 1. Initiate custom auth challenge with Cognito
       const authCommand = new InitiateAuthCommand({
@@ -295,48 +331,53 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           USERNAME: officialEmailAddress,
         },
       });
-
+  
       const response = await client.send(authCommand);
-
-      // 2. Fetch Cognito user to get the Cognito ID (sub)
+  
+      // 2. Fetch Cognito user details
       const adminGetUserCommand = new AdminGetUserCommand({
         Username: officialEmailAddress,
         UserPoolId: process.env.COGNITO_USER_POOL_ID,
       });
-
+  
       const userData = await client.send(adminGetUserCommand);
       const subAttr = userData.UserAttributes.find(attr => attr.Name === 'sub');
       const cognitoId = subAttr?.Value;
-
+  
       if (!cognitoId) {
         return ctx.internalServerError('Cognito ID not found for user');
       }
-
-      // 3. Fetch facilitator from Strapi using cognitoId
+  
+      // 3. Check if Cognito user is a facilitator in Strapi
       const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
         where: { cognitoId },
       });
-
+  
       if (!facilitator) {
-        return ctx.notFound('Facilitator not found');
+        return ctx.forbidden('This email is associated with a participant account. Please use the main contact email provided during registration to log in.');
       }
-
+  
       return ctx.send({
         message: 'OTP sent to email',
         session: response.Session,
       });
-
+  
     } catch (error) {
       console.error('Login error:', error);
+  
+      if (error.name === 'UserNotFoundException') {
+        return ctx.notFound('Email is not registered. Please register first.');
+      }
+  
       return ctx.internalServerError('Failed to process login');
     }
-  },
+  },  
 
   async verifyLoginOtp(ctx) {
     const { officialEmailAddress, otp, session } = ctx.request.body;
   
     if (!officialEmailAddress || !otp || !session) {
-      return ctx.badRequest('Missing data');
+      return ctx.badRequest('Email, OTP, and session are required.');
     }
   
     try {
@@ -354,7 +395,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       const response = await client.send(challengeCommand);
   
       if (!response.AuthenticationResult) {
-        return ctx.unauthorized('Authentication failed');
+        return ctx.unauthorized('OTP verification failed.');
       }
   
       // 2. Get user profile from Cognito
@@ -394,7 +435,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       });
   
       if (!facilitator) {
-        return ctx.notFound('Facilitator not found');
+        return ctx.notFound('User not found in the system.');
       }
   
       let mobileNumber = facilitatorPhone;
@@ -490,7 +531,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
   
     } catch (error) {
       console.error('OTP verification failed:', error);
-      return ctx.internalServerError('An unexpected error occurred');
+      return ctx.internalServerError('OTP verification failed due to an unexpected error.');
     }
   },
 

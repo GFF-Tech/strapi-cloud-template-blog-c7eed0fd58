@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "early_stage_pitches",
+  "info": {
+    "singularName": "early-stage-pitch",
+    "pluralName": "early-stage-pitches",
+    "displayName": "EarlyStagePitch",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "fullName": {
+      "type": "string"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "emailAddress": {
+      "type": "email",
+      "unique": true
+    },
+    "companyName": {
+      "type": "string"
+    },
+    "companyWebsite": {
+      "type": "string"
+    },
+    "linkedinUrl": {
+      "type": "string"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    },
+    "consent": {
+      "type": "boolean"
+    },
+    "mobileNumber": {
+      "type": "string"
+    },
+    "countryCode": {
+      "type": "string"
+    }
+  }
+}
