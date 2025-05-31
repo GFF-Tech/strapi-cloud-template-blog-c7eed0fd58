@@ -57,6 +57,10 @@
       "relation": "oneToMany",
       "target": "api::delegate.delegate",
       "mappedBy": "facilitatorId"
+    },
+    "passBought": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
