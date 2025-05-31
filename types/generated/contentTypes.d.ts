@@ -626,6 +626,7 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
       'api::facilitator.facilitator'
     > &
       Schema.Attribute.Private;
+    passBought: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     paymentMode: Schema.Attribute.String;
     paymentStatus: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
