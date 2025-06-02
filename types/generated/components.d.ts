@@ -15,10 +15,24 @@ export interface CommonGstDetails extends Struct.ComponentSchema {
   };
 }
 
+export interface CommonWooOrderDetails extends Struct.ComponentSchema {
+  collectionName: 'components_common_woo_order_details';
+  info: {
+    displayName: 'WooOrderDetails';
+  };
+  attributes: {
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    totalAmount: Schema.Attribute.Decimal;
+    wcOrderId: Schema.Attribute.String;
+    wcOrderStatus: Schema.Attribute.String;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'common.gst-details': CommonGstDetails;
+      'common.woo-order-details': CommonWooOrderDetails;
     }
   }
 }

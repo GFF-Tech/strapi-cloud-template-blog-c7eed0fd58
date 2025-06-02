@@ -61,6 +61,11 @@
     "passBought": {
       "type": "boolean",
       "default": false
+    },
+    "wooOrderDetails": {
+      "type": "component",
+      "repeatable": true,
+      "component": "common.woo-order-details"
     }
   }
 }

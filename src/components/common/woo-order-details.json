@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_common_woo_order_details",
+  "info": {
+    "displayName": "WooOrderDetails"
+  },
+  "options": {},
+  "attributes": {
+    "wcOrderId": {
+      "type": "string"
+    },
+    "wcOrderStatus": {
+      "type": "string"
+    },
+    "totalAmount": {
+      "type": "decimal"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}
