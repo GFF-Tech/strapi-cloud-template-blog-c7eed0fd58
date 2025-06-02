@@ -184,93 +184,123 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
     }
   },
 
-  async create(ctx) {
-    const { data } = ctx.request.body;
-  
-    try {
-      // 1. Fetch and validate country code
-      const country = await strapi.entityService.findOne('api::country.country', data.country, {
-        fields: ['countryCode'],
-      });
-  
-      if (!country || !country.countryCode) {
-        return ctx.badRequest('Invalid or missing country code.');
-      }
-  
-      // 2. Format phone number for Cognito
-      const formattedPhoneNumber = `${country.countryCode}${data.mobileNumber}`;
-  
-      // 3. Sign up user in Cognito
-      const command = new SignUpCommand({
-        ClientId: process.env.COGNITO_CLIENT_ID,
-        Username: data.officialEmailAddress,
-        Password: 'Temp@123',
-        UserAttributes: [
-          { Name: 'email', Value: data.officialEmailAddress },
-          { Name: 'phone_number', Value: formattedPhoneNumber },
-          { Name: 'custom:firstName', Value: data.firstName },
-          { Name: 'custom:lastName', Value: data.lastName },
-          { Name: 'custom:delegate', Value: 'false' },
-          ...(data.companyName ? [{ Name: 'custom:companyName', Value: data.companyName }] : []),
-        ],
-      });
-  
-      let response;
-      try {
-        response = await client.send(command);
-      } catch (error) {
-        if (error.name === 'UsernameExistsException') {
-          return ctx.conflict('A user with this email already exists.');
-        }
-  
-        console.error('Cognito SignUp error:', error);
-        return ctx.internalServerError(`Registration failed: ${error.message || 'Unknown error'}`);
-      }
-  
-      const cognitoId = response.UserSub;
-  
-      // 4. Create facilitator entry
-      let createdFacilitator;
-      try {
-        createdFacilitator = await strapi.entityService.create('api::facilitator.facilitator', {
-          data: {
-            country: data.country,
-            sector: data.sector || null,
-            cognitoId,
-          },
-        });
-      } catch (error) {
-        console.error('Failed to create facilitator:', error);
-        return ctx.internalServerError('Failed to save user information to the system.');
-      }
-  
-      // 5. Populate facilitator with relations
-      const populatedFacilitator = await strapi.entityService.findOne(
-        'api::facilitator.facilitator',
-        createdFacilitator.id,
-        {
-          populate: {
-            country: { fields: ['country', 'countryCode'] },
-            sector: { fields: ['name'] },
-          },
-        }
-      );
-  
-      return {
-        ...populatedFacilitator,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        officialEmailAddress: data.officialEmailAddress,
-        mobileNumber: data.mobileNumber,
-        companyName: data.companyName,
-        session: response.Session,
-      };
-  
-    } catch (error) {
-      console.error('Unexpected error in facilitator creation:', error);
-      return ctx.internalServerError('An unexpected error occurred while registering.');
+ async create(ctx) {
+  const { data } = ctx.request.body;
+
+  try {
+    // 1. Validate country
+    const country = await strapi.entityService.findOne('api::country.country', data.country, {
+      fields: ['countryCode'],
+    });
+
+    if (!country || !country.countryCode) {
+      return ctx.badRequest('Invalid or missing country code.');
     }
-  },
+
+    const formattedPhoneNumber = `${country.countryCode}${data.mobileNumber}`;
+    let existingCognitoId = null;
+
+    // 2. Check if user exists in Cognito
+    try {
+      const userData = await client.send(new AdminGetUserCommand({
+        Username: data.officialEmailAddress,
+        UserPoolId: process.env.COGNITO_USER_POOL_ID,
+      }));
+
+      const subAttr = userData.UserAttributes.find(attr => attr.Name === 'sub');
+      const delegateAttr = userData.UserAttributes.find(attr => attr.Name === 'custom:delegate');
+
+      existingCognitoId = subAttr?.Value;
+      const isDelegate = delegateAttr?.Value === 'true';
+
+      // ❌ If it's a delegate, block registration
+      if (isDelegate) {
+        return ctx.forbidden('This email is associated with a participant account. Please use other email to register.');
+      }
+
+      // ✅ Not a delegate — check in Strapi
+      if (existingCognitoId) {
+        const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
+          where: { cognitoId: existingCognitoId },
+        });
+
+        if (facilitator) {
+          if (facilitator.isCognitoVerified && facilitator.passBought === true) {
+            return ctx.badRequest('Email already registered.');
+          }
+
+          // ❌ Incomplete registration — delete from Strapi
+          await strapi.entityService.delete('api::facilitator.facilitator', facilitator.id);
+        }
+
+        // ❌ Delete from Cognito
+        await client.send(new AdminDeleteUserCommand({
+          Username: data.officialEmailAddress,
+          UserPoolId: process.env.COGNITO_USER_POOL_ID,
+        }));
+      }
+    } catch (err) {
+      // User does not exist in Cognito — this is fine
+      if (err.name !== 'UserNotFoundException') {
+        console.error('Error checking Cognito user:', err);
+        return ctx.internalServerError('Failed to validate existing user.');
+      }
+    }
+
+    // 3. Proceed with sign-up
+    const signUpCommand = new SignUpCommand({
+      ClientId: process.env.COGNITO_CLIENT_ID,
+      Username: data.officialEmailAddress,
+      Password: 'Temp@123',
+      UserAttributes: [
+        { Name: 'email', Value: data.officialEmailAddress },
+        { Name: 'phone_number', Value: formattedPhoneNumber },
+        { Name: 'custom:firstName', Value: data.firstName },
+        { Name: 'custom:lastName', Value: data.lastName },
+        { Name: 'custom:delegate', Value: 'false' },
+        ...(data.companyName ? [{ Name: 'custom:companyName', Value: data.companyName }] : []),
+      ],
+    });
+
+    const response = await client.send(signUpCommand);
+    const cognitoId = response.UserSub;
+
+    // 4. Create facilitator in Strapi
+    const createdFacilitator = await strapi.entityService.create('api::facilitator.facilitator', {
+      data: {
+        country: data.country,
+        sector: data.sector || null,
+        cognitoId,
+      },
+    });
+
+    // 5. Return populated facilitator
+    const populatedFacilitator = await strapi.entityService.findOne(
+      'api::facilitator.facilitator',
+      createdFacilitator.id,
+      {
+        populate: {
+          country: { fields: ['country', 'countryCode'] },
+          sector: { fields: ['name'] },
+        },
+      }
+    );
+
+    return {
+      ...populatedFacilitator,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      officialEmailAddress: data.officialEmailAddress,
+      mobileNumber: data.mobileNumber,
+      companyName: data.companyName,
+      session: response.Session,
+    };
+
+  } catch (error) {
+    console.error('Unexpected error in facilitator creation:', error);
+    return ctx.internalServerError('An unexpected error occurred while registering.');
+  }
+},
 
   async verifyFacilitator(ctx) {
     const { officialEmailAddress, otp } = ctx.request.body;
