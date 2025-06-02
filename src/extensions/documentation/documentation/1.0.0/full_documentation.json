@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-06-02T13:24:11.674Z"
+    "x-generation-date": "2025-06-02T18:32:59.166Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -9740,6 +9740,12 @@
               "passBought": {
                 "type": "boolean"
               },
+              "wooOrderDetails": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CommonWooOrderDetailsComponent"
+                }
+              },
               "createdAt": {
                 "type": "string",
                 "format": "date-time"
@@ -9897,6 +9903,27 @@
           },
           "companyAddress": {
             "type": "string"
+          }
+        }
+      },
+      "CommonWooOrderDetailsComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "wcOrderId": {
+            "type": "string"
+          },
+          "wcOrderStatus": {
+            "type": "string"
+          },
+          "totalAmount": {
+            "type": "number",
+            "format": "float"
+          },
+          "isActive": {
+            "type": "boolean"
           }
         }
       },
@@ -11098,6 +11125,12 @@
               "passBought": {
                 "type": "boolean"
               },
+              "wooOrderDetails": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CommonWooOrderDetailsComponent"
+                }
+              },
               "locale": {
                 "type": "string"
               },
@@ -11698,6 +11731,12 @@
                     "passBought": {
                       "type": "boolean"
                     },
+                    "wooOrderDetails": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/CommonWooOrderDetailsComponent"
+                      }
+                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -11824,6 +11863,12 @@
           },
           "passBought": {
             "type": "boolean"
+          },
+          "wooOrderDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CommonWooOrderDetailsComponent"
+            }
           },
           "createdAt": {
             "type": "string",
