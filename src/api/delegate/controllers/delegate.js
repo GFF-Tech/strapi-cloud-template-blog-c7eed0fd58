@@ -15,6 +15,7 @@ const facilitator = require('../../facilitator/controllers/facilitator');
 
 // @ts-ignore
 const { createCoreController } = require('@strapi/strapi').factories;
+const sendEmail = require('../../../utils/email');
 
 const client = new CognitoIdentityProviderClient({ region: process.env.AWS_REGION });
 
@@ -135,6 +136,17 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
           sector: { fields: ['name'] },
         },
       });
+
+      const firstName = data.firstName;
+      const email = data.officialEmailAddress;
+      const passType = data.wcProductName.split(' ')[0];
+
+      await sendEmail({
+              to: email,
+              subject: 'Thank You for Registering to GFF 2025! ',
+              templateName: 'verification',
+              replacements: { passType, firstName, confirmationId },
+            });
   
       return {
         ...fullDelegate,

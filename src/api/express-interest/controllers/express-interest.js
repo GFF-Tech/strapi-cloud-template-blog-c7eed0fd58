@@ -13,14 +13,15 @@ module.exports = createCoreController('api::express-interest.express-interest', 
     const response = await super.create(ctx);
     const email = ctx.request.body.data?.email || '';
     const firstName = ctx.request.body.data?.firstName || '';
+    const lastName = ctx.request.body.data?.lastName || '';
     // Step 2: Send email using SES
     try {
     //  console.log(email);
       await sendEmail({
         to: email,
-        subject: '',
+        subject: 'Thank You for Expressing Your Interest in GFF 2025! ',
         templateName: 'express-interest',
-        replacements: { firstName },
+        replacements: { firstName, lastName },
       });
 
       // strapi.log.info(`Confirmation email sent to ${email}`);
