@@ -637,6 +637,10 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     wcOrderId: Schema.Attribute.String;
     wcOrderStatus: Schema.Attribute.String;
+    wooOrderDetails: Schema.Attribute.Component<
+      'common.woo-order-details',
+      true
+    >;
   };
 }
 
