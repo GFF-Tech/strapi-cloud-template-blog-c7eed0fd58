@@ -6,6 +6,9 @@ module.exports = async ({ to, subject, templateName, replacements }) => {
   const templatePath = path.join(strapi.dirs.app.root, 'src', 'email-templates', `${templateName}.html`);
   let html = fs.readFileSync(templatePath, 'utf8');
 
+   const baseUrl = process.env.EMAIL_TEMPLATE_BASE_URL || '';
+  html = html.replace(/{{baseUrl}}/g, baseUrl);
+
   // Replace placeholders
   for (const [key, value] of Object.entries(replacements)) {
     html = html.replace(new RegExp(`{{${key}}}`, 'g'), value);
