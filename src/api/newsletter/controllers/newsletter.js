@@ -15,12 +15,12 @@ module.exports = createCoreController('api::newsletter.newsletter', ({ strapi })
     // Step 2: Send email using SES
     try {
     //  console.log(email);
-      await sendEmail({
-        to: email,
-        subject: 'Thank You for Subscribing to GFF Updates!',
-        templateName: 'newsletter',
-        replacements: {  },
-      });
+    //  await sendEmail({
+    //    to: email,
+    //    subject: 'Thank You for Subscribing to GFF Updates!',
+    //    templateName: 'newsletter',
+    //   replacements: {  },
+    //  });
 
       // strapi.log.info(`Confirmation email sent to ${email}`);
     } catch (err) {

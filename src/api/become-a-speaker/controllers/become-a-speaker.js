@@ -11,12 +11,12 @@ module.exports = createCoreController('api::become-a-speaker.become-a-speaker', 
     // Step 2: Send email using SES
     try {
     //  console.log(email);
-      await sendEmail({
-        to: email,
-        subject: 'Thank You for Registering as a Speaker for GFF 2025 ',
-        templateName: 'become-a-speaker',
-        replacements: { firstName },
-      });
+    //  await sendEmail({
+    //    to: email,
+     //   subject: 'Thank You for Registering as a Speaker for GFF 2025 ',
+     //   templateName: 'become-a-speaker',
+     //   replacements: { firstName },
+     // });
 
       // strapi.log.info(`Confirmation email sent to ${email}`);
     } catch (err) {
