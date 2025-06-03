@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #f0f0f0;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+      }
+
+      table {
+        border-collapse: collapse;
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+      }
+
+      img {
+        border: 0;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+        max-width: 100%;
+      }
+
+      .email-container {
+        max-width: 798px;
+        margin: 20px auto;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header-section {
+        background: linear-gradient(135deg, #4285f4 0%, #8b5cf6 100%);
+        background-color: #4285f4;
+        position: relative;
+      }
+
+      .content-section {
+        padding: 40px 10% 40px;
+        text-align: left;
+      }
+
+      .greeting {
+        margin: 0 0 16px;
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 100%;
+        color: #1a1a1a;
+      }
+
+      .content-text {
+        margin: 0 0 32px;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 140%;
+        color: #4a4a4a;
+      }
+
+      .thank-you-title {
+        margin: 0 0 32px;
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 100%;
+        color: #4285f4;
+      }
+
+      .contact-link {
+        color: #4285f4;
+        text-decoration: underline;
+      }
+
+      .signature {
+        margin: 0 0 32px;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 140%;
+        color: #4a4a4a;
+      }
+
+      .footer-divider {
+        margin: 32px 0;
+        border: none;
+        height: 1px;
+        background-color: rgba(17, 17, 17, 0.2);
+      }
+
+      .footer-text {
+        font-size: 12px;
+        color: #888888;
+        line-height: 1.5;
+        margin: 0 0 16px 0;
+      }
+
+      .footer-text:last-child {
+        margin-bottom: 0;
+      }
+
+      .unsubscribe-link {
+        color: #888888;
+        text-decoration: underline;
+      }
+
+      /* Responsive styles */
+      @media only screen and (max-width: 600px) {
+        body {
+          height: auto;
+          display: block;
+          padding: 20px 10px;
+        }
+
+        .email-container {
+          width: 100% !important;
+          margin: 0 auto;
+        }
+
+        .content-section {
+          padding: 30px 20px !important;
+        }
+
+        .greeting {
+          font-size: 18px !important;
+        }
+
+        .content-text {
+          font-size: 16px !important;
+          margin-bottom: 24px !important;
+        }
+
+        .thank-you-title {
+          font-size: 24px !important;
+          margin-bottom: 24px !important;
+        }
+
+        .signature {
+          font-size: 16px !important;
+          margin-bottom: 24px !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Outer wrapper table -->
+    <table
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+      style="background-color: #f0f0f0"
+    >
+      <tr>
+        <td align="center" style="padding: 20px 10px">
+          <!-- Main email container -->
+          <table
+            class="email-container"
+            width="798"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+          >
+            <!-- Header Section -->
+            <tr>
+              <td class="header-section">
+                <!-- <img
+                  src="{{baseUrl}}mailerassets/Global-fintech.jpg"
+                  alt="Global Fintech Fest 2025"
+                  style="width: 100%; display: block"
+                /> -->
+                <img
+                  src="https://gff-micro-site-fe-ap97.vercel.app/mailerassets/Global-fintech.jpg"
+                  alt="Global Fintech Fest 2025"
+                  style="width: 100%; display: block"
+                />
+              </td>
+            </tr>
+
+            <!-- Main Content Section -->
+            <tr>
+              <td class="content-section">
+                <!-- Greeting -->
+                <p class="greeting">Dear {{firstName}},</p>
+
+                <!-- Main message -->
+                <p class="content-text">
+                  Thank you for your interest in becoming a speaker at Global
+                  Fintech Fest 2025, we sincerely appreciate it.
+                </p>
+
+                <p class="content-text">
+                  Our team will carefully review your profile and get in touch
+                  with you regarding the next steps. Should we require any
+                  further information, we will reach out to you directly.
+                </p>
+
+                <p class="content-text">
+                  Thank you once again for your interest in contributing to GFF
+                  2025. We look forward to the possibility of welcoming you as a
+                  speaker, you may write to
+                  <a
+                    href="mailto:speaker@globalfintechfest.com"
+                    class="contact-link"
+                    >speaker@globalfintechfest.com</a
+                  >
+                  for more information!
+                </p>
+
+                <!-- Signature -->
+                <p class="signature">
+                  Warm regards,<br />
+                  Speaker Management Team<br />
+                  Global Fintech Fest
+                </p>
+
+                <!-- Footer divider -->
+                <!-- <hr class="footer-divider" /> -->
+
+                <!-- Footer information -->
+                <!-- <p class="footer-text">
+                  Disclaimer: This is an automated email. Please do not reply to
+                  this email as incoming emails are not monitored.
+                </p> -->
+
+                <!-- <p class="footer-text">
+                  If you don't wish to be on the subscription list, please
+                  <a href="#" class="unsubscribe-link">unsubscribe</a>.
+                </p> -->
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -55,52 +55,54 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
   async findOne(ctx) {
     const { id } = ctx.params;
-  
+
     try {
       const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
         where: { id },
         populate: {
           country: true,
           sector: true,
+          wooOrderDetails: true,
+          gstDetails: true,
           delegates: {
             populate: ['sector', 'country'],
           },
         },
       });
-  
+
       if (!facilitator) {
         return ctx.notFound('Facilitator not found');
       }
-  
+
       // 1. Get Cognito user data for facilitator
       const userCommand = new AdminGetUserCommand({
         UserPoolId: process.env.COGNITO_USER_POOL_ID,
         Username: facilitator.cognitoId,
       });
-  
+
       const userResult = await client.send(userCommand);
-  
+
       const attributes = {};
       userResult.UserAttributes.forEach(attr => {
         attributes[attr.Name] = attr.Value;
       });
-  
+
       const cognitoId = attributes['sub'];
       const facilitatorFirstName = attributes['custom:firstName'];
       const facilitatorLastName = attributes['custom:lastName'];
       const facilitatorEmail = attributes['email'];
       const facilitatorPhone = attributes['phone_number'];
       const facilitatorCompany = attributes['custom:companyName'] || null;
-  
+
       let mobileNumber = facilitatorPhone;
       if (facilitatorPhone && facilitator?.country?.countryCode) {
         const code = facilitator.country.countryCode.replace('+', '');
         mobileNumber = facilitatorPhone.replace(`+${code}`, '');
       }
-  
+
       // 2. Enrich delegates
       const enrichedDelegates = [];
-  
+
       for (const delegate of facilitator.delegates || []) {
         const cognitoDelegateId = delegate.cognitoId;
         let firstName = null;
@@ -108,48 +110,48 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         let officialEmailAddress = null;
         let mobileNumber = null;
         let companyName = null;
-  
+
         if (delegate.isFacilitator) {
           firstName = facilitatorFirstName;
           lastName = facilitatorLastName;
           officialEmailAddress = facilitatorEmail;
           companyName = facilitatorCompany;
-  
+
           if (facilitatorPhone && delegate?.country?.countryCode) {
             const code = delegate.country.countryCode.replace('+', '');
             mobileNumber = facilitatorPhone.replace(`+${code}`, '');
           } else {
             mobileNumber = facilitatorPhone;
           }
-  
+
         } else if (delegate.cognitoId) {
           try {
             const delegateUser = await client.send(new AdminGetUserCommand({
               UserPoolId: process.env.COGNITO_USER_POOL_ID,
               Username: delegate.cognitoId,
             }));
-  
+
             const delegateAttrs = {};
             delegateUser.UserAttributes.forEach(attr => {
               delegateAttrs[attr.Name] = attr.Value;
             });
-  
+
             firstName = delegateAttrs['custom:firstName'];
             lastName = delegateAttrs['custom:lastName'];
             officialEmailAddress = delegateAttrs['email'];
             mobileNumber = delegateAttrs['phone_number'];
             companyName = delegateAttrs['custom:companyName'] || null;
-  
+
             if (mobileNumber && delegate?.country?.countryCode) {
               const code = delegate.country.countryCode.replace('+', '');
               mobileNumber = mobileNumber.replace(`+${code}`, '');
             }
-  
+
           } catch (e) {
             console.warn(`Failed to fetch Cognito data for delegate ${delegate.cognitoId}:`, e.message);
           }
         }
-  
+
         enrichedDelegates.push({
           ...delegate,
           firstName,
@@ -159,10 +161,26 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           companyName,
         });
       }
-  
+
       // 3. Fetch WooCommerce order if present
-      const wooOrderDetails = await fetchWooOrder(facilitator.wcOrderId);
-  
+      // const wooOrderDetails = await fetchWooOrder(facilitator.wcOrderId);
+
+      let mergedLineItems = [];
+      console.log('I am here');
+      console.log(facilitator.wooOrderDetails);
+
+      if (Array.isArray(facilitator.wooOrderDetails)) {
+        for (const orderMeta of facilitator.wooOrderDetails) {
+          if (orderMeta.wcOrderStatus === 'completed' && orderMeta.wcOrderId) {
+            const order = await fetchWooOrder(orderMeta.wcOrderId);
+            console.log(order);
+            if (order && Array.isArray(order.line_items)) {
+              mergedLineItems.push(...order.line_items);
+            }
+          }
+        }
+      }
+
       // 4. Return combined data
       return ctx.send({
         data: {
@@ -174,133 +192,135 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           companyName: facilitatorCompany,
           ...facilitator,
           delegates: enrichedDelegates,
-          wooOrderDetails,
+          wooOrderDetailsTest: {
+      line_items: mergedLineItems,
+    },
         },
       });
-  
+
     } catch (error) {
       console.error('Find one facilitator failed:', error);
       return ctx.internalServerError('Failed to fetch facilitator');
     }
   },
 
- async create(ctx) {
-  const { data } = ctx.request.body;
+  async create(ctx) {
+    const { data } = ctx.request.body;
 
-  try {
-    // 1. Validate country
-    const country = await strapi.entityService.findOne('api::country.country', data.country, {
-      fields: ['countryCode'],
-    });
-
-    if (!country || !country.countryCode) {
-      return ctx.badRequest('Invalid or missing country code.');
-    }
-
-    const formattedPhoneNumber = `${country.countryCode}${data.mobileNumber}`;
-    let existingCognitoId = null;
-
-    // 2. Check if user exists in Cognito
     try {
-      const userData = await client.send(new AdminGetUserCommand({
-        Username: data.officialEmailAddress,
-        UserPoolId: process.env.COGNITO_USER_POOL_ID,
-      }));
+      // 1. Validate country
+      const country = await strapi.entityService.findOne('api::country.country', data.country, {
+        fields: ['countryCode'],
+      });
 
-      const subAttr = userData.UserAttributes.find(attr => attr.Name === 'sub');
-      const delegateAttr = userData.UserAttributes.find(attr => attr.Name === 'custom:delegate');
-
-      existingCognitoId = subAttr?.Value;
-      const isDelegate = delegateAttr?.Value === 'true';
-
-      // ❌ If it's a delegate, block registration
-      if (isDelegate) {
-        return ctx.forbidden('This email is associated with a participant account. Please use other email to register.');
+      if (!country || !country.countryCode) {
+        return ctx.badRequest('Invalid or missing country code.');
       }
 
-      // ✅ Not a delegate — check in Strapi
-      if (existingCognitoId) {
-        const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
-          where: { cognitoId: existingCognitoId },
-        });
+      const formattedPhoneNumber = `${country.countryCode}${data.mobileNumber}`;
+      let existingCognitoId = null;
 
-        if (facilitator) {
-          if (facilitator.isCognitoVerified && facilitator.passBought === true) {
-            return ctx.badRequest('Email already registered.');
-          }
-
-          // ❌ Incomplete registration — delete from Strapi
-          await strapi.entityService.delete('api::facilitator.facilitator', facilitator.id);
-        }
-
-        // ❌ Delete from Cognito
-        await client.send(new AdminDeleteUserCommand({
+      // 2. Check if user exists in Cognito
+      try {
+        const userData = await client.send(new AdminGetUserCommand({
           Username: data.officialEmailAddress,
           UserPoolId: process.env.COGNITO_USER_POOL_ID,
         }));
+
+        const subAttr = userData.UserAttributes.find(attr => attr.Name === 'sub');
+        const delegateAttr = userData.UserAttributes.find(attr => attr.Name === 'custom:delegate');
+
+        existingCognitoId = subAttr?.Value;
+        const isDelegate = delegateAttr?.Value === 'true';
+
+        // ❌ If it's a delegate, block registration
+        if (isDelegate) {
+          return ctx.forbidden('This email is associated with a participant account. Please use other email to register.');
+        }
+
+        // ✅ Not a delegate — check in Strapi
+        if (existingCognitoId) {
+          const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
+            where: { cognitoId: existingCognitoId },
+          });
+
+          if (facilitator) {
+            if (facilitator.isCognitoVerified && facilitator.passBought === true) {
+              return ctx.badRequest('Email already registered.');
+            }
+
+            // ❌ Incomplete registration — delete from Strapi
+            await strapi.entityService.delete('api::facilitator.facilitator', facilitator.id);
+          }
+
+          // ❌ Delete from Cognito
+          await client.send(new AdminDeleteUserCommand({
+            Username: data.officialEmailAddress,
+            UserPoolId: process.env.COGNITO_USER_POOL_ID,
+          }));
+        }
+      } catch (err) {
+        // User does not exist in Cognito — this is fine
+        if (err.name !== 'UserNotFoundException') {
+          console.error('Error checking Cognito user:', err);
+          return ctx.internalServerError('Failed to validate existing user.');
+        }
       }
-    } catch (err) {
-      // User does not exist in Cognito — this is fine
-      if (err.name !== 'UserNotFoundException') {
-        console.error('Error checking Cognito user:', err);
-        return ctx.internalServerError('Failed to validate existing user.');
-      }
-    }
 
-    // 3. Proceed with sign-up
-    const signUpCommand = new SignUpCommand({
-      ClientId: process.env.COGNITO_CLIENT_ID,
-      Username: data.officialEmailAddress,
-      Password: 'Temp@123',
-      UserAttributes: [
-        { Name: 'email', Value: data.officialEmailAddress },
-        { Name: 'phone_number', Value: formattedPhoneNumber },
-        { Name: 'custom:firstName', Value: data.firstName },
-        { Name: 'custom:lastName', Value: data.lastName },
-        { Name: 'custom:delegate', Value: 'false' },
-        ...(data.companyName ? [{ Name: 'custom:companyName', Value: data.companyName }] : []),
-      ],
-    });
+      // 3. Proceed with sign-up
+      const signUpCommand = new SignUpCommand({
+        ClientId: process.env.COGNITO_CLIENT_ID,
+        Username: data.officialEmailAddress,
+        Password: 'Temp@123',
+        UserAttributes: [
+          { Name: 'email', Value: data.officialEmailAddress },
+          { Name: 'phone_number', Value: formattedPhoneNumber },
+          { Name: 'custom:firstName', Value: data.firstName },
+          { Name: 'custom:lastName', Value: data.lastName },
+          { Name: 'custom:delegate', Value: 'false' },
+          ...(data.companyName ? [{ Name: 'custom:companyName', Value: data.companyName }] : []),
+        ],
+      });
 
-    const response = await client.send(signUpCommand);
-    const cognitoId = response.UserSub;
+      const response = await client.send(signUpCommand);
+      const cognitoId = response.UserSub;
 
-    // 4. Create facilitator in Strapi
-    const createdFacilitator = await strapi.entityService.create('api::facilitator.facilitator', {
-      data: {
-        country: data.country,
-        sector: data.sector || null,
-        cognitoId,
-      },
-    });
-
-    // 5. Return populated facilitator
-    const populatedFacilitator = await strapi.entityService.findOne(
-      'api::facilitator.facilitator',
-      createdFacilitator.id,
-      {
-        populate: {
-          country: { fields: ['country', 'countryCode'] },
-          sector: { fields: ['name'] },
+      // 4. Create facilitator in Strapi
+      const createdFacilitator = await strapi.entityService.create('api::facilitator.facilitator', {
+        data: {
+          country: data.country,
+          sector: data.sector || null,
+          cognitoId,
         },
-      }
-    );
+      });
 
-    return {
-      ...populatedFacilitator,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      officialEmailAddress: data.officialEmailAddress,
-      mobileNumber: data.mobileNumber,
-      companyName: data.companyName,
-      session: response.Session,
-    };
+      // 5. Return populated facilitator
+      const populatedFacilitator = await strapi.entityService.findOne(
+        'api::facilitator.facilitator',
+        createdFacilitator.id,
+        {
+          populate: {
+            country: { fields: ['country', 'countryCode'] },
+            sector: { fields: ['name'] },
+          },
+        }
+      );
 
-  } catch (error) {
-    console.error('Unexpected error in facilitator creation:', error);
-    return ctx.internalServerError('An unexpected error occurred while registering.');
-  }
-},
+      return {
+        ...populatedFacilitator,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        officialEmailAddress: data.officialEmailAddress,
+        mobileNumber: data.mobileNumber,
+        companyName: data.companyName,
+        session: response.Session,
+      };
+
+    } catch (error) {
+      console.error('Unexpected error in facilitator creation:', error);
+      return ctx.internalServerError('An unexpected error occurred while registering.');
+    }
+  },
 
   async verifyFacilitator(ctx) {
     const { officialEmailAddress, otp } = ctx.request.body;
@@ -352,15 +372,15 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
     } catch (error) {
       console.error('Cognito verification error:', error);
 
-    if (error.name === 'CodeMismatchException') {
-      return ctx.badRequest('The provided OTP is incorrect.');
-    }
+      if (error.name === 'CodeMismatchException') {
+        return ctx.badRequest('The provided OTP is incorrect.');
+      }
 
-    if (error.name === 'ExpiredCodeException') {
-      return ctx.badRequest('The OTP has expired. Please request a new one.');
-    }
+      if (error.name === 'ExpiredCodeException') {
+        return ctx.badRequest('The OTP has expired. Please request a new one.');
+      }
 
-    return ctx.internalServerError('Verification failed due to an unexpected error.');
+      return ctx.internalServerError('Verification failed due to an unexpected error.');
     }
   },
 
@@ -384,58 +404,73 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
     } catch (error) {
       console.error('Cognito OTP resend error:', error);
 
-    if (error.name === 'UserNotFoundException') {
-      return ctx.notFound('No user found with the provided email address.');
-    }
+      if (error.name === 'UserNotFoundException') {
+        return ctx.notFound('No user found with the provided email address.');
+      }
 
-    if (error.name === 'InvalidParameterException') {
-      return ctx.badRequest('Cannot resend OTP at this stage. The user might already be confirmed.');
-    }
+      if (error.name === 'InvalidParameterException') {
+        return ctx.badRequest('Cannot resend OTP at this stage. The user might already be confirmed.');
+      }
 
-    return ctx.internalServerError('Failed to resend OTP due to an unexpected error.');
+      return ctx.internalServerError('Failed to resend OTP due to an unexpected error.');
     }
   },
 
   async update(ctx) {
-    const { id } = ctx.params;
-    const { data } = ctx.request.body;
+  const { id } = ctx.params;
+  const { data } = ctx.request.body;
 
-    if (!id || typeof id !== 'string') {
-      return ctx.badRequest('Invalid ID');
+  if (!id || typeof id !== 'string') {
+    return ctx.badRequest('Invalid ID');
+  }
+
+  try {
+    const existing = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
+      populate: ['wooOrderDetails'],
+    });
+
+    if (!existing) {
+      return ctx.notFound('Facilitator not found');
     }
 
-    try {
-      const existing = await strapi.entityService.findOne('api::facilitator.facilitator', id);
-      if (!existing) {
-        return ctx.notFound('Facilitator not found');
-      }
+    // Append new wooOrderDetails if present
+    const existingWooOrders = existing.wooOrderDetails || [];
+    const incomingWooOrders = data.wooOrderDetails || [];
 
-      await strapi.entityService.update('api::facilitator.facilitator', id, {
-        data: {
-          ...data,
-          gstDetails: data.gstDetails ?? null,
-        }
-      });
+    // Combine and remove duplicates based on wcOrderId if needed
+    const mergedWooOrders = [...existingWooOrders, ...incomingWooOrders];
 
-      const updated = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
-        populate: {
-          gstDetails: true,
-          country: {
-            fields: ['country', 'countryCode'],
-          },
-          sector: {
-            fields: ['name'],
-          },
+    // Remove wooOrderDetails from spread to avoid overwrite
+    const { wooOrderDetails, ...restData } = data;
+
+    await strapi.entityService.update('api::facilitator.facilitator', id, {
+      data: {
+        ...restData,
+        gstDetails: data.gstDetails ?? null,
+        wooOrderDetails: mergedWooOrders,
+      },
+    });
+
+    const updated = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
+      populate: {
+        gstDetails: true,
+        country: {
+          fields: ['country', 'countryCode'],
         },
-      });
+        sector: {
+          fields: ['name'],
+        },
+        wooOrderDetails: true,
+      },
+    });
 
-      return updated;
+    return updated;
 
-    } catch (error) {
-      console.error('Update error:', error);
-      return ctx.internalServerError('An error occurred while updating the facilitator');
-    }
-  },
+  } catch (error) {
+    console.error('Update error:', error);
+    return ctx.internalServerError('An error occurred while updating the facilitator');
+  }
+},
 
   async delete(ctx) {
     const { id } = ctx.params;
@@ -451,34 +486,34 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
   async login(ctx) {
     const { officialEmailAddress } = ctx.request.body;
-  
+
     if (!officialEmailAddress) {
       return ctx.badRequest('Email address is required.');
     }
-  
+
     try {
       // 1. Fetch Cognito user details
       const userData = await client.send(new AdminGetUserCommand({
         Username: officialEmailAddress,
         UserPoolId: process.env.COGNITO_USER_POOL_ID,
       }));
-  
+
       const attributes = userData.UserAttributes;
       const subAttr = attributes.find(attr => attr.Name === 'sub');
       const delegateAttr = attributes.find(attr => attr.Name === 'custom:delegate');
       const userStatus = userData.UserStatus;
-  
+
       const cognitoId = subAttr?.Value;
       const isDelegate = delegateAttr?.Value === 'true';
-  
+
       if (!cognitoId) {
         return ctx.notFound('Email is not registered. Please register first.');
       }
-  
+
       if (isDelegate) {
         return ctx.forbidden('This email is associated with a participant account. Please use the main contact email provided during registration to log in.');
       }
-  
+
       // 2. Find facilitator in Strapi
       const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
         where: { cognitoId },
@@ -489,10 +524,10 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           Username: officialEmailAddress,
           UserPoolId: process.env.COGNITO_USER_POOL_ID,
         }));
-  
+
         return ctx.badRequest('Your registration was not completed. Please register again.');
       }
-  
+
       // 3. If user is UNCONFIRMED and facilitator is partially registered, delete both
       if (userStatus === 'UNCONFIRMED' || facilitator?.passBought === false) {
         // Delete user from Cognito
@@ -500,13 +535,13 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           Username: officialEmailAddress,
           UserPoolId: process.env.COGNITO_USER_POOL_ID,
         }));
-  
+
         // Delete user from Strapi
         await strapi.entityService.delete('api::facilitator.facilitator', facilitator.id);
-  
+
         return ctx.badRequest('Your registration was not completed. Please register again.');
       }
-  
+
       // 4. Proceed to send OTP using custom auth flow
       const authCommand = new InitiateAuthCommand({
         AuthFlow: 'CUSTOM_AUTH',
@@ -515,32 +550,32 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           USERNAME: officialEmailAddress,
         },
       });
-  
+
       const response = await client.send(authCommand);
-  
+
       return ctx.send({
         message: 'OTP sent to email',
         session: response.Session,
       });
-  
+
     } catch (error) {
       console.error('Login error:', error);
-  
+
       if (error.name === 'UserNotFoundException') {
         return ctx.notFound('Email is not registered. Please register first.');
       }
-  
+
       return ctx.internalServerError('Failed to process login');
     }
-  },  
+  },
 
   async verifyLoginOtp(ctx) {
     const { officialEmailAddress, otp, session } = ctx.request.body;
-  
+
     if (!officialEmailAddress || !otp || !session) {
       return ctx.badRequest('Email, OTP, and session are required.');
     }
-  
+
     try {
       // 1. Verify OTP with Cognito
       const challengeCommand = new RespondToAuthChallengeCommand({
@@ -552,62 +587,64 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           ANSWER: otp,
         },
       });
-  
+
       const response = await client.send(challengeCommand);
-  
+
       if (!response.AuthenticationResult) {
         return ctx.unauthorized('OTP verification failed.');
       }
-  
+
       // 2. Get user profile from Cognito
       const userCommand = new AdminGetUserCommand({
         UserPoolId: process.env.COGNITO_USER_POOL_ID,
         Username: officialEmailAddress,
       });
-  
+
       const userResult = await client.send(userCommand);
-  
+
       const attributes = {};
       userResult.UserAttributes.forEach(attr => {
         attributes[attr.Name] = attr.Value;
       });
-  
+
       const cognitoId = attributes['sub'];
-      const facilitatorFirstName  = attributes['custom:firstName'];
-      const facilitatorLastName  = attributes['custom:lastName'];
-      const facilitatorEmail  = attributes['email'];
-      const facilitatorPhone  = attributes['phone_number'];
-      const facilitatorCompany  = attributes['custom:companyName'] || null;
-  
+      const facilitatorFirstName = attributes['custom:firstName'];
+      const facilitatorLastName = attributes['custom:lastName'];
+      const facilitatorEmail = attributes['email'];
+      const facilitatorPhone = attributes['phone_number'];
+      const facilitatorCompany = attributes['custom:companyName'] || null;
+
       if (!cognitoId) {
         return ctx.internalServerError('Cognito ID missing');
       }
-  
+
       // 3. Find facilitator in Strapi using Cognito ID
       const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
         where: { cognitoId },
         populate: {
           country: true,
           sector: true,
+          wooOrderDetails: true,
+          gstDetails: true,
           delegates: {
             populate: ['sector', 'country'],
           },
         },
       });
-  
+
       if (!facilitator) {
         return ctx.notFound('User not found in the system.');
       }
-  
+
       let mobileNumber = facilitatorPhone;
       if (facilitatorPhone && facilitator?.country?.countryCode) {
         const code = facilitator.country.countryCode.replace('+', '');
         mobileNumber = facilitatorPhone.replace(`+${code}`, '');
       }
-  
+
       // 4. Enrich delegates with Cognito details
       const enrichedDelegates = [];
-  
+
       for (const delegate of facilitator.delegates || []) {
         const cognitoDelegateId = delegate.cognitoId;
         let firstName = null;
@@ -615,20 +652,20 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         let officialEmailAddress = null;
         let mobileNumber = null;
         let companyName = null;
-  
+
         if (delegate.isFacilitator) {
           firstName = facilitatorFirstName;
           lastName = facilitatorLastName;
           officialEmailAddress = facilitatorEmail;
           companyName = facilitatorCompany;
-      
-          if (facilitatorPhone  && delegate?.country?.countryCode) {
+
+          if (facilitatorPhone && delegate?.country?.countryCode) {
             const code = delegate.country.countryCode.replace('+', '');
             mobileNumber = facilitatorPhone.replace(`+${code}`, '');
           } else {
             mobileNumber = facilitatorPhone;
           }
-      
+
         } else if (delegate.cognitoId) {
           // If not isFacilitator, fetch from Cognito
           try {
@@ -636,28 +673,28 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
               UserPoolId: process.env.COGNITO_USER_POOL_ID,
               Username: delegate.cognitoId,
             }));
-      
+
             const delegateAttrs = {};
             delegateUser.UserAttributes.forEach(attr => {
               delegateAttrs[attr.Name] = attr.Value;
             });
-      
+
             firstName = delegateAttrs['custom:firstName'];
             lastName = delegateAttrs['custom:lastName'];
             officialEmailAddress = delegateAttrs['email'];
             mobileNumber = delegateAttrs['phone_number'];
             companyName = delegateAttrs['custom:companyName'] || null;
-      
+
             if (mobileNumber && delegate?.country?.countryCode) {
               const code = delegate.country.countryCode.replace('+', '');
               mobileNumber = mobileNumber.replace(`+${code}`, '');
             }
-      
+
           } catch (e) {
             console.warn(`Failed to fetch Cognito data for delegate ${delegate.cognitoId}:`, e.message);
           }
         }
-  
+
         enrichedDelegates.push({
           ...delegate,
           firstName,
@@ -667,10 +704,22 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           companyName,
         });
       }
-  
+
       // 5. Fetch WooCommerce order if present
-      const wooOrderDetails = await fetchWooOrder(facilitator.wcOrderId);
-  
+      // const wooOrderDetails = await fetchWooOrder(facilitator.wcOrderId);
+      let mergedLineItems = [];
+
+      if (Array.isArray(facilitator.wooOrderDetails)) {
+        for (const orderMeta of facilitator.wooOrderDetails) {
+          if (orderMeta.wcOrderStatus === 'completed' && orderMeta.wcOrderId) {
+            const order = await fetchWooOrder(orderMeta.wcOrderId);
+            if (order && Array.isArray(order.line_items)) {
+              mergedLineItems.push(...order.line_items);
+            }
+          }
+        }
+      }
+
       // 6. Return combined Cognito + Strapi data
       return ctx.send({
         message: 'Login successful',
@@ -686,10 +735,12 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           companyName: facilitatorCompany,
           ...facilitator,
           delegates: enrichedDelegates,
-          wooOrderDetails,
+          wooOrderDetailsTest: {
+            line_items: mergedLineItems,
+          },
         },
       });
-  
+
     } catch (error) {
       console.error('OTP verification failed:', error);
       return ctx.internalServerError('OTP verification failed due to an unexpected error.');

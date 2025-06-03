@@ -17,9 +17,9 @@ module.exports = createCoreController('api::newsletter.newsletter', ({ strapi })
     //  console.log(email);
       await sendEmail({
         to: email,
-        subject: '',
+        subject: 'Thank You for Subscribing to GFF Updates!',
         templateName: 'newsletter',
-        replacements: { email },
+        replacements: {  },
       });
 
       // strapi.log.info(`Confirmation email sent to ${email}`);
