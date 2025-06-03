@@ -735,7 +735,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           companyName: facilitatorCompany,
           ...facilitator,
           delegates: enrichedDelegates,
-          wooOrderDetails: {
+          wooOrderDetailsTest: {
             line_items: mergedLineItems,
           },
         },
