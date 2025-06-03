@@ -17,12 +17,12 @@ module.exports = createCoreController('api::express-interest.express-interest', 
     // Step 2: Send email using SES
     try {
     //  console.log(email);
-      await sendEmail({
-        to: email,
-        subject: 'Thank You for Expressing Your Interest in GFF 2025! ',
-        templateName: 'express-interest',
-        replacements: { firstName, lastName },
-      });
+    //  await sendEmail({
+    //    to: email,
+    //    subject: 'Thank You for Expressing Your Interest in GFF 2025! ',
+    //    templateName: 'express-interest',
+    //    replacements: { firstName, lastName },
+     // });
 
       // strapi.log.info(`Confirmation email sent to ${email}`);
     } catch (err) {
