@@ -163,23 +163,35 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       }
 
       // 3. Fetch WooCommerce order if present
-      // const wooOrderDetails = await fetchWooOrder(facilitator.wcOrderId);
-
-      let mergedLineItems = [];
-      console.log('I am here');
-      console.log(facilitator.wooOrderDetails);
+      const mergedLineItemsMap = new Map();
 
       if (Array.isArray(facilitator.wooOrderDetails)) {
         for (const orderMeta of facilitator.wooOrderDetails) {
           if (orderMeta.wcOrderStatus === 'completed' && orderMeta.wcOrderId) {
             const order = await fetchWooOrder(orderMeta.wcOrderId);
-            console.log(order);
             if (order && Array.isArray(order.line_items)) {
-              mergedLineItems.push(...order.line_items);
+              for (const item of order.line_items) {
+                const { product_id, name, quantity } = item;
+                if (!product_id) continue;
+
+                if (mergedLineItemsMap.has(product_id)) {
+                  const existing = mergedLineItemsMap.get(product_id);
+                  existing.quantity += quantity;
+                } else {
+                  mergedLineItemsMap.set(product_id, {
+                    product_id,
+                    name,
+                    quantity,
+                  });
+                }
+              }
             }
           }
         }
       }
+
+      // Convert map back to array
+      const mergedLineItems = Array.from(mergedLineItemsMap.values());
 
       // 4. Return combined data
       return ctx.send({
@@ -706,20 +718,35 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       }
 
       // 5. Fetch WooCommerce order if present
-      // const wooOrderDetails = await fetchWooOrder(facilitator.wcOrderId);
-      let mergedLineItems = [];
-
+      const mergedLineItemsMap = new Map();
 
       if (Array.isArray(facilitator.wooOrderDetails)) {
         for (const orderMeta of facilitator.wooOrderDetails) {
           if (orderMeta.wcOrderStatus === 'completed' && orderMeta.wcOrderId) {
             const order = await fetchWooOrder(orderMeta.wcOrderId);
             if (order && Array.isArray(order.line_items)) {
-              mergedLineItems.push(...order.line_items);
+              for (const item of order.line_items) {
+                const { product_id, name, quantity } = item;
+                if (!product_id) continue;
+
+                if (mergedLineItemsMap.has(product_id)) {
+                  const existing = mergedLineItemsMap.get(product_id);
+                  existing.quantity += quantity;
+                } else {
+                  mergedLineItemsMap.set(product_id, {
+                    product_id,
+                    name,
+                    quantity,
+                  });
+                }
+              }
             }
           }
         }
       }
+
+      // Convert map back to array
+      const mergedLineItems = Array.from(mergedLineItemsMap.values());
 
       // 6. Return combined Cognito + Strapi data
       return ctx.send({
