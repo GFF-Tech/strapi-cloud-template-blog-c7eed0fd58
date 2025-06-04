@@ -193,8 +193,8 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           ...facilitator,
           delegates: enrichedDelegates,
           wooOrderDetailsTest: {
-      line_items: mergedLineItems,
-    },
+            line_items: mergedLineItems,
+          },
         },
       });
 
@@ -417,60 +417,60 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
   },
 
   async update(ctx) {
-  const { id } = ctx.params;
-  const { data } = ctx.request.body;
+    const { id } = ctx.params;
+    const { data } = ctx.request.body;
 
-  if (!id || typeof id !== 'string') {
-    return ctx.badRequest('Invalid ID');
-  }
-
-  try {
-    const existing = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
-      populate: ['wooOrderDetails'],
-    });
-
-    if (!existing) {
-      return ctx.notFound('Facilitator not found');
+    if (!id || typeof id !== 'string') {
+      return ctx.badRequest('Invalid ID');
     }
 
-    // Append new wooOrderDetails if present
-    const existingWooOrders = existing.wooOrderDetails || [];
-    const incomingWooOrders = data.wooOrderDetails || [];
+    try {
+      const existing = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
+        populate: ['wooOrderDetails'],
+      });
 
-    // Combine and remove duplicates based on wcOrderId if needed
-    const mergedWooOrders = [...existingWooOrders, ...incomingWooOrders];
+      if (!existing) {
+        return ctx.notFound('Facilitator not found');
+      }
 
-    // Remove wooOrderDetails from spread to avoid overwrite
-    const { wooOrderDetails, ...restData } = data;
+      // Append new wooOrderDetails if present
+      const existingWooOrders = existing.wooOrderDetails || [];
+      const incomingWooOrders = data.wooOrderDetails || [];
 
-    await strapi.entityService.update('api::facilitator.facilitator', id, {
-      data: {
-        ...restData,
-        gstDetails: data.gstDetails ?? null,
-        wooOrderDetails: mergedWooOrders,
-      },
-    });
+      // Combine and remove duplicates based on wcOrderId if needed
+      const mergedWooOrders = [...existingWooOrders, ...incomingWooOrders];
 
-    const updated = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
-      populate: {
-        gstDetails: true,
-        country: {
-          fields: ['country', 'countryCode'],
+      // Remove wooOrderDetails from spread to avoid overwrite
+      const { wooOrderDetails, ...restData } = data;
+
+      await strapi.entityService.update('api::facilitator.facilitator', id, {
+        data: {
+          ...restData,
+          gstDetails: data.gstDetails ?? null,
+          wooOrderDetails: mergedWooOrders,
         },
-        sector: {
-          fields: ['name'],
+      });
+
+      const updated = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
+        populate: {
+          gstDetails: true,
+          country: {
+            fields: ['country', 'countryCode'],
+          },
+          sector: {
+            fields: ['name'],
+          },
+          wooOrderDetails: true,
         },
-        wooOrderDetails: true,
-      },
-    });
+      });
 
-    return updated;
+      return updated;
 
-  } catch (error) {
-    console.error('Update error:', error);
-    return ctx.internalServerError('An error occurred while updating the facilitator');
-  }
-},
+    } catch (error) {
+      console.error('Update error:', error);
+      return ctx.internalServerError('An error occurred while updating the facilitator');
+    }
+  },
 
   async delete(ctx) {
     const { id } = ctx.params;
@@ -709,6 +709,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       // const wooOrderDetails = await fetchWooOrder(facilitator.wcOrderId);
       let mergedLineItems = [];
 
+
       if (Array.isArray(facilitator.wooOrderDetails)) {
         for (const orderMeta of facilitator.wooOrderDetails) {
           if (orderMeta.wcOrderStatus === 'completed' && orderMeta.wcOrderId) {
@@ -737,7 +738,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           delegates: enrichedDelegates,
           wooOrderDetailsTest: {
             line_items: mergedLineItems,
-          },
+          }
         },
       });
 

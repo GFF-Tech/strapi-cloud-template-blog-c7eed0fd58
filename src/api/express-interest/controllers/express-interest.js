@@ -16,15 +16,15 @@ module.exports = createCoreController('api::express-interest.express-interest', 
     const lastName = ctx.request.body.data?.lastName || '';
     // Step 2: Send email using SES
     try {
-    //  console.log(email);
-    //  await sendEmail({
-    //    to: email,
-    //    subject: 'Thank You for Expressing Your Interest in GFF 2025! ',
-    //    templateName: 'express-interest',
-    //    replacements: { firstName, lastName },
-     // });
+     console.log(email);
+     await sendEmail({
+       to: email,
+       subject: 'Thank You for Expressing Your Interest in GFF 2025! ',
+       templateName: 'express-interest',
+       replacements: { firstName, lastName },
+     });
 
-      // strapi.log.info(`Confirmation email sent to ${email}`);
+      strapi.log.info(`Confirmation email sent to ${email}`);
     } catch (err) {
       strapi.log.error('Failed to send email:', err);
     }
