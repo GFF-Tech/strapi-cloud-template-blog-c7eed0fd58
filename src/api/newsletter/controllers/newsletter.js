@@ -14,15 +14,14 @@ module.exports = createCoreController('api::newsletter.newsletter', ({ strapi })
     const email = ctx.request.body.data?.email || '';
     // Step 2: Send email using SES
     try {
-    //  console.log(email);
-    //  await sendEmail({
-    //    to: email,
-    //    subject: 'Thank You for Subscribing to GFF Updates!',
-    //    templateName: 'newsletter',
-    //   replacements: {  },
-    //  });
+     await sendEmail({
+       to: email,
+       subject: 'Thank You for Subscribing to GFF Updates!',
+       templateName: 'newsletter',
+      replacements: {  },
+     });
 
-      // strapi.log.info(`Confirmation email sent to ${email}`);
+      strapi.log.info(`Confirmation email sent to ${email}`);
     } catch (err) {
       strapi.log.error('Failed to send email:', err);
     }
