@@ -11,9 +11,6 @@
     "draftAndPublish": false
   },
   "attributes": {
-    "fullName": {
-      "type": "string"
-    },
     "firstName": {
       "type": "string"
     },

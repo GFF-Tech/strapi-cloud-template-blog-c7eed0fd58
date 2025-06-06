@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-06-05T08:16:42.285Z"
+    "x-generation-date": "2025-06-06T11:58:22.870Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -9099,6 +9099,13 @@
               "confirmationId": {
                 "type": "string"
               },
+              "passType": {
+                "type": "string"
+              },
+              "passPrice": {
+                "type": "number",
+                "format": "float"
+              },
               "locale": {
                 "type": "string"
               },
@@ -9683,6 +9690,13 @@
                     "confirmationId": {
                       "type": "string"
                     },
+                    "passType": {
+                      "type": "string"
+                    },
+                    "passPrice": {
+                      "type": "number",
+                      "format": "float"
+                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -9816,6 +9830,13 @@
           "confirmationId": {
             "type": "string"
           },
+          "passType": {
+            "type": "string"
+          },
+          "passPrice": {
+            "type": "number",
+            "format": "float"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -9924,6 +9945,9 @@
           },
           "isActive": {
             "type": "boolean"
+          },
+          "crmRegistrationPaymentId": {
+            "type": "string"
           }
         }
       },
@@ -9936,9 +9960,6 @@
           "data": {
             "type": "object",
             "properties": {
-              "fullName": {
-                "type": "string"
-              },
               "firstName": {
                 "type": "string"
               },
@@ -10033,9 +10054,6 @@
             "type": "number"
           },
           "documentId": {
-            "type": "string"
-          },
-          "fullName": {
             "type": "string"
           },
           "firstName": {
@@ -10369,9 +10387,6 @@
                 "documentId": {
                   "type": "string"
                 },
-                "fullName": {
-                  "type": "string"
-                },
                 "firstName": {
                   "type": "string"
                 },
@@ -10479,9 +10494,6 @@
           "data": {
             "type": "object",
             "properties": {
-              "fullName": {
-                "type": "string"
-              },
               "firstName": {
                 "type": "string"
               },
@@ -10588,9 +10600,6 @@
             "type": "number"
           },
           "documentId": {
-            "type": "string"
-          },
-          "fullName": {
             "type": "string"
           },
           "firstName": {
@@ -10934,9 +10943,6 @@
                   "type": "number"
                 },
                 "documentId": {
-                  "type": "string"
-                },
-                "fullName": {
                   "type": "string"
                 },
                 "firstName": {
@@ -11806,6 +11812,13 @@
                 },
                 "confirmationId": {
                   "type": "string"
+                },
+                "passType": {
+                  "type": "string"
+                },
+                "passPrice": {
+                  "type": "number",
+                  "format": "float"
                 },
                 "createdAt": {
                   "type": "string",
