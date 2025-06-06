@@ -45,6 +45,12 @@
     },
     "confirmationId": {
       "type": "string"
+    },
+    "passType": {
+      "type": "string"
+    },
+    "passPrice": {
+      "type": "decimal"
     }
   }
 }

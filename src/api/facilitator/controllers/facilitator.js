@@ -4,12 +4,14 @@
 const { createCoreController } = require('@strapi/strapi').factories;
 const axios = require('axios');
 const crypto = require('crypto');
+// @ts-ignore
+const { insertIntoSalesforce } = require('../../../utils/salesforce');
 
 const {
   // @ts-ignore
   CognitoIdentityProviderClient, SignUpCommand, ConfirmSignUpCommand, ResendConfirmationCodeCommand,
   // @ts-ignore
-  InitiateAuthCommand, RespondToAuthChallengeCommand, AdminDeleteUserCommand, AdminGetUserCommand
+  InitiateAuthCommand, RespondToAuthChallengeCommand, AdminDeleteUserCommand, AdminGetUserCommand, ListUsersCommand
 } = require('@aws-sdk/client-cognito-identity-provider');
 const { log } = require('console');
 
@@ -428,61 +430,150 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
     }
   },
 
-  async update(ctx) {
-    const { id } = ctx.params;
-    const { data } = ctx.request.body;
+ async update(ctx) {
+  const { id } = ctx.params;
+  const { data } = ctx.request.body;
 
-    if (!id || typeof id !== 'string') {
-      return ctx.badRequest('Invalid ID');
+  if (!id || typeof id !== 'string') {
+    return ctx.badRequest('Invalid ID');
+  }
+
+  try {
+    const existing = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
+      populate: ['wooOrderDetails'],
+    });
+
+    if (!existing) {
+      return ctx.notFound('Facilitator not found');
     }
 
-    try {
-      const existing = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
-        populate: ['wooOrderDetails'],
-      });
+    const existingWooOrders = existing.wooOrderDetails || [];
+    const addParticpant =
+      existingWooOrders.length > 0 &&
+      existingWooOrders.some(order => order.wcOrderStatus === 'completed')
+        ? 'true'
+        : 'false';
 
-      if (!existing) {
-        return ctx.notFound('Facilitator not found');
+    const incomingWooOrders = data.wooOrderDetails || [];
+    const mergedWooOrders = [...existingWooOrders, ...incomingWooOrders];
+
+    const { wooOrderDetails, ...restData } = data;
+
+    await strapi.entityService.update('api::facilitator.facilitator', id, {
+      data: {
+        ...restData,
+        gstDetails: data.gstDetails ?? null,
+        wooOrderDetails: mergedWooOrders,
+      },
+    });
+
+    const updated = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
+      populate: {
+        gstDetails: true,
+        country: { fields: ['country', 'countryCode'] },
+        sector: { fields: ['name'] },
+        wooOrderDetails: true,
+      },
+    });
+
+    const delegates = [];
+    const passes = [];
+    let updatedWooOrderDetails = [...updated.wooOrderDetails];
+
+    for (const order of incomingWooOrders) {
+      if (order.wcOrderStatus === 'completed') {
+        const wooOrder = await fetchWooOrder(order.wcOrderId);
+
+        for (const item of wooOrder.line_items) {
+          for (let i = 0; i < item.quantity; i++) {
+            const newDelegate = await strapi.entityService.create('api::delegate.delegate', {
+              data: {
+                facilitatorId: existing.id,
+                passType: item.name,
+                passPrice: item.price,
+              },
+            });
+            const confirmationId = `GFF25${String(newDelegate.id).padStart(6, '0')}`;
+            const updatedDelegate = await strapi.entityService.update('api::delegate.delegate', newDelegate.id, {
+              data: { confirmationId },
+            });
+            delegates.push(updatedDelegate);
+            passes.push({
+              confirmationId: updatedDelegate.confirmationId,
+              passType: item.name,
+              price: item.price.toString(),
+            });
+          }
+        }
+
+        const cognitoUser = await getCognitoUserBySub(existing.cognitoId);
+        const firstName = cognitoUser?.firstName || '';
+        const lastName = cognitoUser?.lastName || '';
+        const email = cognitoUser?.email || '';
+        const mobilePhone = cognitoUser?.phone_number || '';
+        const companyName = cognitoUser?.companyName || '';
+
+        const payload = {
+          invoice: 'true',
+          promoCode: (wooOrder.meta_data.find(m => m.key === 'appliedCouponCode') || {}).value || '',
+          addParticpant: addParticpant,
+          eventId: process.env.CRM_EVENT_ID,
+          currencyType: wooOrder.currency,
+          amount: (wooOrder.meta_data.find(m => m.key === 'taxableAmount') || {}).value?.toString() || '',
+          cgst: (wooOrder.meta_data.find(m => m.key === 'cgst') || {}).value || '',
+          sgst: (wooOrder.meta_data.find(m => m.key === 'sgst') || {}).value || '',
+          email,
+          mobilePhone,
+          pocFirstName: firstName,
+          pocLastName: lastName,
+          company: companyName || 'ABC',
+          sector: updated?.sector?.name || 'ABC',
+          linkdinProfile: '',
+          passes,
+          gstInfo: {
+            companyAddress: updated?.gstDetails?.companyAddress || '',
+            billingFirstName: firstName,
+            billingLastName: lastName,
+            gstNumber: updated?.gstDetails?.companyGstNo || '',
+            pincode: updated?.gstDetails?.pincode || '',
+          },
+        };
+
+        console.log('payload = ', payload);
+
+        try {
+          const result = await insertIntoSalesforce(payload);
+          console.log('result = ',result);
+          strapi.log.info('Salesforce insert success:', result.data);
+
+          if (result?.registrationPaymentId) {
+            updatedWooOrderDetails = updatedWooOrderDetails.map(o => {
+              if (o.wcOrderId === order.wcOrderId) {
+                return { ...o, crmRegistrationPaymentId: result.registrationPaymentId };
+              }
+              return o;
+            });
+
+            await strapi.entityService.update('api::facilitator.facilitator', id, {
+              data: { wooOrderDetails: updatedWooOrderDetails },
+            });
+          }
+        } catch (err) {
+          strapi.log.error('Salesforce insert failed:', {
+            message: err?.message || 'No error message',
+            stack: err?.stack || 'No stack trace',
+            full: err,
+          });
+        }
       }
-
-      // Append new wooOrderDetails if present
-      const existingWooOrders = existing.wooOrderDetails || [];
-      const incomingWooOrders = data.wooOrderDetails || [];
-
-      // Combine and remove duplicates based on wcOrderId if needed
-      const mergedWooOrders = [...existingWooOrders, ...incomingWooOrders];
-
-      // Remove wooOrderDetails from spread to avoid overwrite
-      const { wooOrderDetails, ...restData } = data;
-
-      await strapi.entityService.update('api::facilitator.facilitator', id, {
-        data: {
-          ...restData,
-          gstDetails: data.gstDetails ?? null,
-          wooOrderDetails: mergedWooOrders,
-        },
-      });
-
-      const updated = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
-        populate: {
-          gstDetails: true,
-          country: {
-            fields: ['country', 'countryCode'],
-          },
-          sector: {
-            fields: ['name'],
-          },
-          wooOrderDetails: true,
-        },
-      });
-
-      return updated;
-
-    } catch (error) {
-      console.error('Update error:', error);
-      return ctx.internalServerError('An error occurred while updating the facilitator');
     }
-  },
+
+    return updated;
+  } catch (error) {
+    console.error('Update error:', error);
+    return ctx.internalServerError('An error occurred while updating the facilitator');
+  }
+},
 
   async delete(ctx) {
     const { id } = ctx.params;
@@ -844,5 +935,39 @@ async function fetchWooOrder(wcOrderId) {
 
   } catch (err) {
     return { error: 'WooCommerce order fetch failed', details: err.message };
+  }
+}
+
+async function getCognitoUserBySub(sub) {
+  if (!sub) return null;
+
+  try {
+    const listUsersCommand = new ListUsersCommand({
+      UserPoolId: process.env.COGNITO_USER_POOL_ID,
+      Filter: `sub = "${sub}"`,
+      Limit: 1,
+    });
+
+    const response = await client.send(listUsersCommand);
+
+    if (!response.Users || response.Users.length === 0) return null;
+
+    const user = response.Users[0];
+    const attributes = {};
+    for (const attr of user.Attributes) {
+      attributes[attr.Name] = attr.Value;
+    }
+
+    return {
+      sub: attributes.sub,
+      email: attributes.email,
+      phone_number: attributes.phone_number,
+      firstName: attributes['custom:firstName'] || '',
+      lastName: attributes['custom:lastName'] || '',
+      companyName: attributes['custom:companyName'] || '',
+    };
+  } catch (err) {
+    console.error('Failed to fetch Cognito user:', err);
+    return null;
   }
 }

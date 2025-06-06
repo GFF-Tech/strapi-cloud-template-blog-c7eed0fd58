@@ -504,6 +504,8 @@ export interface ApiDelegateDelegate extends Struct.CollectionTypeSchema {
       'api::delegate.delegate'
     > &
       Schema.Attribute.Private;
+    passPrice: Schema.Attribute.Decimal;
+    passType: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     sector: Schema.Attribute.Relation<'oneToOne', 'api::sector.sector'>;
     updatedAt: Schema.Attribute.DateTime;
@@ -536,7 +538,6 @@ export interface ApiEarlyStagePitchEarlyStagePitch
       Schema.Attribute.Private;
     emailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
     firstName: Schema.Attribute.String;
-    fullName: Schema.Attribute.String;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     lastName: Schema.Attribute.String;
     linkedinUrl: Schema.Attribute.String;
@@ -576,7 +577,6 @@ export interface ApiExpressInterestExpressInterest
     designation: Schema.Attribute.String;
     email: Schema.Attribute.Email & Schema.Attribute.Unique;
     firstName: Schema.Attribute.String;
-    fullName: Schema.Attribute.String;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     IsDelegate: Schema.Attribute.Boolean;
     IsPartnerOrExhibitor: Schema.Attribute.Boolean;

@@ -1,7 +1,8 @@
 {
   "collectionName": "components_common_woo_order_details",
   "info": {
-    "displayName": "WooOrderDetails"
+    "displayName": "WooOrderDetails",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -17,6 +18,9 @@
     "isActive": {
       "type": "boolean",
       "default": true
+    },
+    "crmRegistrationPaymentId": {
+      "type": "string"
     }
   }
 }
