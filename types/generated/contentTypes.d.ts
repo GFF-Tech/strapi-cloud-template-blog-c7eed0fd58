@@ -763,6 +763,36 @@ export interface ApiRegistrationFaqRegistrationFaq
   };
 }
 
+export interface ApiSalutationSalutation extends Struct.CollectionTypeSchema {
+  collectionName: 'salutations';
+  info: {
+    description: '';
+    displayName: 'salutation';
+    pluralName: 'salutations';
+    singularName: 'salutation';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::salutation.salutation'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiSectorSector extends Struct.CollectionTypeSchema {
   collectionName: 'sectors';
   info: {
@@ -1349,6 +1379,7 @@ declare module '@strapi/strapi' {
       'api::facilitator.facilitator': ApiFacilitatorFacilitator;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::registration-faq.registration-faq': ApiRegistrationFaqRegistrationFaq;
+      'api::salutation.salutation': ApiSalutationSalutation;
       'api::sector.sector': ApiSectorSector;
       'api::speaker.speaker': ApiSpeakerSpeaker;
       'plugin::content-releases.release': PluginContentReleasesRelease;

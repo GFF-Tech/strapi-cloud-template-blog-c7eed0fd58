@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "salutations",
+  "info": {
+    "singularName": "salutation",
+    "pluralName": "salutations",
+    "displayName": "salutation",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}
