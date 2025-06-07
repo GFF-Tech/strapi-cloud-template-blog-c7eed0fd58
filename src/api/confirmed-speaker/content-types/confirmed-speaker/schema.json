@@ -1,0 +1,112 @@
+{
+  "kind": "collectionType",
+  "collectionName": "confirmed_speakers",
+  "info": {
+    "singularName": "confirmed-speaker",
+    "pluralName": "confirmed-speakers",
+    "displayName": "confirmedSpeaker",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "countryCode": {
+      "type": "string"
+    },
+    "buisnessEmailAddress": {
+      "type": "email",
+      "unique": true
+    },
+    "organisation": {
+      "type": "string"
+    },
+    "registeredCompanyName": {
+      "type": "string"
+    },
+    "brandName": {
+      "type": "string"
+    },
+    "designation": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "linkedinurl": {
+      "type": "string"
+    },
+    "profilePhoto": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "aboutSpeaker": {
+      "type": "text"
+    },
+    "biodata": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "instagramHandle": {
+      "type": "string"
+    },
+    "twitterHandle": {
+      "type": "string"
+    },
+    "pocFirstName": {
+      "type": "string"
+    },
+    "pocLastName": {
+      "type": "string"
+    },
+    "pocCountryCode": {
+      "type": "string"
+    },
+    "pocMobileNumber": {
+      "type": "string"
+    },
+    "pocOfficialEmailAddress": {
+      "type": "string",
+      "unique": true
+    },
+    "pocCountry": {
+      "type": "string"
+    },
+    "additionalMessage": {
+      "type": "string"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    },
+    "consent": {
+      "type": "boolean"
+    },
+    "mobileNumber": {
+      "type": "string"
+    }
+  }
+}
