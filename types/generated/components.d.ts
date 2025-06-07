@@ -18,9 +18,11 @@ export interface CommonGstDetails extends Struct.ComponentSchema {
 export interface CommonWooOrderDetails extends Struct.ComponentSchema {
   collectionName: 'components_common_woo_order_details';
   info: {
+    description: '';
     displayName: 'WooOrderDetails';
   };
   attributes: {
+    crmRegistrationPaymentId: Schema.Attribute.String;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     totalAmount: Schema.Attribute.Decimal;
     wcOrderId: Schema.Attribute.String;

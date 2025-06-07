@@ -441,6 +441,63 @@ export interface ApiBecomeASpeakerBecomeASpeaker
   };
 }
 
+export interface ApiConfirmedSpeakerConfirmedSpeaker
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'confirmed_speakers';
+  info: {
+    description: '';
+    displayName: 'confirmedSpeaker';
+    pluralName: 'confirmed-speakers';
+    singularName: 'confirmed-speaker';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    aboutSpeaker: Schema.Attribute.Text;
+    additionalMessage: Schema.Attribute.String;
+    biodata: Schema.Attribute.Media<'files'>;
+    brandName: Schema.Attribute.String;
+    buisnessEmailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
+    city: Schema.Attribute.String;
+    consent: Schema.Attribute.Boolean;
+    country: Schema.Attribute.String;
+    countryCode: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    designation: Schema.Attribute.String;
+    firstName: Schema.Attribute.String;
+    instagramHandle: Schema.Attribute.String;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    lastName: Schema.Attribute.String;
+    linkedinurl: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::confirmed-speaker.confirmed-speaker'
+    > &
+      Schema.Attribute.Private;
+    mobileNumber: Schema.Attribute.String;
+    organisation: Schema.Attribute.String;
+    pocCountry: Schema.Attribute.String;
+    pocCountryCode: Schema.Attribute.String;
+    pocFirstName: Schema.Attribute.String;
+    pocLastName: Schema.Attribute.String;
+    pocMobileNumber: Schema.Attribute.String;
+    pocOfficialEmailAddress: Schema.Attribute.String & Schema.Attribute.Unique;
+    profilePhoto: Schema.Attribute.Media<'images'>;
+    publishedAt: Schema.Attribute.DateTime;
+    registeredCompanyName: Schema.Attribute.String;
+    state: Schema.Attribute.String;
+    title: Schema.Attribute.String;
+    twitterHandle: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCountryCountry extends Struct.CollectionTypeSchema {
   collectionName: 'countries';
   info: {
@@ -504,6 +561,8 @@ export interface ApiDelegateDelegate extends Struct.CollectionTypeSchema {
       'api::delegate.delegate'
     > &
       Schema.Attribute.Private;
+    passPrice: Schema.Attribute.Decimal;
+    passType: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     sector: Schema.Attribute.Relation<'oneToOne', 'api::sector.sector'>;
     updatedAt: Schema.Attribute.DateTime;
@@ -536,7 +595,6 @@ export interface ApiEarlyStagePitchEarlyStagePitch
       Schema.Attribute.Private;
     emailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
     firstName: Schema.Attribute.String;
-    fullName: Schema.Attribute.String;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     lastName: Schema.Attribute.String;
     linkedinUrl: Schema.Attribute.String;
@@ -576,7 +634,6 @@ export interface ApiExpressInterestExpressInterest
     designation: Schema.Attribute.String;
     email: Schema.Attribute.Email & Schema.Attribute.Unique;
     firstName: Schema.Attribute.String;
-    fullName: Schema.Attribute.String;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     IsDelegate: Schema.Attribute.Boolean;
     IsPartnerOrExhibitor: Schema.Attribute.Boolean;
@@ -700,6 +757,36 @@ export interface ApiRegistrationFaqRegistrationFaq
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     question: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSalutationSalutation extends Struct.CollectionTypeSchema {
+  collectionName: 'salutations';
+  info: {
+    description: '';
+    displayName: 'salutation';
+    pluralName: 'salutations';
+    singularName: 'salutation';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::salutation.salutation'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1284,6 +1371,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::area-of-expertise.area-of-expertise': ApiAreaOfExpertiseAreaOfExpertise;
       'api::become-a-speaker.become-a-speaker': ApiBecomeASpeakerBecomeASpeaker;
+      'api::confirmed-speaker.confirmed-speaker': ApiConfirmedSpeakerConfirmedSpeaker;
       'api::country.country': ApiCountryCountry;
       'api::delegate.delegate': ApiDelegateDelegate;
       'api::early-stage-pitch.early-stage-pitch': ApiEarlyStagePitchEarlyStagePitch;
@@ -1291,6 +1379,7 @@ declare module '@strapi/strapi' {
       'api::facilitator.facilitator': ApiFacilitatorFacilitator;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::registration-faq.registration-faq': ApiRegistrationFaqRegistrationFaq;
+      'api::salutation.salutation': ApiSalutationSalutation;
       'api::sector.sector': ApiSectorSector;
       'api::speaker.speaker': ApiSpeakerSpeaker;
       'plugin::content-releases.release': PluginContentReleasesRelease;
