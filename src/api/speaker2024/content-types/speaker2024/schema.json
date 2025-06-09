@@ -1,0 +1,62 @@
+{
+  "kind": "collectionType",
+  "collectionName": "speakers2024",
+  "info": {
+    "singularName": "speaker2024",
+    "pluralName": "speakers2024",
+    "displayName": "speaker2024",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "salutation": {
+      "type": "enumeration",
+      "enum": [
+        "Mr.",
+        "Ms.",
+        "Mrs.",
+        "Dr.",
+        "Prof.",
+        "Shri",
+        "Smt."
+      ]
+    },
+    "fullName": {
+      "type": "string"
+    },
+    "designation": {
+      "type": "string"
+    },
+    "companyName": {
+      "type": "string"
+    },
+    "biodata": {
+      "type": "text"
+    },
+    "profilePhoto": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "linkedinUrl": {
+      "type": "string"
+    },
+    "country": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::country.country"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    },
+    "rank": {
+      "type": "integer"
+    }
+  }
+}

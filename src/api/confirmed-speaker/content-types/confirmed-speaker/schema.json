@@ -96,7 +96,7 @@
       "type": "string"
     },
     "additionalMessage": {
-      "type": "string"
+      "type": "text"
     },
     "isActive": {
       "type": "boolean",

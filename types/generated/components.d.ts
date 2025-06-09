@@ -15,6 +15,33 @@ export interface CommonGstDetails extends Struct.ComponentSchema {
   };
 }
 
+export interface CommonLogo extends Struct.ComponentSchema {
+  collectionName: 'components_common_logos';
+  info: {
+    description: '';
+    displayName: 'logo';
+  };
+  attributes: {
+    altText: Schema.Attribute.String;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    mobileImage: Schema.Attribute.Media<'images' | 'files'>;
+    title: Schema.Attribute.String;
+    webImage: Schema.Attribute.Media<'images' | 'files'>;
+  };
+}
+
+export interface CommonLogoSection extends Struct.ComponentSchema {
+  collectionName: 'components_common_logo_sections';
+  info: {
+    displayName: 'logo-section';
+  };
+  attributes: {
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    logos: Schema.Attribute.Component<'common.logo', true>;
+    sectionTitle: Schema.Attribute.String;
+  };
+}
+
 export interface CommonWooOrderDetails extends Struct.ComponentSchema {
   collectionName: 'components_common_woo_order_details';
   info: {
@@ -34,6 +61,8 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'common.gst-details': CommonGstDetails;
+      'common.logo': CommonLogo;
+      'common.logo-section': CommonLogoSection;
       'common.woo-order-details': CommonWooOrderDetails;
     }
   }
