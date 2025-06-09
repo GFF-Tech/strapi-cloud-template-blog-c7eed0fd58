@@ -190,15 +190,15 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         participantFirstName: data.firstName,
         participantLastName: data.lastName,
         company: data.companyName || 'ABC',
-        sector: fullDelegate.sector.name || 'ABC', // you may need to fetch this from sector relation
-        vertical: 'Engineer',
-        level: 'Founder',
+        sector: fullDelegate.sector.name || 'ABC',
+        vertical: '',
+        level: '',
         GenderIdentity: 'Male',
         title: 'Engineer',
-        linkdinProfile: 'ABC',
-        twitterProfile: 'ABC',
-        instagramProfile: 'ABC',
-        personalEmail: data.officialEmailAddress
+        linkdinProfile: `http://linkedin.com/in/${data.firstName}`,
+        twitterProfile: '',
+        instagramProfile: '',
+        personalEmail: ''
       };
 
       try {
@@ -274,14 +274,14 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         participantLastName: data.lastName,
         company: companyName || 'ABC',
         sector: existing.sector.name || 'ABC', // you may need to fetch this from sector relation
-        vertical: 'Engineer',
-        level: 'Founder',
+        vertical: '',
+        level: '',
         GenderIdentity: 'Male',
         title: 'Engineer',
-        linkdinProfile: 'ABC',
-        twitterProfile: 'ABC',
-        instagramProfile: 'ABC',
-        personalEmail: data.officialEmailAddress
+        linkdinProfile: `http://linkedin.com/in/${data.firstName}`,
+        twitterProfile: '',
+        instagramProfile: '',
+        personalEmail: ''
       };
 
       try {

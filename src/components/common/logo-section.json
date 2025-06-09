@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_common_logo_sections",
+  "info": {
+    "displayName": "logo-section"
+  },
+  "options": {},
+  "attributes": {
+    "sectionTitle": {
+      "type": "string"
+    },
+    "logos": {
+      "type": "component",
+      "repeatable": true,
+      "component": "common.logo"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

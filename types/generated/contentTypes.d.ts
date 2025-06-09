@@ -455,7 +455,7 @@ export interface ApiConfirmedSpeakerConfirmedSpeaker
   };
   attributes: {
     aboutSpeaker: Schema.Attribute.Text;
-    additionalMessage: Schema.Attribute.String;
+    additionalMessage: Schema.Attribute.Text;
     biodata: Schema.Attribute.Media<'files'>;
     brandName: Schema.Attribute.String;
     buisnessEmailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
@@ -701,6 +701,37 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiMicroSiteHomePageMicroSiteHomePage
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'micro_site_home_pages';
+  info: {
+    description: '';
+    displayName: 'microSiteHomePage';
+    pluralName: 'micro-site-home-pages';
+    singularName: 'micro-site-home-page';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::micro-site-home-page.micro-site-home-page'
+    > &
+      Schema.Attribute.Private;
+    logoSection: Schema.Attribute.Component<'common.logo-section', true>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiNewsletterNewsletter extends Struct.CollectionTypeSchema {
   collectionName: 'newsletters';
   info: {
@@ -854,6 +885,46 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     salutation: Schema.Attribute.Enumeration<['Shri', 'Mr', 'Mrs', 'Dr']>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSpeaker2024Speaker2024 extends Struct.CollectionTypeSchema {
+  collectionName: 'speakers2024';
+  info: {
+    description: '';
+    displayName: 'speaker2024';
+    pluralName: 'speakers2024';
+    singularName: 'speaker2024';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    biodata: Schema.Attribute.Text;
+    companyName: Schema.Attribute.String;
+    country: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    designation: Schema.Attribute.String;
+    fullName: Schema.Attribute.String;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    linkedinUrl: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::speaker2024.speaker2024'
+    > &
+      Schema.Attribute.Private;
+    profilePhoto: Schema.Attribute.Media<'images'>;
+    publishedAt: Schema.Attribute.DateTime;
+    rank: Schema.Attribute.Integer;
+    salutation: Schema.Attribute.Enumeration<
+      ['Mr.', 'Ms.', 'Mrs.', 'Dr.', 'Prof.', 'Shri', 'Smt.']
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1377,11 +1448,13 @@ declare module '@strapi/strapi' {
       'api::early-stage-pitch.early-stage-pitch': ApiEarlyStagePitchEarlyStagePitch;
       'api::express-interest.express-interest': ApiExpressInterestExpressInterest;
       'api::facilitator.facilitator': ApiFacilitatorFacilitator;
+      'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::registration-faq.registration-faq': ApiRegistrationFaqRegistrationFaq;
       'api::salutation.salutation': ApiSalutationSalutation;
       'api::sector.sector': ApiSectorSector;
       'api::speaker.speaker': ApiSpeakerSpeaker;
+      'api::speaker2024.speaker2024': ApiSpeaker2024Speaker2024;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
