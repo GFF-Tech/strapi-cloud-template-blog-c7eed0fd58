@@ -509,12 +509,14 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           }
 
           const cognitoUser = await getCognitoUserBySub(existing.cognitoId);
+          console.log('cognitoUser = ', cognitoUser);
           const firstName = cognitoUser?.firstName || '';
           const lastName = cognitoUser?.lastName || '';
           const email = cognitoUser?.email || '';
           const mobilePhone = cognitoUser?.phone_number || '';
           const companyName = cognitoUser?.companyName || '';
           const isGstPresent = !!updated?.gstDetails?.companyGstNo;
+         
 
           const payload = {
             invoice: 'true',
@@ -565,13 +567,23 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
               try {
                 const invoiceResponse = await fetchInvoiceFromSalesforce(result.registrationPaymentId); // You’ll create this function
-                console.log('invoiceResponse',invoiceResponse);
-                // invoiceDetails = {
-                //   invoiceNumber: invoiceResponse?.invoiceNumber || '',
-                //   paymentDate: invoiceResponse?.paymentDate || '',
-                //   amountPaid: invoiceResponse?.amountPaid || '',
-                //   invoiceLink: invoiceResponse?.invoiceLink || '',
-                // };
+                console.log('invoiceResponse', invoiceResponse);
+                const rawDate = invoiceResponse?.['Invoice Date'];
+                let paymentDate = '';
+
+                if (rawDate) {
+                  const dateObj = new Date(rawDate);
+                  const day = String(dateObj.getDate()).padStart(2, '0');
+                  const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // month is 0-based
+                  const year = dateObj.getFullYear();
+                  paymentDate = `${day}/${month}/${year}`;
+                }
+                invoiceDetails = {
+                  invoiceNumber: invoiceResponse?.Name || '',
+                  paymentDate: paymentDate,
+                  amountPaid: invoiceResponse?.Amount_Paid || '',
+                  invoiceLink: invoiceResponse?.Content_Document_URL__c || '',
+                };
 
                 strapi.log.info('Invoice details fetched:', invoiceDetails);
               } catch (invoiceError) {
@@ -581,20 +593,20 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
                 });
               }
 
-              // if (invoiceDetails) {
-              //   const invoiceNumber = invoiceDetails.invoiceNumber;
-              //   const amountPaid = invoiceDetails.amountPaid;
-              //   const paymentDate = invoiceDetails.paymentDate;
-              //   const passDetails = passes;
-              //   const invoiceLink = invoiceDetails.invoiceLink;
+              if (invoiceDetails) {
+                const invoiceNumber = invoiceDetails.invoiceNumber;
+                const amountPaid = invoiceDetails.amountPaid;
+                const paymentDate = invoiceDetails.paymentDate;
+                const passDetails = passes;
+                const invoiceLink = invoiceDetails.invoiceLink;
 
-              //   await sendEmail({
-              //     to: email,
-              //     subject: 'Thank You for Your Payment for GFF 2025 Registration',
-              //     templateName: 'payment-invoice',
-              //     replacements: { invoiceNumber, amountPaid, paymentDate, passDetails, invoiceLink },
-              //   });
-              // }
+                await sendEmail({
+                  to: email,
+                  subject: 'Thank You for Your Payment for GFF 2025 Registration',
+                  templateName: 'payment-invoice',
+                  replacements: { invoiceNumber, amountPaid, paymentDate, passDetails, invoiceLink },
+                });
+              }
 
             }
           } catch (err) {
