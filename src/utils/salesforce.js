@@ -1,3 +1,4 @@
+const axios = require('axios');
 let salesforceToken = null;
 const insertEndpoint = `${process.env.CRM_BASE_URL}/apexrest/RegistrationParticipant/`;
 const updateEndpoint = `${process.env.CRM_BASE_URL}/apexrest/UpdateBulkRegistrationParticipant/`;
@@ -159,16 +160,19 @@ async function fetchInvoiceFromSalesforce(registrationPaymentId) {
   }
 
   const fetchInvoice = async () => {
+    console.log('salesforceToken = ',salesforceToken);
+    console.log('JSON.stringify({ registrationPaymentId }) = ',JSON.stringify({ registrationPaymentId }));
     const res = await fetch(getInvoiceUrlEndpoint, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${salesforceToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ registrationPaymentId }),
+      body: JSON.stringify({ "registrationPaymentId": registrationPaymentId }),
     });
 
     const text = await res.text();
+    console.log('Salesforce raw response:', res.status, text);
     let parsed;
 
     try {
@@ -212,6 +216,9 @@ async function fetchInvoiceFromSalesforce(registrationPaymentId) {
 
   return result.data;
 }
+
+
+
 
 module.exports = {
   insertIntoSalesforce,
