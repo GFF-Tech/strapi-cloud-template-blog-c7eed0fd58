@@ -170,14 +170,15 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
 
       // 9. Send verification email
       const firstName = data.firstName;
+      const lastName = data.lastName;
       const email = data.officialEmailAddress;
       const passTypeForEmail = passType;
 
       await sendEmail({
         to: email,
-        subject: 'Thank You for Registering to GFF 2025!',
-        templateName: 'verification',
-        replacements: { passType: passTypeForEmail, firstName, confirmationId: fullDelegate.confirmationId },
+        subject: 'Your Delegate Registration is Confirmed - Welcome to GFF 2025!',
+        templateName: 'delegate-confirmation',
+        replacements: {  firstName, lastName },
       });
 
       const salesforcePayload = {
@@ -190,7 +191,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         participantFirstName: data.firstName,
         participantLastName: data.lastName,
         company: data.companyName || 'ABC',
-        sector: fullDelegate.sector.name || 'ABC',
+        sector: fullDelegate.sector?.name || 'ABC',
         vertical: '',
         level: '',
         GenderIdentity: 'Male',
@@ -273,8 +274,8 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         participantFirstName: data.firstName,
         participantLastName: data.lastName,
         company: companyName || 'ABC',
-        sector: existing.sector.name || 'ABC', // you may need to fetch this from sector relation
-        vertical: '',
+        sector: existing.sector?.name || 'ABC',
+       vertical: '',
         level: '',
         GenderIdentity: 'Male',
         title: 'Engineer',

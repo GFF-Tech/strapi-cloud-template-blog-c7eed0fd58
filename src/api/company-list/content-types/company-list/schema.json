@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "company_lists",
+  "info": {
+    "singularName": "company-list",
+    "pluralName": "company-lists",
+    "displayName": "companyList"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "companyName": {
+      "type": "string"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

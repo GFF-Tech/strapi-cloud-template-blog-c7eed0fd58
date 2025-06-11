@@ -66,6 +66,9 @@
       "type": "component",
       "repeatable": true,
       "component": "common.woo-order-details"
+    },
+    "pciFccMember": {
+      "type": "boolean"
     }
   }
 }
