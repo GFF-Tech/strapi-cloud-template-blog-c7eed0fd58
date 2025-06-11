@@ -441,6 +441,35 @@ export interface ApiBecomeASpeakerBecomeASpeaker
   };
 }
 
+export interface ApiCompanyListCompanyList extends Struct.CollectionTypeSchema {
+  collectionName: 'company_lists';
+  info: {
+    displayName: 'companyList';
+    pluralName: 'company-lists';
+    singularName: 'company-list';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    companyName: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::company-list.company-list'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiConfirmedSpeakerConfirmedSpeaker
   extends Struct.CollectionTypeSchema {
   collectionName: 'confirmed_speakers';
@@ -686,6 +715,7 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
     passBought: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     paymentMode: Schema.Attribute.String;
     paymentStatus: Schema.Attribute.String;
+    pciFccMember: Schema.Attribute.Boolean;
     publishedAt: Schema.Attribute.DateTime;
     sector: Schema.Attribute.Relation<'oneToOne', 'api::sector.sector'>;
     totalAmount: Schema.Attribute.Decimal;
@@ -1442,6 +1472,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::area-of-expertise.area-of-expertise': ApiAreaOfExpertiseAreaOfExpertise;
       'api::become-a-speaker.become-a-speaker': ApiBecomeASpeakerBecomeASpeaker;
+      'api::company-list.company-list': ApiCompanyListCompanyList;
       'api::confirmed-speaker.confirmed-speaker': ApiConfirmedSpeakerConfirmedSpeaker;
       'api::country.country': ApiCountryCountry;
       'api::delegate.delegate': ApiDelegateDelegate;
