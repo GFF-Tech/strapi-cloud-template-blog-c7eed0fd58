@@ -481,12 +481,14 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       const delegates = [];
       const passes = [];
       let updatedWooOrderDetails = [...updated.wooOrderDetails];
+      const orderSummaryItems = [];
 
       for (const order of incomingWooOrders) {
         if (order.wcOrderStatus === 'completed') {
           const wooOrder = await fetchWooOrder(order.wcOrderId);
 
           for (const item of wooOrder.line_items) {
+            orderSummaryItems.push(`${item.name} Pass - ${item.quantity}`);
             for (let i = 0; i < item.quantity; i++) {
               const newDelegate = await strapi.entityService.create('api::delegate.delegate', {
                 data: {
@@ -507,6 +509,9 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
               });
             }
           }
+
+          const orderSummary = orderSummaryItems.join(', ');
+          console.log('Order Summary:', orderSummary);
 
           const cognitoUser = await getCognitoUserBySub(existing.cognitoId);
           console.log('cognitoUser = ', cognitoUser);
@@ -597,14 +602,14 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
                 const invoiceNumber = invoiceDetails.invoiceNumber;
                 const amountPaid = invoiceDetails.amountPaid;
                 const paymentDate = invoiceDetails.paymentDate;
-                const passDetails = passes;
+                const passDetails = orderSummary;
                 const invoiceLink = invoiceDetails.invoiceLink;
 
                 await sendEmail({
                   to: email,
                   subject: 'Thank You for Your Payment for GFF 2025 Registration',
                   templateName: 'payment-invoice',
-                  replacements: { invoiceNumber, amountPaid, paymentDate, passDetails, invoiceLink },
+                  replacements: { firstName, lastName, invoiceNumber, amountPaid, paymentDate, passDetails, invoiceLink },
                 });
               }
 
