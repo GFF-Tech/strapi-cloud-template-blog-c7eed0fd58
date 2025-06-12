@@ -20,6 +20,7 @@
     "@yunusemrejs/drag-drop-content-types-strapi5": "^1.0.11",
     "axios": "^1.9.0",
     "better-sqlite3": "11.3.0",
+    "exceljs": "^4.4.0",
     "fs-extra": "^10.0.0",
     "mime-types": "^2.1.27",
     "nodemailer": "^7.0.3",

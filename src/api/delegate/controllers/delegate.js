@@ -73,10 +73,10 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       }
       for (const d of delegates) {
         const hasMissingFields =
-          !d.cognitoId ||
           !d.wcProductId ||
           !d.wcProductName ||
           typeof d.isFacilitator !== 'boolean';
+          (d.isFacilitator === false && !d.cognitoId);
 
         if (hasMissingFields) {
           delegateToUpdate = d;
@@ -181,33 +181,33 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         replacements: {  firstName, lastName },
       });
 
-      const salesforcePayload = {
-        upgrade: 'false',
-        passType: passType,
-        price: fullDelegate.price,
-        confirmationId: fullDelegate.confirmationId,
-        email: data.officialEmailAddress,
-        mobilePhone: `${fullDelegate.country.countryCode}${data.mobileNumber}`,
-        participantFirstName: data.firstName,
-        participantLastName: data.lastName,
-        company: data.companyName || 'ABC',
-        sector: fullDelegate.sector?.name || 'ABC',
-        vertical: '',
-        level: '',
-        GenderIdentity: 'Male',
-        title: 'Engineer',
-        linkdinProfile: `http://linkedin.com/in/${data.firstName}`,
-        twitterProfile: '',
-        instagramProfile: '',
-        personalEmail: ''
-      };
+      // const salesforcePayload = {
+      //   upgrade: 'false',
+      //   passType: passType,
+      //   price: fullDelegate.price,
+      //   confirmationId: fullDelegate.confirmationId,
+      //   email: data.officialEmailAddress,
+      //   mobilePhone: `${fullDelegate.country.countryCode}${data.mobileNumber}`,
+      //   participantFirstName: data.firstName,
+      //   participantLastName: data.lastName,
+      //   company: data.companyName || 'ABC',
+      //   sector: fullDelegate.sector?.name || 'ABC',
+      //   vertical: '',
+      //   level: '',
+      //   GenderIdentity: 'Male',
+      //   title: 'Engineer',
+      //   linkdinProfile: `http://linkedin.com/in/${data.firstName}`,
+      //   twitterProfile: '',
+      //   instagramProfile: '',
+      //   personalEmail: ''
+      // };
 
-      try {
-        await updateSalesforceParticipant(salesforcePayload);
-        strapi.log.info(`Salesforce updated for delegate ${fullDelegate.confirmationId}`);
-      } catch (error) {
-        strapi.log.error('Salesforce update failed:', error.message || error);
-      }
+      // try {
+      //   await updateSalesforceParticipant(salesforcePayload);
+      //   strapi.log.info(`Salesforce updated for delegate ${fullDelegate.confirmationId}`);
+      // } catch (error) {
+      //   strapi.log.error('Salesforce update failed:', error.message || error);
+      // }
 
       // 10. Return updated delegate with extra info
       return {
@@ -264,33 +264,33 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       const mobilePhone = cognitoUser?.phone_number || '';
       const companyName = cognitoUser?.companyName || '';
 
-      const salesforcePayload = {
-        upgrade: 'true',
-        passType: existing.passType,
-        price: existing.price,
-        confirmationId: existing.confirmationId,
-        email: email,
-        mobilePhone: `${existing.country.countryCode}${mobilePhone}`,
-        participantFirstName: data.firstName,
-        participantLastName: data.lastName,
-        company: companyName || 'ABC',
-        sector: existing.sector?.name || 'ABC',
-       vertical: '',
-        level: '',
-        GenderIdentity: 'Male',
-        title: 'Engineer',
-        linkdinProfile: `http://linkedin.com/in/${data.firstName}`,
-        twitterProfile: '',
-        instagramProfile: '',
-        personalEmail: ''
-      };
+      // const salesforcePayload = {
+      //   upgrade: 'true',
+      //   passType: existing.passType,
+      //   price: existing.price,
+      //   confirmationId: existing.confirmationId,
+      //   email: email,
+      //   mobilePhone: `${existing.country.countryCode}${mobilePhone}`,
+      //   participantFirstName: data.firstName,
+      //   participantLastName: data.lastName,
+      //   company: companyName || 'ABC',
+      //   sector: existing.sector?.name || 'ABC',
+      //  vertical: '',
+      //   level: '',
+      //   GenderIdentity: 'Male',
+      //   title: 'Engineer',
+      //   linkdinProfile: `http://linkedin.com/in/${data.firstName}`,
+      //   twitterProfile: '',
+      //   instagramProfile: '',
+      //   personalEmail: ''
+      // };
 
-      try {
-        await updateSalesforceParticipant(salesforcePayload);
-        strapi.log.info(`Salesforce updated for delegate ${existing.confirmationId}`);
-      } catch (error) {
-        strapi.log.error('Salesforce update failed:', error.message || error);
-      }
+      // try {
+      //   await updateSalesforceParticipant(salesforcePayload);
+      //   strapi.log.info(`Salesforce updated for delegate ${existing.confirmationId}`);
+      // } catch (error) {
+      //   strapi.log.error('Salesforce update failed:', error.message || error);
+      // }
 
       return { message: 'Delegate name updated in Cognito successfully' };
 
