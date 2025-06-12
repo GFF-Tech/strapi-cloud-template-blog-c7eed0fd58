@@ -42,6 +42,23 @@ export interface CommonLogoSection extends Struct.ComponentSchema {
   };
 }
 
+export interface CommonPartnerShowInPage extends Struct.ComponentSchema {
+  collectionName: 'components_common_partner_show_in_pages';
+  info: {
+    description: '';
+    displayName: 'partnerShowInPage';
+  };
+  attributes: {
+    pages: Schema.Attribute.Enumeration<
+      [
+        'Home Page Slider',
+        'Home Page GFF 2025 Partners Section',
+        'Investment Pitches at GFF 2025 LeftSide Below Content',
+      ]
+    >;
+  };
+}
+
 export interface CommonWooOrderDetails extends Struct.ComponentSchema {
   collectionName: 'components_common_woo_order_details';
   info: {
@@ -63,6 +80,7 @@ declare module '@strapi/strapi' {
       'common.gst-details': CommonGstDetails;
       'common.logo': CommonLogo;
       'common.logo-section': CommonLogoSection;
+      'common.partner-show-in-page': CommonPartnerShowInPage;
       'common.woo-order-details': CommonWooOrderDetails;
     }
   }
