@@ -792,6 +792,78 @@ export interface ApiNewsletterNewsletter extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
+  collectionName: 'partners';
+  info: {
+    description: '';
+    displayName: 'Partner';
+    pluralName: 'partners';
+    singularName: 'partner';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::partner.partner'
+    > &
+      Schema.Attribute.Private;
+    partnerDescription: Schema.Attribute.Blocks;
+    partnerID: Schema.Attribute.UID<'partnerName'>;
+    partnerLogo: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    > &
+      Schema.Attribute.Required;
+    partnerName: Schema.Attribute.String & Schema.Attribute.Required;
+    partnerPriority: Schema.Attribute.Integer;
+    partnerShowIn: Schema.Attribute.Component<
+      'common.partner-show-in-page',
+      true
+    >;
+    partnerSubType: Schema.Attribute.Enumeration<
+      [
+        'Co-Powered By',
+        'Technology Partner',
+        'Brought to you by',
+        'Associate Partners',
+        'Consent Partner',
+        'Payment Enabler',
+        'Registration Partner',
+        'Cloud Communications Partner',
+        'Speaker Lounge Partner',
+        'Banking Innovation Partner',
+        'Diamond Partners',
+        'Credit Insights Partner',
+        'Gourmet Partner',
+        'Platinum Partner',
+        'Charging Station Partner',
+        'Notepad Partner',
+        'Caffeine Partner',
+        'Gold Partners',
+        'Credit Innovation Partner',
+        'Spend Management Partner',
+        'Silver Partners',
+        'Mobile App Security Partner',
+        'Bronze Partners',
+      ]
+    >;
+    partnerType: Schema.Attribute.Enumeration<
+      ['Partners', 'Exhibitors', 'Supporters', 'Ecosystem', 'Organisers']
+    > &
+      Schema.Attribute.Required;
+    partnerURL: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiRegistrationFaqRegistrationFaq
   extends Struct.CollectionTypeSchema {
   collectionName: 'registration_faqs';
@@ -1481,6 +1553,7 @@ declare module '@strapi/strapi' {
       'api::facilitator.facilitator': ApiFacilitatorFacilitator;
       'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
+      'api::partner.partner': ApiPartnerPartner;
       'api::registration-faq.registration-faq': ApiRegistrationFaqRegistrationFaq;
       'api::salutation.salutation': ApiSalutationSalutation;
       'api::sector.sector': ApiSectorSector;
