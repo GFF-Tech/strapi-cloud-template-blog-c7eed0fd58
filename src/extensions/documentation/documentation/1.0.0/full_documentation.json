@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-06-13T07:30:39.913Z"
+    "x-generation-date": "2025-06-13T14:58:18.609Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -19149,7 +19149,14 @@
                 "example": "string or id"
               },
               "partner_hp_priority": {
-                "type": "integer"
+                "type": "number",
+                "format": "float"
+              },
+              "Partner_hp_web_url": {
+                "type": "string"
+              },
+              "Partner_hp_logo_alt_text": {
+                "type": "string"
               },
               "locale": {
                 "type": "string"
@@ -19824,7 +19831,14 @@
             }
           },
           "partner_hp_priority": {
-            "type": "integer"
+            "type": "number",
+            "format": "float"
+          },
+          "Partner_hp_web_url": {
+            "type": "string"
+          },
+          "Partner_hp_logo_alt_text": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -20010,7 +20024,14 @@
                   }
                 },
                 "partner_hp_priority": {
-                  "type": "integer"
+                  "type": "number",
+                  "format": "float"
+                },
+                "Partner_hp_web_url": {
+                  "type": "string"
+                },
+                "Partner_hp_logo_alt_text": {
+                  "type": "string"
                 },
                 "createdAt": {
                   "type": "string",
@@ -20109,7 +20130,8 @@
                 "example": "string or id"
               },
               "partner_ip_priority": {
-                "type": "integer"
+                "type": "number",
+                "format": "float"
               },
               "locale": {
                 "type": "string"
@@ -20784,7 +20806,8 @@
             }
           },
           "partner_ip_priority": {
-            "type": "integer"
+            "type": "number",
+            "format": "float"
           },
           "createdAt": {
             "type": "string",
@@ -20970,7 +20993,8 @@
                   }
                 },
                 "partner_ip_priority": {
-                  "type": "integer"
+                  "type": "number",
+                  "format": "float"
                 },
                 "createdAt": {
                   "type": "string",

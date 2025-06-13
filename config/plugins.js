@@ -1,14 +1,12 @@
 module.exports = () => ({
-   'drag-drop-content-types-strapi5': {
-    enabled: true,
-  },
   "strapi-csv-import-export": {
           config: {
             authorizedExports: [
               "api::become-a-speaker.become-a-speaker",
               "api::express-interest.express-interest",
               "api::early-stage-pitch.early-stage-pitch",
-              "api::newsletter.newsletter"
+              "api::newsletter.newsletter",
+              "api::confirmed-speaker.confirmed-speaker"
             ],
             // authorizedImports: ["api::become-a-speaker.become-a-speaker"]
   }

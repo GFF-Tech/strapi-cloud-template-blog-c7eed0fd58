@@ -4,7 +4,7 @@
   "info": {
     "singularName": "confirmed-speaker",
     "pluralName": "confirmed-speakers",
-    "displayName": "confirmedSpeaker",
+    "displayName": "Speaker Confirmation Form",
     "description": ""
   },
   "options": {

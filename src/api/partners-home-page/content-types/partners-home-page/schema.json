@@ -4,7 +4,8 @@
   "info": {
     "singularName": "partners-home-page",
     "pluralName": "partners-home-pages",
-    "displayName": "Partners Home Page"
+    "displayName": "Home Page Scroller Logos",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -18,17 +19,24 @@
       "required": true
     },
     "partner_hp_uploadlogo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "partner_hp_priority": {
-      "type": "integer"
+      "type": "decimal"
+    },
+    "Partner_hp_web_url": {
+      "type": "string"
+    },
+    "Partner_hp_logo_alt_text": {
+      "type": "string"
     }
   }
 }
