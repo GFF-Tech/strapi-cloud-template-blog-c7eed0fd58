@@ -1,7 +1,4 @@
 module.exports = () => ({
-   'drag-drop-content-types-strapi5': {
-    enabled: true,
-  },
   "strapi-csv-import-export": {
           config: {
             authorizedExports: [
