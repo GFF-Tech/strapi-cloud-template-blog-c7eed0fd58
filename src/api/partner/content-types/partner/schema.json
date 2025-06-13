@@ -26,9 +26,6 @@
         "audios"
       ]
     },
-    "partnerURL": {
-      "type": "string"
-    },
     "partnerType": {
       "type": "enumeration",
       "enum": [
@@ -42,9 +39,6 @@
     },
     "partnerPriority": {
       "type": "integer"
-    },
-    "partnerDescription": {
-      "type": "blocks"
     },
     "partnerSubType": {
       "type": "enumeration",
@@ -77,11 +71,6 @@
     "partnerID": {
       "type": "uid",
       "targetField": "partnerName"
-    },
-    "partnerShowIn": {
-      "type": "component",
-      "repeatable": true,
-      "component": "common.partner-show-in-page"
     }
   }
 }

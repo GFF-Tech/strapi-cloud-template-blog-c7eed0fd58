@@ -813,7 +813,6 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
       'api::partner.partner'
     > &
       Schema.Attribute.Private;
-    partnerDescription: Schema.Attribute.Blocks;
     partnerID: Schema.Attribute.UID<'partnerName'>;
     partnerLogo: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
@@ -821,10 +820,6 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
       Schema.Attribute.Required;
     partnerName: Schema.Attribute.String & Schema.Attribute.Required;
     partnerPriority: Schema.Attribute.Integer;
-    partnerShowIn: Schema.Attribute.Component<
-      'common.partner-show-in-page',
-      true
-    >;
     partnerSubType: Schema.Attribute.Enumeration<
       [
         'Co-Powered By',
@@ -856,7 +851,75 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
       ['Partners', 'Exhibitors', 'Supporters', 'Ecosystem', 'Organisers']
     > &
       Schema.Attribute.Required;
-    partnerURL: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPartnersHomePagePartnersHomePage
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'partners_home_pages';
+  info: {
+    displayName: 'Partners Home Page';
+    pluralName: 'partners-home-pages';
+    singularName: 'partners-home-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::partners-home-page.partners-home-page'
+    > &
+      Schema.Attribute.Private;
+    partner_hp_id: Schema.Attribute.UID;
+    partner_hp_name: Schema.Attribute.String & Schema.Attribute.Required;
+    partner_hp_priority: Schema.Attribute.Integer;
+    partner_hp_uploadlogo: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'partners_investment_pitches_pages';
+  info: {
+    displayName: 'Partners Investment Pitches Page';
+    pluralName: 'partners-investment-pitches-pages';
+    singularName: 'partners-investment-pitches-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::partners-investment-pitches-page.partners-investment-pitches-page'
+    > &
+      Schema.Attribute.Private;
+    partner_ip_id: Schema.Attribute.UID;
+    partner_ip_name: Schema.Attribute.String;
+    partner_ip_priority: Schema.Attribute.Integer;
+    partner_ip_uploadlogo: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    > &
+      Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1554,6 +1617,8 @@ declare module '@strapi/strapi' {
       'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::partner.partner': ApiPartnerPartner;
+      'api::partners-home-page.partners-home-page': ApiPartnersHomePagePartnersHomePage;
+      'api::partners-investment-pitches-page.partners-investment-pitches-page': ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage;
       'api::registration-faq.registration-faq': ApiRegistrationFaqRegistrationFaq;
       'api::salutation.salutation': ApiSalutationSalutation;
       'api::sector.sector': ApiSectorSector;
