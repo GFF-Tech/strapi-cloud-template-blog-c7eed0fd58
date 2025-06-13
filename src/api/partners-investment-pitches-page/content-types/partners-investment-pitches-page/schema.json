@@ -4,7 +4,8 @@
   "info": {
     "singularName": "partners-investment-pitches-page",
     "pluralName": "partners-investment-pitches-pages",
-    "displayName": "Partners Investment Pitches Page"
+    "displayName": "Partners Investment Pitches Page",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -17,18 +18,18 @@
       "type": "string"
     },
     "partner_ip_uploadlogo": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false,
-      "required": true
+      ]
     },
     "partner_ip_priority": {
-      "type": "integer"
+      "type": "decimal"
     }
   }
 }

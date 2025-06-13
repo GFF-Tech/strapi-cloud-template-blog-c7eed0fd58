@@ -862,7 +862,8 @@ export interface ApiPartnersHomePagePartnersHomePage
   extends Struct.CollectionTypeSchema {
   collectionName: 'partners_home_pages';
   info: {
-    displayName: 'Partners Home Page';
+    description: '';
+    displayName: 'Home Page Scroller Logos';
     pluralName: 'partners-home-pages';
     singularName: 'partners-home-page';
   };
@@ -880,11 +881,13 @@ export interface ApiPartnersHomePagePartnersHomePage
     > &
       Schema.Attribute.Private;
     partner_hp_id: Schema.Attribute.UID;
+    Partner_hp_logo_alt_text: Schema.Attribute.String;
     partner_hp_name: Schema.Attribute.String & Schema.Attribute.Required;
-    partner_hp_priority: Schema.Attribute.Integer;
+    partner_hp_priority: Schema.Attribute.Decimal;
     partner_hp_uploadlogo: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
+    Partner_hp_web_url: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -896,6 +899,7 @@ export interface ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage
   extends Struct.CollectionTypeSchema {
   collectionName: 'partners_investment_pitches_pages';
   info: {
+    description: '';
     displayName: 'Partners Investment Pitches Page';
     pluralName: 'partners-investment-pitches-pages';
     singularName: 'partners-investment-pitches-page';
@@ -915,7 +919,7 @@ export interface ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage
       Schema.Attribute.Private;
     partner_ip_id: Schema.Attribute.UID;
     partner_ip_name: Schema.Attribute.String;
-    partner_ip_priority: Schema.Attribute.Integer;
+    partner_ip_priority: Schema.Attribute.Decimal;
     partner_ip_uploadlogo: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     > &
