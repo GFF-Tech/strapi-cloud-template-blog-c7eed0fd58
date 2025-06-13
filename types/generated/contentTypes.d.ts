@@ -405,7 +405,7 @@ export interface ApiBecomeASpeakerBecomeASpeaker
   collectionName: 'become_a_speakers';
   info: {
     description: '';
-    displayName: 'BecomeASpeaker';
+    displayName: 'Speaker Interest Form';
     pluralName: 'become-a-speakers';
     singularName: 'become-a-speaker';
   };
@@ -475,7 +475,7 @@ export interface ApiConfirmedSpeakerConfirmedSpeaker
   collectionName: 'confirmed_speakers';
   info: {
     description: '';
-    displayName: 'confirmedSpeaker';
+    displayName: 'Speaker Confirmation Form';
     pluralName: 'confirmed-speakers';
     singularName: 'confirmed-speaker';
   };
@@ -607,7 +607,7 @@ export interface ApiEarlyStagePitchEarlyStagePitch
   collectionName: 'early_stage_pitches';
   info: {
     description: '';
-    displayName: 'EarlyStagePitch';
+    displayName: 'Investment Pitches Form';
     pluralName: 'early-stage-pitches';
     singularName: 'early-stage-pitch';
   };
@@ -646,7 +646,7 @@ export interface ApiExpressInterestExpressInterest
   collectionName: 'express_interests';
   info: {
     description: '';
-    displayName: 'ExpressInterest';
+    displayName: 'Express Interest Form';
     pluralName: 'express-interests';
     singularName: 'express-interest';
   };
@@ -766,7 +766,7 @@ export interface ApiNewsletterNewsletter extends Struct.CollectionTypeSchema {
   collectionName: 'newsletters';
   info: {
     description: '';
-    displayName: 'Newsletter';
+    displayName: 'Newsletter Subscription';
     pluralName: 'newsletters';
     singularName: 'newsletter';
   };
