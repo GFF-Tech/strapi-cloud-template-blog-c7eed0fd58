@@ -441,6 +441,35 @@ export interface ApiBecomeASpeakerBecomeASpeaker
   };
 }
 
+export interface ApiCompanyListCompanyList extends Struct.CollectionTypeSchema {
+  collectionName: 'company_lists';
+  info: {
+    displayName: 'companyList';
+    pluralName: 'company-lists';
+    singularName: 'company-list';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    companyName: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::company-list.company-list'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiConfirmedSpeakerConfirmedSpeaker
   extends Struct.CollectionTypeSchema {
   collectionName: 'confirmed_speakers';
@@ -455,7 +484,7 @@ export interface ApiConfirmedSpeakerConfirmedSpeaker
   };
   attributes: {
     aboutSpeaker: Schema.Attribute.Text;
-    additionalMessage: Schema.Attribute.String;
+    additionalMessage: Schema.Attribute.Text;
     biodata: Schema.Attribute.Media<'files'>;
     brandName: Schema.Attribute.String;
     buisnessEmailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
@@ -686,6 +715,7 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
     passBought: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     paymentMode: Schema.Attribute.String;
     paymentStatus: Schema.Attribute.String;
+    pciFccMember: Schema.Attribute.Boolean;
     publishedAt: Schema.Attribute.DateTime;
     sector: Schema.Attribute.Relation<'oneToOne', 'api::sector.sector'>;
     totalAmount: Schema.Attribute.Decimal;
@@ -698,6 +728,37 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
       'common.woo-order-details',
       true
     >;
+  };
+}
+
+export interface ApiMicroSiteHomePageMicroSiteHomePage
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'micro_site_home_pages';
+  info: {
+    description: '';
+    displayName: 'microSiteHomePage';
+    pluralName: 'micro-site-home-pages';
+    singularName: 'micro-site-home-page';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::micro-site-home-page.micro-site-home-page'
+    > &
+      Schema.Attribute.Private;
+    logoSection: Schema.Attribute.Component<'common.logo-section', true>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -724,6 +785,141 @@ export interface ApiNewsletterNewsletter extends Struct.CollectionTypeSchema {
       'api::newsletter.newsletter'
     > &
       Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
+  collectionName: 'partners';
+  info: {
+    description: '';
+    displayName: 'Partner';
+    pluralName: 'partners';
+    singularName: 'partner';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::partner.partner'
+    > &
+      Schema.Attribute.Private;
+    partnerID: Schema.Attribute.UID<'partnerName'>;
+    partnerLogo: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    > &
+      Schema.Attribute.Required;
+    partnerName: Schema.Attribute.String & Schema.Attribute.Required;
+    partnerPriority: Schema.Attribute.Integer;
+    partnerSubType: Schema.Attribute.Enumeration<
+      [
+        'Co-Powered By',
+        'Technology Partner',
+        'Brought to you by',
+        'Associate Partners',
+        'Consent Partner',
+        'Payment Enabler',
+        'Registration Partner',
+        'Cloud Communications Partner',
+        'Speaker Lounge Partner',
+        'Banking Innovation Partner',
+        'Diamond Partners',
+        'Credit Insights Partner',
+        'Gourmet Partner',
+        'Platinum Partner',
+        'Charging Station Partner',
+        'Notepad Partner',
+        'Caffeine Partner',
+        'Gold Partners',
+        'Credit Innovation Partner',
+        'Spend Management Partner',
+        'Silver Partners',
+        'Mobile App Security Partner',
+        'Bronze Partners',
+      ]
+    >;
+    partnerType: Schema.Attribute.Enumeration<
+      ['Partners', 'Exhibitors', 'Supporters', 'Ecosystem', 'Organisers']
+    > &
+      Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPartnersHomePagePartnersHomePage
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'partners_home_pages';
+  info: {
+    displayName: 'Partners Home Page';
+    pluralName: 'partners-home-pages';
+    singularName: 'partners-home-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::partners-home-page.partners-home-page'
+    > &
+      Schema.Attribute.Private;
+    partner_hp_id: Schema.Attribute.UID;
+    partner_hp_name: Schema.Attribute.String & Schema.Attribute.Required;
+    partner_hp_priority: Schema.Attribute.Integer;
+    partner_hp_uploadlogo: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'partners_investment_pitches_pages';
+  info: {
+    displayName: 'Partners Investment Pitches Page';
+    pluralName: 'partners-investment-pitches-pages';
+    singularName: 'partners-investment-pitches-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::partners-investment-pitches-page.partners-investment-pitches-page'
+    > &
+      Schema.Attribute.Private;
+    partner_ip_id: Schema.Attribute.UID;
+    partner_ip_name: Schema.Attribute.String;
+    partner_ip_priority: Schema.Attribute.Integer;
+    partner_ip_uploadlogo: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    > &
+      Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -854,6 +1050,46 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     salutation: Schema.Attribute.Enumeration<['Shri', 'Mr', 'Mrs', 'Dr']>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiSpeaker2024Speaker2024 extends Struct.CollectionTypeSchema {
+  collectionName: 'speakers2024';
+  info: {
+    description: '';
+    displayName: 'speaker2024';
+    pluralName: 'speakers2024';
+    singularName: 'speaker2024';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    biodata: Schema.Attribute.Text;
+    companyName: Schema.Attribute.String;
+    country: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    designation: Schema.Attribute.String;
+    fullName: Schema.Attribute.String;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    linkedinUrl: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::speaker2024.speaker2024'
+    > &
+      Schema.Attribute.Private;
+    profilePhoto: Schema.Attribute.Media<'images'>;
+    publishedAt: Schema.Attribute.DateTime;
+    rank: Schema.Attribute.Integer;
+    salutation: Schema.Attribute.Enumeration<
+      ['Mr.', 'Ms.', 'Mrs.', 'Dr.', 'Prof.', 'Shri', 'Smt.']
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1371,17 +1607,23 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::area-of-expertise.area-of-expertise': ApiAreaOfExpertiseAreaOfExpertise;
       'api::become-a-speaker.become-a-speaker': ApiBecomeASpeakerBecomeASpeaker;
+      'api::company-list.company-list': ApiCompanyListCompanyList;
       'api::confirmed-speaker.confirmed-speaker': ApiConfirmedSpeakerConfirmedSpeaker;
       'api::country.country': ApiCountryCountry;
       'api::delegate.delegate': ApiDelegateDelegate;
       'api::early-stage-pitch.early-stage-pitch': ApiEarlyStagePitchEarlyStagePitch;
       'api::express-interest.express-interest': ApiExpressInterestExpressInterest;
       'api::facilitator.facilitator': ApiFacilitatorFacilitator;
+      'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
+      'api::partner.partner': ApiPartnerPartner;
+      'api::partners-home-page.partners-home-page': ApiPartnersHomePagePartnersHomePage;
+      'api::partners-investment-pitches-page.partners-investment-pitches-page': ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage;
       'api::registration-faq.registration-faq': ApiRegistrationFaqRegistrationFaq;
       'api::salutation.salutation': ApiSalutationSalutation;
       'api::sector.sector': ApiSectorSector;
       'api::speaker.speaker': ApiSpeakerSpeaker;
+      'api::speaker2024.speaker2024': ApiSpeaker2024Speaker2024;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "partners_home_pages",
+  "info": {
+    "singularName": "partners-home-page",
+    "pluralName": "partners-home-pages",
+    "displayName": "Partners Home Page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "partner_hp_id": {
+      "type": "uid"
+    },
+    "partner_hp_name": {
+      "type": "string",
+      "required": true
+    },
+    "partner_hp_uploadlogo": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "partner_hp_priority": {
+      "type": "integer"
+    }
+  }
+}

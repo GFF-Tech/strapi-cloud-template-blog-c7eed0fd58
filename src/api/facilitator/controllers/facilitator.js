@@ -5,7 +5,8 @@ const { createCoreController } = require('@strapi/strapi').factories;
 const axios = require('axios');
 const crypto = require('crypto');
 // @ts-ignore
-const { insertIntoSalesforce } = require('../../../utils/salesforce');
+const { insertIntoSalesforce, fetchInvoiceFromSalesforce } = require('../../../utils/salesforce');
+const sendEmail = require('../../../utils/email');
 
 const {
   // @ts-ignore
@@ -304,6 +305,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         data: {
           country: data.country,
           sector: data.sector || null,
+          pciFccMember: data.pciFccMember,
           cognitoId,
         },
       });
@@ -430,150 +432,206 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
     }
   },
 
- async update(ctx) {
-  const { id } = ctx.params;
-  const { data } = ctx.request.body;
+  async update(ctx) {
+    const { id } = ctx.params;
+    const { data } = ctx.request.body;
 
-  if (!id || typeof id !== 'string') {
-    return ctx.badRequest('Invalid ID');
-  }
-
-  try {
-    const existing = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
-      populate: ['wooOrderDetails'],
-    });
-
-    if (!existing) {
-      return ctx.notFound('Facilitator not found');
+    if (!id || typeof id !== 'string') {
+      return ctx.badRequest('Invalid ID');
     }
 
-    const existingWooOrders = existing.wooOrderDetails || [];
-    const addParticpant =
-      existingWooOrders.length > 0 &&
-      existingWooOrders.some(order => order.wcOrderStatus === 'completed')
-        ? 'true'
-        : 'false';
+    try {
+      const existing = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
+        populate: ['wooOrderDetails'],
+      });
 
-    const incomingWooOrders = data.wooOrderDetails || [];
-    const mergedWooOrders = [...existingWooOrders, ...incomingWooOrders];
+      if (!existing) {
+        return ctx.notFound('Facilitator not found');
+      }
 
-    const { wooOrderDetails, ...restData } = data;
+      const existingWooOrders = existing.wooOrderDetails || [];
+      const addParticpant =
+        existingWooOrders.length > 0 &&
+          existingWooOrders.some(order => order.wcOrderStatus === 'completed')
+          ? 'true'
+          : 'false';
 
-    await strapi.entityService.update('api::facilitator.facilitator', id, {
-      data: {
-        ...restData,
-        gstDetails: data.gstDetails ?? null,
-        wooOrderDetails: mergedWooOrders,
-      },
-    });
+      const incomingWooOrders = data.wooOrderDetails || [];
+      const mergedWooOrders = [...existingWooOrders, ...incomingWooOrders];
 
-    const updated = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
-      populate: {
-        gstDetails: true,
-        country: { fields: ['country', 'countryCode'] },
-        sector: { fields: ['name'] },
-        wooOrderDetails: true,
-      },
-    });
+      const { wooOrderDetails, ...restData } = data;
 
-    const delegates = [];
-    const passes = [];
-    let updatedWooOrderDetails = [...updated.wooOrderDetails];
+      await strapi.entityService.update('api::facilitator.facilitator', id, {
+        data: {
+          ...restData,
+          gstDetails: data.gstDetails ?? null,
+          wooOrderDetails: mergedWooOrders,
+        },
+      });
 
-    for (const order of incomingWooOrders) {
-      if (order.wcOrderStatus === 'completed') {
-        const wooOrder = await fetchWooOrder(order.wcOrderId);
+      const updated = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
+        populate: {
+          gstDetails: true,
+          country: { fields: ['country', 'countryCode'] },
+          sector: { fields: ['name'] },
+          wooOrderDetails: true,
+        },
+      });
 
-        for (const item of wooOrder.line_items) {
-          for (let i = 0; i < item.quantity; i++) {
-            const newDelegate = await strapi.entityService.create('api::delegate.delegate', {
-              data: {
-                facilitatorId: existing.id,
+      const delegates = [];
+      const passes = [];
+      let updatedWooOrderDetails = [...updated.wooOrderDetails];
+      const orderSummaryItems = [];
+
+      for (const order of incomingWooOrders) {
+        if (order.wcOrderStatus === 'completed') {
+          const wooOrder = await fetchWooOrder(order.wcOrderId);
+
+          for (const item of wooOrder.line_items) {
+            orderSummaryItems.push(`${item.name} Pass - ${item.quantity}`);
+            for (let i = 0; i < item.quantity; i++) {
+              const newDelegate = await strapi.entityService.create('api::delegate.delegate', {
+                data: {
+                  facilitatorId: existing.id,
+                  passType: item.name,
+                  passPrice: item.price,
+                },
+              });
+              const confirmationId = `GFF25${String(newDelegate.id).padStart(6, '0')}`;
+              const updatedDelegate = await strapi.entityService.update('api::delegate.delegate', newDelegate.id, {
+                data: { confirmationId },
+              });
+              delegates.push(updatedDelegate);
+              passes.push({
+                confirmationId: updatedDelegate.confirmationId,
                 passType: item.name,
-                passPrice: item.price,
-              },
-            });
-            const confirmationId = `GFF25${String(newDelegate.id).padStart(6, '0')}`;
-            const updatedDelegate = await strapi.entityService.update('api::delegate.delegate', newDelegate.id, {
-              data: { confirmationId },
-            });
-            delegates.push(updatedDelegate);
-            passes.push({
-              confirmationId: updatedDelegate.confirmationId,
-              passType: item.name,
-              price: item.price.toString(),
-            });
+                price: item.price.toString(),
+              });
+            }
           }
-        }
 
-        const cognitoUser = await getCognitoUserBySub(existing.cognitoId);
-        const firstName = cognitoUser?.firstName || '';
-        const lastName = cognitoUser?.lastName || '';
-        const email = cognitoUser?.email || '';
-        const mobilePhone = cognitoUser?.phone_number || '';
-        const companyName = cognitoUser?.companyName || '';
+          const orderSummary = orderSummaryItems.join(', ');
+          console.log('Order Summary:', orderSummary);
 
-        const payload = {
-          invoice: 'true',
-          promoCode: (wooOrder.meta_data.find(m => m.key === 'appliedCouponCode') || {}).value || '',
-          addParticpant: addParticpant,
-          eventId: process.env.CRM_EVENT_ID,
-          currencyType: wooOrder.currency,
-          amount: (wooOrder.meta_data.find(m => m.key === 'taxableAmount') || {}).value?.toString() || '',
-          cgst: (wooOrder.meta_data.find(m => m.key === 'cgst') || {}).value || '',
-          sgst: (wooOrder.meta_data.find(m => m.key === 'sgst') || {}).value || '',
-          email,
-          mobilePhone,
-          pocFirstName: firstName,
-          pocLastName: lastName,
-          company: companyName || 'ABC',
-          sector: updated?.sector?.name || 'ABC',
-          linkdinProfile: '',
-          passes,
-          gstInfo: {
-            companyAddress: updated?.gstDetails?.companyAddress || '',
-            billingFirstName: firstName,
-            billingLastName: lastName,
-            gstNumber: updated?.gstDetails?.companyGstNo || '',
-            pincode: updated?.gstDetails?.pincode || '',
-          },
-        };
+          const cognitoUser = await getCognitoUserBySub(existing.cognitoId);
+          console.log('cognitoUser = ', cognitoUser);
+          const firstName = cognitoUser?.firstName || '';
+          const lastName = cognitoUser?.lastName || '';
+          const email = cognitoUser?.email || '';
+          const mobilePhone = cognitoUser?.phone_number || '';
+          const companyName = cognitoUser?.companyName || '';
+          const isGstPresent = !!updated?.gstDetails?.companyGstNo;
+         
 
-        console.log('payload = ', payload);
+          // const payload = {
+          //   invoice: 'true',
+          //   promoCode: (wooOrder.meta_data.find(m => m.key === 'appliedCouponCode') || {}).value || '',
+          //   addParticpant: addParticpant,
+          //   eventId: process.env.CRM_EVENT_ID,
+          //   currencyType: wooOrder.currency,
+          //   amount: (wooOrder.meta_data.find(m => m.key === 'taxableAmount') || {}).value?.toString() || '',
+          //   cgst: (wooOrder.meta_data.find(m => m.key === 'cgst') || {}).value || '',
+          //   sgst: (wooOrder.meta_data.find(m => m.key === 'sgst') || {}).value || '',
+          //   email,
+          //   mobilePhone,
+          //   pocFirstName: firstName,
+          //   pocLastName: lastName,
+          //   company: companyName,
+          //   sector: updated?.sector?.name || 'ABC',
+          //   linkdinProfile: '',
+          //   passes,
+          //   gstInfo: {
+          //     companyAddress: updated?.gstDetails?.companyAddress || '',
+          //     billingFirstName: isGstPresent ? firstName : '',
+          //     billingLastName: isGstPresent ? lastName : '',
+          //     gstNumber: updated?.gstDetails?.companyGstNo || '',
+          //     pincode: updated?.gstDetails?.pincode || '',
+          //   },
+          // };
 
-        try {
-          const result = await insertIntoSalesforce(payload);
-          console.log('result = ',result);
-          strapi.log.info('Salesforce insert success:', result.data);
+          // console.log('payload = ', payload);
 
-          if (result?.registrationPaymentId) {
-            updatedWooOrderDetails = updatedWooOrderDetails.map(o => {
-              if (o.wcOrderId === order.wcOrderId) {
-                return { ...o, crmRegistrationPaymentId: result.registrationPaymentId };
-              }
-              return o;
-            });
+          // try {
+          //   const result = await insertIntoSalesforce(payload);
+          //   console.log('result = ', result);
+          //   strapi.log.info('Salesforce insert success:', result.data);
 
-            await strapi.entityService.update('api::facilitator.facilitator', id, {
-              data: { wooOrderDetails: updatedWooOrderDetails },
-            });
-          }
-        } catch (err) {
-          strapi.log.error('Salesforce insert failed:', {
-            message: err?.message || 'No error message',
-            stack: err?.stack || 'No stack trace',
-            full: err,
-          });
+          //   if (result?.registrationPaymentId) {
+          //     updatedWooOrderDetails = updatedWooOrderDetails.map(o => {
+          //       if (o.wcOrderId === order.wcOrderId) {
+          //         return { ...o, crmRegistrationPaymentId: result.registrationPaymentId };
+          //       }
+          //       return o;
+          //     });
+
+          //     await strapi.entityService.update('api::facilitator.facilitator', id, {
+          //       data: { wooOrderDetails: updatedWooOrderDetails },
+          //     });
+
+          //     let invoiceDetails = null;
+
+          //     try {
+          //       const invoiceResponse = await fetchInvoiceFromSalesforce(result.registrationPaymentId); // You’ll create this function
+          //       console.log('invoiceResponse', invoiceResponse);
+          //       const rawDate = invoiceResponse?.['Invoice Date'];
+          //       let paymentDate = '';
+
+          //       if (rawDate) {
+          //         const dateObj = new Date(rawDate);
+          //         const day = String(dateObj.getDate()).padStart(2, '0');
+          //         const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // month is 0-based
+          //         const year = dateObj.getFullYear();
+          //         paymentDate = `${day}/${month}/${year}`;
+          //       }
+          //       invoiceDetails = {
+          //         invoiceNumber: invoiceResponse?.Name || '',
+          //         paymentDate: paymentDate,
+          //         amountPaid: invoiceResponse?.Amount_Paid || '',
+          //         invoiceLink: invoiceResponse?.Content_Document_URL__c || '',
+          //       };
+
+          //       strapi.log.info('Invoice details fetched:', invoiceDetails);
+          //     } catch (invoiceError) {
+          //       strapi.log.error('Failed to fetch invoice details:', {
+          //         message: invoiceError.message,
+          //         stack: invoiceError.stack,
+          //       });
+          //     }
+
+          //     if (invoiceDetails) {
+          //       const invoiceNumber = invoiceDetails.invoiceNumber;
+          //       const amountPaid = invoiceDetails.amountPaid;
+          //       const paymentDate = invoiceDetails.paymentDate;
+          //       const passDetails = orderSummary;
+          //       const invoiceLink = invoiceDetails.invoiceLink;
+
+          //       await sendEmail({
+          //         to: email,
+          //         subject: 'Thank You for Your Payment for GFF 2025 Registration',
+          //         templateName: 'payment-invoice',
+          //         replacements: { firstName, lastName, invoiceNumber, amountPaid, paymentDate, passDetails, invoiceLink },
+          //       });
+          //     }
+
+          //   }
+          // } catch (err) {
+          //   strapi.log.error('Salesforce insert failed:', {
+          //     message: err?.message || 'No error message',
+          //     stack: err?.stack || 'No stack trace',
+          //     full: err,
+          //   });
+          // }
+
+
         }
       }
-    }
 
-    return updated;
-  } catch (error) {
-    console.error('Update error:', error);
-    return ctx.internalServerError('An error occurred while updating the facilitator');
-  }
-},
+      return updated;
+    } catch (error) {
+      console.error('Update error:', error);
+      return ctx.internalServerError('An error occurred while updating the facilitator');
+    }
+  },
 
   async delete(ctx) {
     const { id } = ctx.params;

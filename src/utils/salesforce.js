@@ -1,6 +1,8 @@
+const axios = require('axios');
 let salesforceToken = null;
 const insertEndpoint = `${process.env.CRM_BASE_URL}/apexrest/RegistrationParticipant/`;
 const updateEndpoint = `${process.env.CRM_BASE_URL}/apexrest/UpdateBulkRegistrationParticipant/`;
+const getInvoiceUrlEndpoint = `${process.env.CRM_BASE_URL}/apexrest/getInvoiceUrl`;
 
 async function getSalesforceToken() {
   try {
@@ -152,8 +154,75 @@ async function updateSalesforceParticipant(delegatePayload) {
   return result.data;
 }
 
+async function fetchInvoiceFromSalesforce(registrationPaymentId) {
+  if (!salesforceToken) {
+    await getSalesforceToken();
+  }
+
+  const fetchInvoice = async () => {
+    console.log('salesforceToken = ',salesforceToken);
+    console.log('JSON.stringify({ registrationPaymentId }) = ',JSON.stringify({ registrationPaymentId }));
+    const res = await fetch(getInvoiceUrlEndpoint, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${salesforceToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ "registrationPaymentId": registrationPaymentId }),
+    });
+
+    const text = await res.text();
+    console.log('Salesforce raw response:', res.status, text);
+    let parsed;
+
+    try {
+      parsed = JSON.parse(text);
+    } catch (e) {
+      parsed = text;
+    }
+
+    const bodyText = typeof parsed === 'string' ? parsed : JSON.stringify(parsed);
+    const isTokenExpired =
+      res.status === 401 ||
+      res.status === 403 ||
+      bodyText.includes('INVALID_SESSION_ID') ||
+      (bodyText.toLowerCase().includes('session') && bodyText.toLowerCase().includes('expired'));
+
+    if (isTokenExpired) {
+      return { retry: true };
+    }
+
+    if (!res.ok) {
+      console.error('Salesforce Invoice Fetch Error:', parsed);
+      throw new Error('Salesforce invoice fetch failed');
+    }
+
+    return { retry: false, data: parsed };
+  };
+
+  // First attempt
+  let result = await fetchInvoice();
+
+  // Retry if session expired
+  if (result.retry) {
+    console.warn('Salesforce session expired during invoice fetch, retrying...');
+    await getSalesforceToken();
+    result = await fetchInvoice();
+
+    if (result.retry) {
+      throw new Error('Salesforce invoice fetch failed after token refresh');
+    }
+  }
+
+  return result.data;
+}
+
+
+
+
 module.exports = {
   insertIntoSalesforce,
   getSalesforceToken, // optional if you also want to use it elsewhere
   updateSalesforceParticipant,
+  fetchInvoiceFromSalesforce,
 };

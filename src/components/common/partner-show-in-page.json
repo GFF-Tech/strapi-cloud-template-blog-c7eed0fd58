@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_common_partner_show_in_pages",
+  "info": {
+    "displayName": "partnerShowInPage",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "pages": {
+      "type": "enumeration",
+      "enum": [
+        "Home Page Slider",
+        "Home Page GFF 2025 Partners Section",
+        "Investment Pitches at GFF 2025 LeftSide Below Content"
+      ]
+    }
+  }
+}

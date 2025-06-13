@@ -1,0 +1,76 @@
+{
+  "kind": "collectionType",
+  "collectionName": "partners",
+  "info": {
+    "singularName": "partner",
+    "pluralName": "partners",
+    "displayName": "Partner",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "partnerName": {
+      "type": "string",
+      "required": true
+    },
+    "partnerLogo": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "partnerType": {
+      "type": "enumeration",
+      "enum": [
+        "Partners",
+        "Exhibitors",
+        "Supporters",
+        "Ecosystem",
+        "Organisers"
+      ],
+      "required": true
+    },
+    "partnerPriority": {
+      "type": "integer"
+    },
+    "partnerSubType": {
+      "type": "enumeration",
+      "enum": [
+        "Co-Powered By",
+        "Technology Partner",
+        "Brought to you by",
+        "Associate Partners",
+        "Consent Partner",
+        "Payment Enabler",
+        "Registration Partner",
+        "Cloud Communications Partner",
+        "Speaker Lounge Partner",
+        "Banking Innovation Partner",
+        "Diamond Partners",
+        "Credit Insights Partner",
+        "Gourmet Partner",
+        "Platinum Partner",
+        "Charging Station Partner",
+        "Notepad Partner",
+        "Caffeine Partner",
+        "Gold Partners",
+        "Credit Innovation Partner",
+        "Spend Management Partner",
+        "Silver Partners",
+        "Mobile App Security Partner",
+        "Bronze Partners"
+      ]
+    },
+    "partnerID": {
+      "type": "uid",
+      "targetField": "partnerName"
+    }
+  }
+}

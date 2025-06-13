@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "micro_site_home_pages",
+  "info": {
+    "singularName": "micro-site-home-page",
+    "pluralName": "micro-site-home-pages",
+    "displayName": "microSiteHomePage",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "logoSection": {
+      "type": "component",
+      "repeatable": true,
+      "component": "common.logo-section"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}
