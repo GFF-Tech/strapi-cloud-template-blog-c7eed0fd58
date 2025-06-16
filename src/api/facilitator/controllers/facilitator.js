@@ -523,104 +523,104 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           const isGstPresent = !!updated?.gstDetails?.companyGstNo;
          
 
-          // const payload = {
-          //   invoice: 'true',
-          //   promoCode: (wooOrder.meta_data.find(m => m.key === 'appliedCouponCode') || {}).value || '',
-          //   addParticpant: addParticpant,
-          //   eventId: process.env.CRM_EVENT_ID,
-          //   currencyType: wooOrder.currency,
-          //   amount: (wooOrder.meta_data.find(m => m.key === 'taxableAmount') || {}).value?.toString() || '',
-          //   cgst: (wooOrder.meta_data.find(m => m.key === 'cgst') || {}).value || '',
-          //   sgst: (wooOrder.meta_data.find(m => m.key === 'sgst') || {}).value || '',
-          //   email,
-          //   mobilePhone,
-          //   pocFirstName: firstName,
-          //   pocLastName: lastName,
-          //   company: companyName || 'ABC',
-          //   sector: updated?.sector?.name || 'ABC',
-          //   linkdinProfile: '',
-          //   passes,
-          //   gstInfo: {
-          //     companyAddress: updated?.gstDetails?.companyAddress || '',
-          //     billingFirstName: isGstPresent ? firstName : '',
-          //     billingLastName: isGstPresent ? lastName : '',
-          //     gstNumber: updated?.gstDetails?.companyGstNo || '',
-          //     pincode: updated?.gstDetails?.pincode || '',
-          //   },
-          // };
+          const payload = {
+            invoice: 'true',
+            promoCode: (wooOrder.meta_data.find(m => m.key === 'appliedCouponCode') || {}).value || '',
+            addParticpant: addParticpant,
+            eventId: process.env.CRM_EVENT_ID,
+            currencyType: wooOrder.currency,
+            amount: (wooOrder.meta_data.find(m => m.key === 'taxableAmount') || {}).value?.toString() || '',
+            cgst: (wooOrder.meta_data.find(m => m.key === 'cgst') || {}).value || '',
+            sgst: (wooOrder.meta_data.find(m => m.key === 'sgst') || {}).value || '',
+            email,
+            mobilePhone,
+            pocFirstName: firstName,
+            pocLastName: lastName,
+            company: companyName || 'ABC',
+            sector: updated?.sector?.name || 'ABC',
+            linkdinProfile: '',
+            passes,
+            gstInfo: {
+              companyAddress: updated?.gstDetails?.companyAddress || '',
+              billingFirstName: isGstPresent ? firstName : '',
+              billingLastName: isGstPresent ? lastName : '',
+              gstNumber: updated?.gstDetails?.companyGstNo || '',
+              pincode: updated?.gstDetails?.pincode || '',
+            },
+          };
 
-          // console.log('payload = ', payload);
+          console.log('payload = ', payload);
 
-          // try {
-          //   const result = await insertIntoSalesforce(payload);
-          //   console.log('result = ', result);
-          //   strapi.log.info('Salesforce insert success:', result.data);
+          try {
+            const result = await insertIntoSalesforce(payload);
+            console.log('result = ', result);
+            strapi.log.info('Salesforce insert success:', result.data);
 
-          //   if (result?.registrationPaymentId) {
-          //     updatedWooOrderDetails = updatedWooOrderDetails.map(o => {
-          //       if (o.wcOrderId === order.wcOrderId) {
-          //         return { ...o, crmRegistrationPaymentId: result.registrationPaymentId };
-          //       }
-          //       return o;
-          //     });
+            if (result?.registrationPaymentId) {
+              updatedWooOrderDetails = updatedWooOrderDetails.map(o => {
+                if (o.wcOrderId === order.wcOrderId) {
+                  return { ...o, crmRegistrationPaymentId: result.registrationPaymentId };
+                }
+                return o;
+              });
 
-          //     await strapi.entityService.update('api::facilitator.facilitator', id, {
-          //       data: { wooOrderDetails: updatedWooOrderDetails },
-          //     });
+              await strapi.entityService.update('api::facilitator.facilitator', id, {
+                data: { wooOrderDetails: updatedWooOrderDetails },
+              });
 
-          //     let invoiceDetails = null;
+              let invoiceDetails = null;
 
-          //     try {
-          //       const invoiceResponse = await fetchInvoiceFromSalesforce(result.registrationPaymentId); // You’ll create this function
-          //       console.log('invoiceResponse', invoiceResponse);
-          //       const rawDate = invoiceResponse?.['Invoice Date'];
-          //       let paymentDate = '';
+              try {
+                const invoiceResponse = await fetchInvoiceFromSalesforce(result.registrationPaymentId); // You’ll create this function
+                console.log('invoiceResponse', invoiceResponse);
+                const rawDate = invoiceResponse?.['Invoice Date'];
+                let paymentDate = '';
 
-          //       if (rawDate) {
-          //         const dateObj = new Date(rawDate);
-          //         const day = String(dateObj.getDate()).padStart(2, '0');
-          //         const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // month is 0-based
-          //         const year = dateObj.getFullYear();
-          //         paymentDate = `${day}/${month}/${year}`;
-          //       }
-          //       invoiceDetails = {
-          //         invoiceNumber: invoiceResponse?.Name || '',
-          //         paymentDate: paymentDate,
-          //         amountPaid: invoiceResponse?.Amount_Paid || '',
-          //         invoiceLink: invoiceResponse?.Content_Document_URL__c || '',
-          //       };
+                if (rawDate) {
+                  const dateObj = new Date(rawDate);
+                  const day = String(dateObj.getDate()).padStart(2, '0');
+                  const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // month is 0-based
+                  const year = dateObj.getFullYear();
+                  paymentDate = `${day}/${month}/${year}`;
+                }
+                invoiceDetails = {
+                  invoiceNumber: invoiceResponse?.Name || '',
+                  paymentDate: paymentDate,
+                  amountPaid: invoiceResponse?.Amount_Paid || '',
+                  invoiceLink: invoiceResponse?.Content_Document_URL__c || '',
+                };
 
-          //       strapi.log.info('Invoice details fetched:', invoiceDetails);
-          //     } catch (invoiceError) {
-          //       strapi.log.error('Failed to fetch invoice details:', {
-          //         message: invoiceError.message,
-          //         stack: invoiceError.stack,
-          //       });
-          //     }
+                strapi.log.info('Invoice details fetched:', invoiceDetails);
+              } catch (invoiceError) {
+                strapi.log.error('Failed to fetch invoice details:', {
+                  message: invoiceError.message,
+                  stack: invoiceError.stack,
+                });
+              }
 
-          //     if (invoiceDetails) {
-          //       const invoiceNumber = invoiceDetails.invoiceNumber;
-          //       const amountPaid = invoiceDetails.amountPaid;
-          //       const paymentDate = invoiceDetails.paymentDate;
-          //       const passDetails = orderSummary;
-          //       const invoiceLink = invoiceDetails.invoiceLink;
+              if (invoiceDetails) {
+                const invoiceNumber = invoiceDetails.invoiceNumber;
+                const amountPaid = invoiceDetails.amountPaid;
+                const paymentDate = invoiceDetails.paymentDate;
+                const passDetails = orderSummary;
+                const invoiceLink = invoiceDetails.invoiceLink;
 
-          //       await sendEmail({
-          //         to: email,
-          //         subject: 'Thank You for Your Payment for GFF 2025 Registration',
-          //         templateName: 'payment-invoice',
-          //         replacements: { firstName, lastName, invoiceNumber, amountPaid, paymentDate, passDetails, invoiceLink },
-          //       });
-          //     }
+                await sendEmail({
+                  to: email,
+                  subject: 'Thank You for Your Payment for GFF 2025 Registration',
+                  templateName: 'payment-invoice',
+                  replacements: { firstName, lastName, invoiceNumber, amountPaid, paymentDate, passDetails, invoiceLink },
+                });
+              }
 
-          //   }
-          // } catch (err) {
-          //   strapi.log.error('Salesforce insert failed:', {
-          //     message: err?.message || 'No error message',
-          //     stack: err?.stack || 'No stack trace',
-          //     full: err,
-          //   });
-          // }
+            }
+          } catch (err) {
+            strapi.log.error('Salesforce insert failed:', {
+              message: err?.message || 'No error message',
+              stack: err?.stack || 'No stack trace',
+              full: err,
+            });
+          }
 
 
         }
