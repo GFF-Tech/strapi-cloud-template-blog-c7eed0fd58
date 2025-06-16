@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "post_conference_report_forms_2024",
+  "info": {
+    "singularName": "post-conference-report-form-2024",
+    "pluralName": "post-conference-report-forms-2024",
+    "displayName": "Post Conference Report Forms 2024",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "fullName": {
+      "type": "string"
+    },
+    "officialEmailAddress": {
+      "type": "email",
+      "unique": true
+    },
+    "countryCode": {
+      "type": "string"
+    },
+    "mobileNumber": {
+      "type": "string"
+    },
+    "designation": {
+      "type": "string"
+    },
+    "organisation": {
+      "type": "string"
+    },
+    "consent": {
+      "type": "boolean"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

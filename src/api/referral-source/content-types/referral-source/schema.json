@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "referral_sources",
+  "info": {
+    "singularName": "referral-source",
+    "pluralName": "referral-sources",
+    "displayName": "Referral Source",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "referralSource": {
+      "type": "string"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}
