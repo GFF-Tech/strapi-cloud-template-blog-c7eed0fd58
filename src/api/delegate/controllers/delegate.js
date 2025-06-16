@@ -196,7 +196,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         level: '',
         GenderIdentity: 'Male',
         title: 'Engineer',
-        linkdinProfile: fullDelegate.linkedinUrl,
+        linkdinProfile: fullDelegate.linkedinUrl || `http://linkedin.com/in/${data.firstName}`,
         twitterProfile: '',
         instagramProfile: '',
         personalEmail: ''
@@ -279,7 +279,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         level: '',
         GenderIdentity: 'Male',
         title: 'Engineer',
-        linkdinProfile: existing.linkedinUrl,
+        linkdinProfile: existing.linkedinUrl || `http://linkedin.com/in/${data.firstName}`,
         twitterProfile: '',
         instagramProfile: '',
         personalEmail: ''
