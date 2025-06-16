@@ -217,9 +217,6 @@ async function fetchInvoiceFromSalesforce(registrationPaymentId) {
   return result.data;
 }
 
-
-
-
 module.exports = {
   insertIntoSalesforce,
   getSalesforceToken, // optional if you also want to use it elsewhere
