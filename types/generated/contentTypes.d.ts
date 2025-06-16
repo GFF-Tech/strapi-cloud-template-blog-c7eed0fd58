@@ -584,6 +584,7 @@ export interface ApiDelegateDelegate extends Struct.CollectionTypeSchema {
     >;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     isFacilitator: Schema.Attribute.Boolean;
+    linkedinUrl: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -706,6 +707,7 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     isCognitoVerified: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
+    linkedinUrl: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',

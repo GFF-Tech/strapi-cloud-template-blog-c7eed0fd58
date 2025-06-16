@@ -538,7 +538,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
             pocLastName: lastName,
             company: companyName || 'ABC',
             sector: updated?.sector?.name || 'ABC',
-            linkdinProfile: '',
+            linkdinProfile: updated.linkedinUrl || '',
             passes,
             gstInfo: {
               companyAddress: updated?.gstDetails?.companyAddress || '',

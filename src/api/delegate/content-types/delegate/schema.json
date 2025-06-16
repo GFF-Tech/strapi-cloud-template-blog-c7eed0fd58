@@ -51,6 +51,9 @@
     },
     "passPrice": {
       "type": "decimal"
+    },
+    "linkedinUrl": {
+      "type": "string"
     }
   }
 }

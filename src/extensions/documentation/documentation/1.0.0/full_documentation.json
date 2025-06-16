@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-06-16T10:35:46.498Z"
+    "x-generation-date": "2025-06-16T14:30:30.156Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -15772,6 +15772,9 @@
                 "type": "number",
                 "format": "float"
               },
+              "linkedinUrl": {
+                "type": "string"
+              },
               "locale": {
                 "type": "string"
               },
@@ -16363,6 +16366,9 @@
                       "type": "number",
                       "format": "float"
                     },
+                    "linkedinUrl": {
+                      "type": "string"
+                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -16428,6 +16434,9 @@
               },
               "pciFccMember": {
                 "type": "boolean"
+              },
+              "linkedinUrl": {
+                "type": "string"
               },
               "createdAt": {
                 "type": "string",
@@ -16505,6 +16514,9 @@
           "passPrice": {
             "type": "number",
             "format": "float"
+          },
+          "linkedinUrl": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -17809,6 +17821,9 @@
               "pciFccMember": {
                 "type": "boolean"
               },
+              "linkedinUrl": {
+                "type": "string"
+              },
               "locale": {
                 "type": "string"
               },
@@ -18418,6 +18433,9 @@
                     "pciFccMember": {
                       "type": "boolean"
                     },
+                    "linkedinUrl": {
+                      "type": "string"
+                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -18495,6 +18513,9 @@
                   "type": "number",
                   "format": "float"
                 },
+                "linkedinUrl": {
+                  "type": "string"
+                },
                 "createdAt": {
                   "type": "string",
                   "format": "date-time"
@@ -18560,6 +18581,9 @@
           },
           "pciFccMember": {
             "type": "boolean"
+          },
+          "linkedinUrl": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
