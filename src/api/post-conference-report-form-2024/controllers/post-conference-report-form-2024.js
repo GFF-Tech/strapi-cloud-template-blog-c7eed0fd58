@@ -9,19 +9,19 @@ module.exports = createCoreController('api::post-conference-report-form-2024.pos
     const email = ctx.request.body.data?.officialEmailAddress || '';
     const fullName = ctx.request.body.data?.fullName || '';
     // Step 2: Send email using SES
-    // try {
-    //  console.log(email);
-    //  await sendEmail({
-    //    to: email,
-    //    subject: 'Thank You for Registering as a Speaker for GFF 2025 ',
-    //    templateName: 'become-a-speaker',
-    //    replacements: { fullName },
-    //  });
+    try {
+     console.log(email);
+     await sendEmail({
+       to: email,
+       subject: 'Thank You for Downloading the GFF 2024 Report ',
+       templateName: 'report-form-2024',
+       replacements: { fullName },
+     });
 
-    //   strapi.log.info(`Confirmation email sent to ${email}`);
-    // } catch (err) {
-    //   strapi.log.error('Failed to send email:', err);
-    // }
+      strapi.log.info(`Confirmation email sent to ${email}`);
+    } catch (err) {
+      strapi.log.error('Failed to send email:', err);
+    }
 
     return response;
   }

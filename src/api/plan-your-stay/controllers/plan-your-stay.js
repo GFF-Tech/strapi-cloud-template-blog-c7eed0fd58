@@ -10,19 +10,19 @@ module.exports = createCoreController('api::plan-your-stay.plan-your-stay', ({ s
     const firstName = ctx.request.body.data?.firstName || '';
     const lastName = ctx.request.body.data?.lastName || '';
     // Step 2: Send email using SES
-    // try {
-    //  console.log(email);
-    //  await sendEmail({
-    //    to: email,
-    //    subject: 'Thank You for Registering as a Speaker for GFF 2025 ',
-    //    templateName: 'become-a-speaker',
-    //    replacements: { firstName, lastName },
-    //  });
+    try {
+     console.log(email);
+     await sendEmail({
+       to: email,
+       subject: 'Thank You for your interest to book your stay for GFF 2025!',
+       templateName: 'plan-your-stay-form',
+       replacements: { firstName, lastName },
+     });
 
-    //   strapi.log.info(`Confirmation email sent to ${email}`);
-    // } catch (err) {
-    //   strapi.log.error('Failed to send email:', err);
-    // }
+      strapi.log.info(`Confirmation email sent to ${email}`);
+    } catch (err) {
+      strapi.log.error('Failed to send email:', err);
+    }
 
     return response;
   }
