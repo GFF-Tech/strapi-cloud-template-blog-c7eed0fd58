@@ -37,6 +37,10 @@ async function insertIntoSalesforce(payload) {
     await getSalesforceToken();
   }
 
+  console.log("salesforceToken = ",salesforceToken);
+  console.log("insertEndpoint = ",insertEndpoint);
+
+
   const doInsert = async () => {
   const res = await fetch(insertEndpoint, {
     method: 'POST',
