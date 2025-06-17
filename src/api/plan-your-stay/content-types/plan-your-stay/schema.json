@@ -1,0 +1,63 @@
+{
+  "kind": "collectionType",
+  "collectionName": "plan_your_stays",
+  "info": {
+    "singularName": "plan-your-stay",
+    "pluralName": "plan-your-stays",
+    "displayName": "Plan Your Stay Form",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "firstName": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "countryCode": {
+      "type": "string"
+    },
+    "mobileNumber": {
+      "type": "string"
+    },
+    "businessEmailAddress": {
+      "type": "email",
+      "required": false,
+      "unique": true
+    },
+    "organisation": {
+      "type": "string"
+    },
+    "designation": {
+      "type": "string"
+    },
+    "checkInDate": {
+      "type": "date"
+    },
+    "checkOutDate": {
+      "type": "date"
+    },
+    "noOfRoomsRequired": {
+      "type": "integer"
+    },
+    "occupancyType": {
+      "type": "string"
+    },
+    "preferredHotel": {
+      "type": "string"
+    },
+    "referralSource": {
+      "type": "string"
+    },
+    "otherSource": {
+      "type": "string"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

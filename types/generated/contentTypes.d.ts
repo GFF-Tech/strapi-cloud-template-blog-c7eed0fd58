@@ -584,6 +584,7 @@ export interface ApiDelegateDelegate extends Struct.CollectionTypeSchema {
     >;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     isFacilitator: Schema.Attribute.Boolean;
+    linkedinUrl: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -706,6 +707,7 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     isCognitoVerified: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
+    linkedinUrl: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -728,6 +730,33 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
       'common.woo-order-details',
       true
     >;
+  };
+}
+
+export interface ApiHotelHotel extends Struct.CollectionTypeSchema {
+  collectionName: 'hotels';
+  info: {
+    description: '';
+    displayName: 'Hotel';
+    pluralName: 'hotels';
+    singularName: 'hotel';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    hotelName: Schema.Attribute.String;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::hotel.hotel'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -900,7 +929,7 @@ export interface ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage
   collectionName: 'partners_investment_pitches_pages';
   info: {
     description: '';
-    displayName: 'Partners Investment Pitches Page';
+    displayName: 'Logos in Investment Pitches Page';
     pluralName: 'partners-investment-pitches-pages';
     singularName: 'partners-investment-pitches-page';
   };
@@ -918,13 +947,127 @@ export interface ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage
     > &
       Schema.Attribute.Private;
     partner_ip_id: Schema.Attribute.UID;
+    partner_ip_logo_alt_text: Schema.Attribute.String;
     partner_ip_name: Schema.Attribute.String;
     partner_ip_priority: Schema.Attribute.Decimal;
     partner_ip_uploadlogo: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     > &
       Schema.Attribute.Required;
+    partner_ip_web_url: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPlanYourStayPlanYourStay
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'plan_your_stays';
+  info: {
+    description: '';
+    displayName: 'Plan Your Stay Form';
+    pluralName: 'plan-your-stays';
+    singularName: 'plan-your-stay';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    businessEmailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
+    checkInDate: Schema.Attribute.Date;
+    checkOutDate: Schema.Attribute.Date;
+    countryCode: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    designation: Schema.Attribute.String;
+    firstName: Schema.Attribute.String;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    lastName: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::plan-your-stay.plan-your-stay'
+    > &
+      Schema.Attribute.Private;
+    mobileNumber: Schema.Attribute.String;
+    noOfRoomsRequired: Schema.Attribute.Integer;
+    occupancyType: Schema.Attribute.String;
+    organisation: Schema.Attribute.String;
+    otherSource: Schema.Attribute.String;
+    preferredHotel: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    referralSource: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPostConferenceReportForm2024PostConferenceReportForm2024
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'post_conference_report_forms_2024';
+  info: {
+    description: '';
+    displayName: 'Post Conference Report Forms 2024';
+    pluralName: 'post-conference-report-forms-2024';
+    singularName: 'post-conference-report-form-2024';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    consent: Schema.Attribute.Boolean;
+    countryCode: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    designation: Schema.Attribute.String;
+    fullName: Schema.Attribute.String;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::post-conference-report-form-2024.post-conference-report-form-2024'
+    > &
+      Schema.Attribute.Private;
+    mobileNumber: Schema.Attribute.String;
+    officialEmailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
+    organisation: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiReferralSourceReferralSource
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'referral_sources';
+  info: {
+    description: '';
+    displayName: 'Referral Source';
+    pluralName: 'referral-sources';
+    singularName: 'referral-source';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::referral-source.referral-source'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    referralSource: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1618,11 +1761,15 @@ declare module '@strapi/strapi' {
       'api::early-stage-pitch.early-stage-pitch': ApiEarlyStagePitchEarlyStagePitch;
       'api::express-interest.express-interest': ApiExpressInterestExpressInterest;
       'api::facilitator.facilitator': ApiFacilitatorFacilitator;
+      'api::hotel.hotel': ApiHotelHotel;
       'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::partner.partner': ApiPartnerPartner;
       'api::partners-home-page.partners-home-page': ApiPartnersHomePagePartnersHomePage;
       'api::partners-investment-pitches-page.partners-investment-pitches-page': ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage;
+      'api::plan-your-stay.plan-your-stay': ApiPlanYourStayPlanYourStay;
+      'api::post-conference-report-form-2024.post-conference-report-form-2024': ApiPostConferenceReportForm2024PostConferenceReportForm2024;
+      'api::referral-source.referral-source': ApiReferralSourceReferralSource;
       'api::registration-faq.registration-faq': ApiRegistrationFaqRegistrationFaq;
       'api::salutation.salutation': ApiSalutationSalutation;
       'api::sector.sector': ApiSectorSector;

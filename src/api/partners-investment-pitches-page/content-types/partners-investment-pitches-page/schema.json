@@ -4,7 +4,7 @@
   "info": {
     "singularName": "partners-investment-pitches-page",
     "pluralName": "partners-investment-pitches-pages",
-    "displayName": "Partners Investment Pitches Page",
+    "displayName": "Logos in Investment Pitches Page",
     "description": ""
   },
   "options": {
@@ -30,6 +30,12 @@
     },
     "partner_ip_priority": {
       "type": "decimal"
+    },
+    "partner_ip_web_url": {
+      "type": "string"
+    },
+    "partner_ip_logo_alt_text": {
+      "type": "string"
     }
   }
 }
