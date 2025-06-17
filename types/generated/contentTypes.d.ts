@@ -929,7 +929,7 @@ export interface ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage
   collectionName: 'partners_investment_pitches_pages';
   info: {
     description: '';
-    displayName: 'Partners Investment Pitches Page';
+    displayName: 'Logos in Investment Pitches Page';
     pluralName: 'partners-investment-pitches-pages';
     singularName: 'partners-investment-pitches-page';
   };
@@ -947,12 +947,14 @@ export interface ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage
     > &
       Schema.Attribute.Private;
     partner_ip_id: Schema.Attribute.UID;
+    partner_ip_logo_alt_text: Schema.Attribute.String;
     partner_ip_name: Schema.Attribute.String;
     partner_ip_priority: Schema.Attribute.Decimal;
     partner_ip_uploadlogo: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     > &
       Schema.Attribute.Required;
+    partner_ip_web_url: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
