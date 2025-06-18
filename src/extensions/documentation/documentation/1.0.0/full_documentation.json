@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-06-18T06:05:54.149Z"
+    "x-generation-date": "2025-06-18T06:23:08.458Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -27557,9 +27557,12 @@
                 "type": "string",
                 "enum": [
                   "Shri",
-                  "Mr",
+                  "Mr.",
+                  "Ms.",
                   "Mrs",
-                  "Dr"
+                  "Dr.",
+                  "Smt.",
+                  "Lt"
                 ]
               },
               "fullName": {
@@ -27601,6 +27604,20 @@
               },
               "isActive": {
                 "type": "boolean"
+              },
+              "speakerId": {
+                "type": "string"
+              },
+              "featureinHomePage": {
+                "type": "boolean"
+              },
+              "speakerPriorityinSpeakerPage": {
+                "type": "number",
+                "format": "float"
+              },
+              "speakerPriorityinHomePage": {
+                "type": "number",
+                "format": "float"
               },
               "locale": {
                 "type": "string"
@@ -27671,9 +27688,12 @@
             "type": "string",
             "enum": [
               "Shri",
-              "Mr",
+              "Mr.",
+              "Ms.",
               "Mrs",
-              "Dr"
+              "Dr.",
+              "Smt.",
+              "Lt"
             ]
           },
           "fullName": {
@@ -28369,6 +28389,20 @@
           "isActive": {
             "type": "boolean"
           },
+          "speakerId": {
+            "type": "string"
+          },
+          "featureinHomePage": {
+            "type": "boolean"
+          },
+          "speakerPriorityinSpeakerPage": {
+            "type": "number",
+            "format": "float"
+          },
+          "speakerPriorityinHomePage": {
+            "type": "number",
+            "format": "float"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -28421,9 +28455,12 @@
                   "type": "string",
                   "enum": [
                     "Shri",
-                    "Mr",
+                    "Mr.",
+                    "Ms.",
                     "Mrs",
-                    "Dr"
+                    "Dr.",
+                    "Smt.",
+                    "Lt"
                   ]
                 },
                 "fullName": {
@@ -28583,6 +28620,20 @@
                 },
                 "isActive": {
                   "type": "boolean"
+                },
+                "speakerId": {
+                  "type": "string"
+                },
+                "featureinHomePage": {
+                  "type": "boolean"
+                },
+                "speakerPriorityinSpeakerPage": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "speakerPriorityinHomePage": {
+                  "type": "number",
+                  "format": "float"
                 },
                 "createdAt": {
                   "type": "string",
