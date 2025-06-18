@@ -1217,6 +1217,7 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     desgination: Schema.Attribute.String;
+    featureinHomePage: Schema.Attribute.Boolean;
     fullName: Schema.Attribute.String;
     image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -1228,7 +1229,12 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    salutation: Schema.Attribute.Enumeration<['Shri', 'Mr', 'Mrs', 'Dr']>;
+    salutation: Schema.Attribute.Enumeration<
+      ['Shri', 'Mr.', 'Ms.', 'Mrs', 'Dr.', 'Smt.', 'Lt']
+    >;
+    speakerId: Schema.Attribute.UID;
+    speakerPriorityinHomePage: Schema.Attribute.Decimal;
+    speakerPriorityinSpeakerPage: Schema.Attribute.Decimal;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
