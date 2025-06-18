@@ -71,6 +71,12 @@
     "partnerID": {
       "type": "uid",
       "targetField": "partnerName"
+    },
+    "partnerWebURL": {
+      "type": "string"
+    },
+    "partnerLogoAltText": {
+      "type": "string"
     }
   }
 }
