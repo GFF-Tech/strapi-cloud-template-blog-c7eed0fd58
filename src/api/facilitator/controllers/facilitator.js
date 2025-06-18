@@ -536,7 +536,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
             mobilePhone,
             pocFirstName: firstName,
             pocLastName: lastName,
-            company: companyName || 'ABC',
+            company: companyName || 'INDIVIDUAL',
             sector: updated?.sector?.name || '',
             linkdinProfile: updated.linkedinUrl || '',
             passes,
