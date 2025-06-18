@@ -760,6 +760,36 @@ export interface ApiHotelHotel extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiLogLog extends Struct.CollectionTypeSchema {
+  collectionName: 'logs';
+  info: {
+    description: '';
+    displayName: 'Log';
+    pluralName: 'logs';
+    singularName: 'log';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    additionalInfo: Schema.Attribute.JSON;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    details: Schema.Attribute.Blocks;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::log.log'> &
+      Schema.Attribute.Private;
+    logType: Schema.Attribute.Enumeration<['Success', 'Error']>;
+    message: Schema.Attribute.String;
+    origin: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiMicroSiteHomePageMicroSiteHomePage
   extends Struct.CollectionTypeSchema {
   collectionName: 'micro_site_home_pages';
@@ -1762,6 +1792,7 @@ declare module '@strapi/strapi' {
       'api::express-interest.express-interest': ApiExpressInterestExpressInterest;
       'api::facilitator.facilitator': ApiFacilitatorFacilitator;
       'api::hotel.hotel': ApiHotelHotel;
+      'api::log.log': ApiLogLog;
       'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::partner.partner': ApiPartnerPartner;
