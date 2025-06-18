@@ -877,6 +877,7 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
       'images' | 'files' | 'videos' | 'audios'
     > &
       Schema.Attribute.Required;
+    partnerLogoAltText: Schema.Attribute.String;
     partnerName: Schema.Attribute.String & Schema.Attribute.Required;
     partnerPriority: Schema.Attribute.Integer;
     partnerSubType: Schema.Attribute.Enumeration<
@@ -910,6 +911,7 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
       ['Partners', 'Exhibitors', 'Supporters', 'Ecosystem', 'Organisers']
     > &
       Schema.Attribute.Required;
+    partnerWebURL: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
