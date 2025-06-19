@@ -184,7 +184,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       const salesforcePayload = {
         upgrade: 'false',
         passType: passType,
-        price: fullDelegate.price,
+        price: fullDelegate.passPrice,
         confirmationId: fullDelegate.confirmationId,
         email: data.officialEmailAddress,
         mobilePhone: `${fullDelegate.country.countryCode}${data.mobileNumber}`,
@@ -227,78 +227,96 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
   },
 
   async update(ctx) {
-    const { id } = ctx.params;
-    const { data } = ctx.request.body;
+  const { id } = ctx.params;
+  const { data } = ctx.request.body;
 
-    if (!id || typeof id !== 'string') {
-      return ctx.badRequest('Invalid ID');
+  if (!id || typeof id !== 'string') {
+    return ctx.badRequest('Invalid ID');
+  }
+
+  try {
+    let existing = await strapi.entityService.findOne('api::delegate.delegate', id, {
+      populate: {
+        country: { fields: ['country', 'countryCode'] },
+        sector: { fields: ['name'] },
+        facilitatorId: { fields: ['id', 'cognitoId'] }, // include facilitator data
+      },
+    });
+
+    console.log(existing);
+
+    if (!existing) {
+      return ctx.notFound('Delegate not found');
     }
+
+    // If cognitoId is missing and delegate isFacilitator
+    if (!existing.cognitoId && existing.isFacilitator && existing.facilitatorId?.cognitoId) {
+      existing.cognitoId = existing.facilitatorId.cognitoId;
+
+      // Optionally update delegate with this cognitoId
+      await strapi.entityService.update('api::delegate.delegate', id, {
+        data: { cognitoId: existing.cognitoId },
+      });
+    }
+
+    if (!existing.cognitoId) {
+      return ctx.badRequest('Cognito ID is missing for delegate');
+    }
+
+    // Update in Cognito
+    const updateCommand = new AdminUpdateUserAttributesCommand({
+      UserPoolId: process.env.COGNITO_USER_POOL_ID,
+      Username: existing.cognitoId,
+      UserAttributes: [
+        { Name: 'custom:firstName', Value: data.firstName },
+        { Name: 'custom:lastName', Value: data.lastName },
+      ],
+    });
+
+    await client.send(updateCommand);
+
+    const cognitoUser = await getCognitoUserBySub(existing.cognitoId);
+    const email = cognitoUser?.email || '';
+    const mobilePhone = cognitoUser?.phone_number || '';
+    const companyName = cognitoUser?.companyName || '';
+
+    const salesforcePayload = {
+      upgrade: 'true',
+      passType: existing.passType,
+      price: existing.passPrice,
+      confirmationId: existing.confirmationId,
+      email: email,
+      mobilePhone: `${existing.country.countryCode}${mobilePhone}`,
+      participantFirstName: data.firstName,
+      participantLastName: data.lastName,
+      company: companyName || 'INDIVIDUAL',
+      sector: existing.sector?.name || '',
+      vertical: '',
+      level: '',
+      GenderIdentity: '',
+      title: '',
+      linkdinProfile: existing.linkedinUrl || '',
+      twitterProfile: '',
+      instagramProfile: '',
+      personalEmail: ''
+    };
+
+    console.log("salesforcePayload = ", salesforcePayload);
 
     try {
-      const existing = await strapi.entityService.findOne('api::delegate.delegate', id, {
-        populate: {
-          country: { fields: ['country', 'countryCode'] },
-          sector: { fields: ['name'] },
-        },
-      });
-      if (!existing) {
-        return ctx.notFound('Delegate not found');
-      }
-
-      // Only update in Cognito
-      if (existing.cognitoId) {
-        const updateCommand = new AdminUpdateUserAttributesCommand({
-          UserPoolId: process.env.COGNITO_USER_POOL_ID,
-          Username: existing.cognitoId,
-          UserAttributes: [
-            { Name: 'custom:firstName', Value: data.firstName },
-            { Name: 'custom:lastName', Value: data.lastName },
-          ],
-        });
-
-        await client.send(updateCommand);
-      }
-
-      const cognitoUser = await getCognitoUserBySub(existing.cognitoId);
-      const email = cognitoUser?.email || '';
-      const mobilePhone = cognitoUser?.phone_number || '';
-      const companyName = cognitoUser?.companyName || '';
-
-      const salesforcePayload = {
-        upgrade: 'true',
-        passType: existing.passType,
-        price: existing.price,
-        confirmationId: existing.confirmationId,
-        email: email,
-        mobilePhone: `${existing.country.countryCode}${mobilePhone}`,
-        participantFirstName: data.firstName,
-        participantLastName: data.lastName,
-        company: companyName || 'INDIVIDUAL',
-        sector: existing.sector?.name || '',
-        vertical: '',
-        level: '',
-        GenderIdentity: '',
-        title: '',
-        linkdinProfile: existing.linkedinUrl || '',
-        twitterProfile: '',
-        instagramProfile: '',
-        personalEmail: ''
-      };
-
-      try {
-        await updateSalesforceParticipant(salesforcePayload);
-        strapi.log.info(`Salesforce updated for delegate ${existing.confirmationId}`);
-      } catch (error) {
-        strapi.log.error('Salesforce update failed:', error.message || error);
-      }
-
-      return { message: 'Delegate name updated in Cognito successfully' };
-
+      await updateSalesforceParticipant(salesforcePayload);
+      strapi.log.info(`Salesforce updated for delegate ${existing.confirmationId}`);
     } catch (error) {
-      console.error('Update error:', error);
-      return ctx.internalServerError('An error occurred while updating the delegate');
+      strapi.log.error('Salesforce update failed:', error.message || error);
     }
-  },
+
+    return { message: 'Delegate name updated in Cognito successfully' };
+
+  } catch (error) {
+    console.error('Update error:', error);
+    return ctx.internalServerError('An error occurred while updating the delegate');
+  }
+},
 
   async delete(ctx) {
     const { id } = ctx.params;
@@ -312,58 +330,87 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
     return { message: 'Delegate deleted successfully' };
   },
 
-  async login(ctx) {
-    const { officialEmailAddress } = ctx.request.body;
+ async login(ctx) {
+  const { officialEmailAddress } = ctx.request.body;
 
-    if (!officialEmailAddress) {
-      return ctx.badRequest('Missing email');
+  if (!officialEmailAddress) {
+    return ctx.badRequest('Missing email');
+  }
+
+  try {
+    // 1. Start Cognito Auth flow
+    const command = new InitiateAuthCommand({
+      AuthFlow: 'CUSTOM_AUTH',
+      ClientId: process.env.COGNITO_CLIENT_ID,
+      AuthParameters: {
+        USERNAME: officialEmailAddress,
+      },
+    });
+
+    const response = await client.send(command);
+
+    // 2. Get Cognito User and Cognito ID
+    const getUserCommand = new AdminGetUserCommand({
+      UserPoolId: process.env.COGNITO_USER_POOL_ID,
+      Username: officialEmailAddress,
+    });
+
+    const user = await client.send(getUserCommand);
+    const cognitoId = user?.UserAttributes?.find(attr => attr.Name === 'sub')?.Value;
+
+    if (!cognitoId) {
+      return ctx.notFound('User not found in Cognito');
     }
 
-    try {
-      // 1. Start Cognito Auth flow
-      const command = new InitiateAuthCommand({
-        AuthFlow: 'CUSTOM_AUTH',
-        ClientId: process.env.COGNITO_CLIENT_ID,
-        AuthParameters: {
-          USERNAME: officialEmailAddress,
-        },
-      });
+    // 3. Check if delegate already has this Cognito ID
+    const existingDelegate = await strapi.db.query('api::delegate.delegate').findOne({
+      where: { cognitoId },
+    });
 
-      const response = await client.send(command);
-
-      // 2. Fetch the Cognito user to get their sub (ID)
-      const getUserCommand = new AdminGetUserCommand({
-        UserPoolId: process.env.COGNITO_USER_POOL_ID,
-        Username: officialEmailAddress,
-      });
-
-      const user = await client.send(getUserCommand);
-      const cognitoId = user?.UserAttributes?.find(attr => attr.Name === 'sub')?.Value;
-
-      if (!cognitoId) {
-        return ctx.notFound('User not found in Cognito');
-      }
-
-      // 3. Check if delegate exists in Strapi using Cognito ID
-      const delegate = await strapi.db.query('api::delegate.delegate').findOne({
+    if (!existingDelegate) {
+      // 4. Try finding facilitator with this Cognito ID
+      const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
         where: { cognitoId },
       });
 
-      if (!delegate) {
-        return ctx.notFound('Delegate not found');
+      if (facilitator) {
+        // 5. Look for corresponding delegate with isFacilitator = true, cognitoId = null
+        const orphanDelegate = await strapi.db.query('api::delegate.delegate').findOne({
+          where: {
+            facilitatorId: facilitator.id,
+            isFacilitator: true,
+            cognitoId: null,
+          },
+        });
+
+        if (orphanDelegate) {
+          // 6. Patch cognitoId into the orphan delegate
+          await strapi.entityService.update('api::delegate.delegate', orphanDelegate.id, {
+            data: { cognitoId },
+          });
+
+          strapi.log.info(`Patched cognitoId into delegate ${orphanDelegate.id}`);
+        } else {
+          strapi.log.warn(
+            `Facilitator found for Cognito ID ${cognitoId}, but no delegate entry to update`
+          );
+        }
+      } else {
+        return ctx.notFound('Delegate or Facilitator not found');
       }
-
-      // 4. Return session for OTP challenge
-      return ctx.send({
-        message: 'OTP sent to email',
-        session: response.Session,
-      });
-
-    } catch (error) {
-      console.error('Login error:', error);
-      return ctx.internalServerError('Failed to process login');
     }
-  },
+
+    // 7. Return OTP challenge session
+    return ctx.send({
+      message: 'OTP sent to email',
+      session: response.Session,
+    });
+
+  } catch (error) {
+    console.error('Login error:', error);
+    return ctx.internalServerError('Failed to process login');
+  }
+},
 
   async verifyLoginOtp(ctx) {
     const { officialEmailAddress, otp, session } = ctx.request.body;
