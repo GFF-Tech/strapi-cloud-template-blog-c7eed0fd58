@@ -961,7 +961,7 @@ export interface ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage
   collectionName: 'partners_investment_pitches_pages';
   info: {
     description: '';
-    displayName: 'Logos in Investment Pitches Page';
+    displayName: 'ES Investment Pitch Logos';
     pluralName: 'partners-investment-pitches-pages';
     singularName: 'partners-investment-pitches-page';
   };
