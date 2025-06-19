@@ -608,7 +608,7 @@ export interface ApiEarlyStagePitchEarlyStagePitch
   collectionName: 'early_stage_pitches';
   info: {
     description: '';
-    displayName: 'Investment Pitches Form';
+    displayName: 'Investment Pitches Form Export';
     pluralName: 'early-stage-pitches';
     singularName: 'early-stage-pitch';
   };
