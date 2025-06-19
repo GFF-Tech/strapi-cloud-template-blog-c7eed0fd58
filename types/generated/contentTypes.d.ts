@@ -608,7 +608,7 @@ export interface ApiEarlyStagePitchEarlyStagePitch
   collectionName: 'early_stage_pitches';
   info: {
     description: '';
-    displayName: 'Investment Pitches Form';
+    displayName: 'Investment Pitches Form Export';
     pluralName: 'early-stage-pitches';
     singularName: 'early-stage-pitch';
   };
@@ -961,7 +961,7 @@ export interface ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage
   collectionName: 'partners_investment_pitches_pages';
   info: {
     description: '';
-    displayName: 'Logos in Investment Pitches Page';
+    displayName: 'ES Investment Pitch Logos';
     pluralName: 'partners-investment-pitches-pages';
     singularName: 'partners-investment-pitches-page';
   };
