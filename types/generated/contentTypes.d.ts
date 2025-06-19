@@ -608,7 +608,7 @@ export interface ApiEarlyStagePitchEarlyStagePitch
   collectionName: 'early_stage_pitches';
   info: {
     description: '';
-    displayName: 'Investment Pitches Form';
+    displayName: 'Investment Pitches Form Export';
     pluralName: 'early-stage-pitches';
     singularName: 'early-stage-pitch';
   };
@@ -760,6 +760,36 @@ export interface ApiHotelHotel extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiLogLog extends Struct.CollectionTypeSchema {
+  collectionName: 'logs';
+  info: {
+    description: '';
+    displayName: 'Log';
+    pluralName: 'logs';
+    singularName: 'log';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    additionalInfo: Schema.Attribute.JSON;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    details: Schema.Attribute.Blocks;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::log.log'> &
+      Schema.Attribute.Private;
+    logType: Schema.Attribute.Enumeration<['Success', 'Error']>;
+    message: Schema.Attribute.String;
+    origin: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiMicroSiteHomePageMicroSiteHomePage
   extends Struct.CollectionTypeSchema {
   collectionName: 'micro_site_home_pages';
@@ -847,6 +877,7 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
       'images' | 'files' | 'videos' | 'audios'
     > &
       Schema.Attribute.Required;
+    partnerLogoAltText: Schema.Attribute.String;
     partnerName: Schema.Attribute.String & Schema.Attribute.Required;
     partnerPriority: Schema.Attribute.Integer;
     partnerSubType: Schema.Attribute.Enumeration<
@@ -880,6 +911,7 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
       ['Partners', 'Exhibitors', 'Supporters', 'Ecosystem', 'Organisers']
     > &
       Schema.Attribute.Required;
+    partnerWebURL: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -929,7 +961,7 @@ export interface ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage
   collectionName: 'partners_investment_pitches_pages';
   info: {
     description: '';
-    displayName: 'Logos in Investment Pitches Page';
+    displayName: 'ES Investment Pitch Logos';
     pluralName: 'partners-investment-pitches-pages';
     singularName: 'partners-investment-pitches-page';
   };
@@ -1185,6 +1217,7 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     desgination: Schema.Attribute.String;
+    featureinHomePage: Schema.Attribute.Boolean;
     fullName: Schema.Attribute.String;
     image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -1196,7 +1229,12 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    salutation: Schema.Attribute.Enumeration<['Shri', 'Mr', 'Mrs', 'Dr']>;
+    salutation: Schema.Attribute.Enumeration<
+      ['Shri', 'Mr.', 'Ms.', 'Mrs', 'Dr.', 'Smt.', 'Lt']
+    >;
+    speakerId: Schema.Attribute.UID;
+    speakerPriorityinHomePage: Schema.Attribute.Decimal;
+    speakerPriorityinSpeakerPage: Schema.Attribute.Decimal;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1762,6 +1800,7 @@ declare module '@strapi/strapi' {
       'api::express-interest.express-interest': ApiExpressInterestExpressInterest;
       'api::facilitator.facilitator': ApiFacilitatorFacilitator;
       'api::hotel.hotel': ApiHotelHotel;
+      'api::log.log': ApiLogLog;
       'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::partner.partner': ApiPartnerPartner;

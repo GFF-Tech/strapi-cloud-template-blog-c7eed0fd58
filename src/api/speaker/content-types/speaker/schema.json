@@ -15,9 +15,12 @@
       "type": "enumeration",
       "enum": [
         "Shri",
-        "Mr",
+        "Mr.",
+        "Ms.",
         "Mrs",
-        "Dr"
+        "Dr.",
+        "Smt.",
+        "Lt"
       ]
     },
     "fullName": {
@@ -54,6 +57,18 @@
     "isActive": {
       "type": "boolean",
       "default": true
+    },
+    "speakerId": {
+      "type": "uid"
+    },
+    "featureinHomePage": {
+      "type": "boolean"
+    },
+    "speakerPriorityinSpeakerPage": {
+      "type": "decimal"
+    },
+    "speakerPriorityinHomePage": {
+      "type": "decimal"
     }
   }
 }

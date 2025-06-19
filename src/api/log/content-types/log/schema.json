@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "logs",
+  "info": {
+    "singularName": "log",
+    "pluralName": "logs",
+    "displayName": "Log",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "logType": {
+      "type": "enumeration",
+      "enum": [
+        "Success",
+        "Error"
+      ]
+    },
+    "message": {
+      "type": "string"
+    },
+    "details": {
+      "type": "blocks"
+    },
+    "origin": {
+      "type": "string"
+    },
+    "additionalInfo": {
+      "type": "json"
+    }
+  }
+}

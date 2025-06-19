@@ -46,7 +46,7 @@ async function insertIntoSalesforce(payload) {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${salesforceToken}`,
-      'Content-Type': 'text/plain',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(payload),
   });
@@ -108,7 +108,7 @@ async function updateSalesforceParticipant(delegatePayload) {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${salesforceToken}`,
-        'Content-Type': 'text/plain',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify([delegatePayload]), // Wrap single payload in array
     });
