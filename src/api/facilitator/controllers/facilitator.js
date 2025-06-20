@@ -75,6 +75,13 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       });
 
       if (!facilitator) {
+        await log({
+          logType: 'Error',
+          message: 'Facilitator not found',
+          details: '',
+          origin: 'facilitator.findOne',
+          additionalInfo: { facilitatorId: id },
+        });
         return ctx.notFound('Facilitator not found');
       }
 
@@ -153,6 +160,13 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
           } catch (e) {
             console.warn(`Failed to fetch Cognito data for delegate ${delegate.cognitoId}:`, e.message);
+            await log({
+              logType: 'Error',
+              message: 'Failed to fetch delegate Cognito data',
+              details: e.stack,
+              origin: 'facilitator.findOne',
+              additionalInfo: { delegateCognitoId: delegate.cognitoId },
+            });
           }
         }
 
@@ -216,6 +230,13 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
     } catch (error) {
       console.error('Find one facilitator failed:', error);
+      await log({
+        logType: 'Error',
+        message: 'Failed to fetch facilitator',
+        details: error.stack,
+        origin: 'facilitator.findOne',
+        additionalInfo: { facilitatorId: ctx.params.id },
+      });
       return ctx.internalServerError('Failed to fetch facilitator');
     }
   },
@@ -252,12 +273,12 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         // ❌ If it's a delegate, block registration
         if (isDelegate) {
           await log({
-          logType: 'Error',
-          message: 'Blocked registration: email belongs to delegate',
-          details:'',
-          origin: 'facilitator.create',
-          additionalInfo: { email: data.officialEmailAddress },
-        });
+            logType: 'Error',
+            message: 'Blocked registration: email belongs to delegate',
+            details: '',
+            origin: 'facilitator.create',
+            additionalInfo: { email: data.officialEmailAddress },
+          });
           return ctx.forbidden('This email is associated with a participant account. Please use other email to register.');
         }
 
@@ -269,17 +290,17 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
           if (facilitator) {
             if (facilitator.isCognitoVerified && facilitator.passBought === true) {
-               await log({
-              logType: 'Error',
-              message: 'Registration blocked: email already registered',
-              details: '',
-              origin: 'facilitator.create',
-              additionalInfo: {
-                email: data.officialEmailAddress,
-                cognitoId: existingCognitoId,
-                facilitatorId: facilitator.id,
-              },
-            });
+              await log({
+                logType: 'Error',
+                message: 'Registration blocked: email already registered',
+                details: '',
+                origin: 'facilitator.create',
+                additionalInfo: {
+                  email: data.officialEmailAddress,
+                  cognitoId: existingCognitoId,
+                  facilitatorId: facilitator.id,
+                },
+              });
               return ctx.badRequest('Email already registered.');
             }
 
@@ -341,16 +362,16 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         }
       );
 
-       await log({
-      logType: 'Success',
-      message: 'Facilitator created in Strapi',
-      details: '',
-      origin: 'facilitator.create',
-      additionalInfo: {
-        facilitatorId: createdFacilitator.id,
-        cognitoId,
-      },
-    });
+      await log({
+        logType: 'Success',
+        message: 'Facilitator created in Strapi',
+        details: '',
+        origin: 'facilitator.create',
+        additionalInfo: {
+          facilitatorId: createdFacilitator.id,
+          cognitoId,
+        },
+      });
 
       return {
         ...populatedFacilitator,
@@ -364,12 +385,12 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
     } catch (error) {
       await log({
-      logType: 'Error',
-      message: 'Unexpected error during facilitator creation',
-      details: error.stack,
-      origin: 'facilitator.create',
-      additionalInfo: data,
-    });
+        logType: 'Error',
+        message: 'Unexpected error during facilitator creation',
+        details: error.stack,
+        origin: 'facilitator.create',
+        additionalInfo: data,
+      });
       console.error('Unexpected error in facilitator creation:', error);
       return ctx.internalServerError('An unexpected error occurred while registering.');
     }
@@ -403,13 +424,13 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       const cognitoId = subAttr?.Value;
 
       if (!cognitoId) {
-         await log({
-        logType: 'Error',
-        message: 'Cognito ID (sub) not found after OTP verification',
-        details: '',
-        origin: 'facilitator.verifyFacilitator',
-        additionalInfo: { officialEmailAddress },
-      });
+        await log({
+          logType: 'Error',
+          message: 'Cognito ID (sub) not found after OTP verification',
+          details: '',
+          origin: 'facilitator.verifyFacilitator',
+          additionalInfo: { officialEmailAddress },
+        });
         return ctx.internalServerError('Cognito ID not found for user');
       }
 
@@ -422,14 +443,14 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         await strapi.entityService.update('api::facilitator.facilitator', existing.id, {
           data: { isCognitoVerified: true },
         });
-        
-      await log({
-        logType: 'Success',
-        message: 'Facilitator marked as verified',
-        details: '',
-        origin: 'facilitator.verifyFacilitator',
-        additionalInfo: { facilitatorId: existing.id, cognitoId },
-      });
+
+        await log({
+          logType: 'Success',
+          message: 'Facilitator marked as verified',
+          details: '',
+          origin: 'facilitator.verifyFacilitator',
+          additionalInfo: { facilitatorId: existing.id, cognitoId },
+        });
       }
 
       return {
@@ -438,27 +459,27 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       };
 
     } catch (error) {
-    let userMessage = 'Verification failed due to an unexpected error.';
-    let logMessage = 'Cognito verification error';
+      let userMessage = 'Verification failed due to an unexpected error.';
+      let logMessage = 'Cognito verification error';
 
-    if (error.name === 'CodeMismatchException') {
-      userMessage = 'The provided OTP is incorrect.';
-      logMessage = 'OTP code mismatch';
-    } else if (error.name === 'ExpiredCodeException') {
-      userMessage = 'The OTP has expired. Please request a new one.';
-      logMessage = 'OTP expired';
+      if (error.name === 'CodeMismatchException') {
+        userMessage = 'The provided OTP is incorrect.';
+        logMessage = 'OTP code mismatch';
+      } else if (error.name === 'ExpiredCodeException') {
+        userMessage = 'The OTP has expired. Please request a new one.';
+        logMessage = 'OTP expired';
+      }
+
+      await log({
+        logType: 'Error',
+        message: logMessage,
+        details: error.stack,
+        origin: 'facilitator.verifyFacilitator',
+        additionalInfo: { officialEmailAddress, otp },
+      });
+
+      return ctx.badRequest(userMessage);
     }
-
-    await log({
-      logType: 'Error',
-      message: logMessage,
-      details: error.stack,
-      origin: 'facilitator.verifyFacilitator',
-      additionalInfo: { officialEmailAddress, otp },
-    });
-
-    return ctx.badRequest(userMessage);
-  }
   },
 
   async resendFacilitatorOtp(ctx) {
@@ -482,12 +503,36 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       console.error('Cognito OTP resend error:', error);
 
       if (error.name === 'UserNotFoundException') {
+        await log({
+          logType: 'Error',
+          message: 'OTP resend failed: user not found in Cognito',
+          details: '',
+          origin: 'facilitator.resendFacilitatorOtp',
+          additionalInfo: { officialEmailAddress },
+        });
+
         return ctx.notFound('No user found with the provided email address.');
       }
 
       if (error.name === 'InvalidParameterException') {
+        await log({
+          logType: 'Error',
+          message: 'OTP resend failed: user may already be confirmed',
+          details: '',
+          origin: 'facilitator.resendFacilitatorOtp',
+          additionalInfo: { officialEmailAddress },
+        });
+
         return ctx.badRequest('Cannot resend OTP at this stage. The user might already be confirmed.');
       }
+
+      await log({
+        logType: 'Error',
+        message: 'Unexpected error during OTP resend',
+        details: error.stack,
+        origin: 'facilitator.resendFacilitatorOtp',
+        additionalInfo: { officialEmailAddress },
+      });
 
       return ctx.internalServerError('Failed to resend OTP due to an unexpected error.');
     }
@@ -507,6 +552,13 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       });
 
       if (!existing) {
+        await log({
+          logType: 'Error',
+          message: 'Facilitator not found in update',
+          details: '',
+          origin: 'facilitator.update',
+          additionalInfo: { facilitatorId: id },
+        });
         return ctx.notFound('Facilitator not found');
       }
 
@@ -582,7 +634,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           const mobilePhone = cognitoUser?.phone_number || '';
           const companyName = cognitoUser?.companyName || '';
           const isGstPresent = !!updated?.gstDetails?.companyGstNo;
-         
+
 
           const payload = {
             invoice: 'true',
@@ -616,6 +668,18 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
             const result = await insertIntoSalesforce(payload);
             console.log('result = ', result);
             strapi.log.info('Salesforce insert success:', result.data);
+
+            await log({
+              logType: 'Success',
+              message: 'Salesforce insert successful',
+              details: '',
+              origin: 'facilitator.update',
+              additionalInfo: {
+                facilitatorId: id,
+                registrationPaymentId: result?.registrationPaymentId || '',
+                passes,
+              },
+            });
 
             if (result?.registrationPaymentId) {
               updatedWooOrderDetails = updatedWooOrderDetails.map(o => {
@@ -652,10 +716,33 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
                 };
 
                 strapi.log.info('Invoice details fetched:', invoiceDetails);
+                await log({
+                  logType: 'Success',
+                  message: 'Invoice fetched successfully',
+                  details: '',
+                  origin: 'facilitator.update',
+                  additionalInfo: {
+                    facilitatorId: id,
+                    registrationPaymentId: result.registrationPaymentId,
+                    invoiceNumber: invoiceDetails.invoiceNumber,
+                    invoiceLink: invoiceDetails.invoiceLink,
+                  },
+                });
               } catch (invoiceError) {
                 strapi.log.error('Failed to fetch invoice details:', {
                   message: invoiceError.message,
                   stack: invoiceError.stack,
+                });
+                await log({
+                  logType: 'Error',
+                  message: 'Invoice fetch failed from Salesforce',
+                  details: invoiceError.stack,
+                  origin: 'facilitator.update',
+                  additionalInfo: {
+                    facilitatorId: id,
+                    registrationPaymentId: result?.registrationPaymentId || '',
+                    error: invoiceError.message,
+                  },
                 });
               }
 
@@ -681,15 +768,32 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
               stack: err?.stack || 'No stack trace',
               full: err,
             });
+
+            await log({
+              logType: 'Error',
+              message: 'Salesforce insert failed',
+              details: err?.stack || '',
+              origin: 'facilitator.update',
+              additionalInfo: {
+                facilitatorId: id,
+                error: err?.message || 'No error message',
+              },
+            });
+
           }
-
-
         }
       }
 
       return updated;
     } catch (error) {
       console.error('Update error:', error);
+      await log({
+        logType: 'Error',
+        message: 'Unexpected error during facilitator update',
+        details: error.stack,
+        origin: 'facilitator.update',
+        additionalInfo: { facilitatorId: id },
+      });
       return ctx.internalServerError('An error occurred while updating the facilitator');
     }
   },
@@ -729,10 +833,24 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       const isDelegate = delegateAttr?.Value === 'true';
 
       if (!cognitoId) {
+        await log({
+          logType: 'Error',
+          message: 'Login failed: Cognito ID not found',
+          details: '',
+          origin: 'facilitator.login',
+          additionalInfo: { email: officialEmailAddress },
+        });
         return ctx.notFound('Email is not registered. Please register first.');
       }
 
       if (isDelegate) {
+        await log({
+          logType: 'Error',
+          message: 'Blocked login: email belongs to delegate',
+          details: '',
+          origin: 'facilitator.login',
+          additionalInfo: { email: officialEmailAddress },
+        });
         return ctx.forbidden('This email is associated with a participant account. Please use the main contact email provided during registration to log in.');
       }
 
@@ -747,6 +865,14 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           UserPoolId: process.env.COGNITO_USER_POOL_ID,
         }));
 
+        await log({
+          logType: 'Error',
+          message: 'Blocked login: incomplete registration — user deleted',
+          details: '',
+          origin: 'facilitator.login',
+          additionalInfo: { email: officialEmailAddress, reason: 'facilitator not found in DB' },
+        });
+
         return ctx.badRequest('Your registration was not completed. Please register again.');
       }
 
@@ -760,6 +886,14 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
         // Delete user from Strapi
         await strapi.entityService.delete('api::facilitator.facilitator', facilitator.id);
+
+        await log({
+          logType: 'Error',
+          message: 'Blocked login: partially registered — user deleted',
+          details: '',
+          origin: 'facilitator.login',
+          additionalInfo: { email: officialEmailAddress, reason: 'UNCONFIRMED or pass not bought' },
+        });
 
         return ctx.badRequest('Your registration was not completed. Please register again.');
       }
@@ -784,8 +918,23 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       console.error('Login error:', error);
 
       if (error.name === 'UserNotFoundException') {
+        await log({
+          logType: 'Error',
+          message: 'Login failed: Cognito user not found',
+          details: error.stack,
+          origin: 'facilitator.login',
+          additionalInfo: { email: officialEmailAddress },
+        });
         return ctx.notFound('Email is not registered. Please register first.');
       }
+
+      await log({
+        logType: 'Error',
+        message: 'Unexpected error during login',
+        details: error.stack,
+        origin: 'facilitator.login',
+        additionalInfo: { email: officialEmailAddress },
+      });
 
       return ctx.internalServerError('Failed to process login');
     }
@@ -813,6 +962,13 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       const response = await client.send(challengeCommand);
 
       if (!response.AuthenticationResult) {
+        await log({
+          logType: 'Error',
+          message: 'OTP verification failed',
+          details: '',
+          origin: 'facilitator.verifyLoginOtp',
+          additionalInfo: { email: officialEmailAddress },
+        });
         return ctx.unauthorized('OTP verification failed.');
       }
 
@@ -837,6 +993,13 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       const facilitatorCompany = attributes['custom:companyName'] || null;
 
       if (!cognitoId) {
+        await log({
+          logType: 'Error',
+          message: 'Cognito ID missing after OTP verification',
+          details: '',
+          origin: 'facilitator.verifyLoginOtp',
+          additionalInfo: { email: officialEmailAddress },
+        });
         return ctx.internalServerError('Cognito ID missing');
       }
 
@@ -855,6 +1018,13 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       });
 
       if (!facilitator) {
+        await log({
+          logType: 'Error',
+          message: 'Facilitator not found in Strapi after successful OTP verification',
+          details: '',
+          origin: 'facilitator.verifyLoginOtp',
+          additionalInfo: { email: officialEmailAddress, cognitoId },
+        });
         return ctx.notFound('User not found in the system.');
       }
 
@@ -981,6 +1151,13 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
     } catch (error) {
       console.error('OTP verification failed:', error);
+      await log({
+        logType: 'Error',
+        message: 'Unexpected error in OTP verification',
+        details: error.stack,
+        origin: 'facilitator.verifyLoginOtp',
+        additionalInfo: { email: officialEmailAddress },
+      });
       return ctx.internalServerError('OTP verification failed due to an unexpected error.');
     }
   },
@@ -1053,6 +1230,13 @@ async function fetchWooOrder(wcOrderId) {
     return res.data;
 
   } catch (err) {
+    await log({
+      logType: 'Error',
+      message: 'WooCommerce order fetch failed',
+      details: '',
+      origin: 'utils.fetchWooOrder',
+      additionalInfo: { wcOrderId, error: err.message },
+    });
     return { error: 'WooCommerce order fetch failed', details: err.message };
   }
 }
@@ -1087,6 +1271,13 @@ async function getCognitoUserBySub(sub) {
     };
   } catch (err) {
     console.error('Failed to fetch Cognito user:', err);
+    await log({
+      logType: 'Error',
+      message: 'Failed to fetch Cognito user by sub',
+      details: '',
+      origin: 'utils.getCognitoUserBySub',
+      additionalInfo: { sub, error: err.message },
+    });
     return null;
   }
 }
