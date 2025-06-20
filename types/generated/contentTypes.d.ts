@@ -764,7 +764,7 @@ export interface ApiLogLog extends Struct.CollectionTypeSchema {
   collectionName: 'logs';
   info: {
     description: '';
-    displayName: 'Log';
+    displayName: 'Logs';
     pluralName: 'logs';
     singularName: 'log';
   };
