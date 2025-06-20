@@ -939,6 +939,8 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
         'Silver Partners',
         'Mobile App Security Partner',
         'Bronze Partners',
+        'By-Invite Diamond Partners',
+        'VIP Lounge Partner',
       ]
     >;
     partnerType: Schema.Attribute.Enumeration<
