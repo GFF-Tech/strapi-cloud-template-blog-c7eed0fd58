@@ -913,7 +913,7 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
       Schema.Attribute.Required;
     partnerLogoAltText: Schema.Attribute.String;
     partnerName: Schema.Attribute.String & Schema.Attribute.Required;
-    partnerPriority: Schema.Attribute.Integer;
+    partnerPriority: Schema.Attribute.Decimal;
     partnerSubType: Schema.Attribute.Enumeration<
       [
         'Co-Powered By',
