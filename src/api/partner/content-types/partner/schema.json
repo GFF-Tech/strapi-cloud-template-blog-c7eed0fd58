@@ -38,7 +38,7 @@
       "required": true
     },
     "partnerPriority": {
-      "type": "integer"
+      "type": "decimal"
     },
     "partnerSubType": {
       "type": "enumeration",
