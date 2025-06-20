@@ -821,6 +821,40 @@ export interface ApiMicroSiteHomePageMicroSiteHomePage
   };
 }
 
+export interface ApiMobileAppAreasofInterestMobileAppAreasofInterest
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'mobile_app_areasof_interests';
+  info: {
+    displayName: 'mobileAppAreasofInterests';
+    pluralName: 'mobile-app-areasof-interests';
+    singularName: 'mobile-app-areasof-interest';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::mobile-app-areasof-interest.mobile-app-areasof-interest'
+    > &
+      Schema.Attribute.Private;
+    mobileAppAreasofInterestsIcon: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    mobileAppAreasofInterestsID: Schema.Attribute.UID;
+    mobileAppAreasofInterestsName: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiNewsletterNewsletter extends Struct.CollectionTypeSchema {
   collectionName: 'newsletters';
   info: {
@@ -1802,6 +1836,7 @@ declare module '@strapi/strapi' {
       'api::hotel.hotel': ApiHotelHotel;
       'api::log.log': ApiLogLog;
       'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
+      'api::mobile-app-areasof-interest.mobile-app-areasof-interest': ApiMobileAppAreasofInterestMobileAppAreasofInterest;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::partner.partner': ApiPartnerPartner;
       'api::partners-home-page.partners-home-page': ApiPartnersHomePagePartnersHomePage;
