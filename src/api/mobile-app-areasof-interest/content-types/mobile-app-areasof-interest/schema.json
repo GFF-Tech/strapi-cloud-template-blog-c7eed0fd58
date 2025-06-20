@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "mobile_app_areasof_interests",
+  "info": {
+    "singularName": "mobile-app-areasof-interest",
+    "pluralName": "mobile-app-areasof-interests",
+    "displayName": "mobileAppAreasofInterests"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "mobileAppAreasofInterestsID": {
+      "type": "uid"
+    },
+    "mobileAppAreasofInterestsName": {
+      "type": "string"
+    },
+    "mobileAppAreasofInterestsIcon": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
+    }
+  }
+}
