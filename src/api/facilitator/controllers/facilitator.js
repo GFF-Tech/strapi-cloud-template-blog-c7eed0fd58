@@ -570,6 +570,21 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           : 'false';
 
       const incomingWooOrders = data.wooOrderDetails || [];
+
+      await log({
+        logType: 'Success',
+        message: 'Incoming WooCommerce order details received for facilitator update',
+        origin: 'facilitator.update',
+        details: '',
+        additionalInfo: {
+          facilitatorId: id,
+          newOrders: incomingWooOrders.map(order => ({
+            wcOrderId: order.wcOrderId,
+            wcOrderStatus: order.wcOrderStatus,
+          })),
+        },
+      });
+
       const mergedWooOrders = [...existingWooOrders, ...incomingWooOrders];
 
       const { wooOrderDetails, ...restData } = data;
