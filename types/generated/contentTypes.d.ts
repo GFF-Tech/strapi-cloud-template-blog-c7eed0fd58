@@ -34,6 +34,10 @@ export interface AdminApiToken extends Struct.CollectionTypeSchema {
         minLength: 1;
       }> &
       Schema.Attribute.DefaultTo<''>;
+    encryptedKey: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        minLength: 1;
+      }>;
     expiresAt: Schema.Attribute.DateTime;
     lastUsedAt: Schema.Attribute.DateTime;
     lifespan: Schema.Attribute.BigInteger;
@@ -848,6 +852,37 @@ export interface ApiMobileAppAreasofInterestMobileAppAreasofInterest
     >;
     mobileAppAreasofInterestsID: Schema.Attribute.UID;
     mobileAppAreasofInterestsName: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiMobileAppFaqMobileAppFaq
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'mobile_app_faqs';
+  info: {
+    displayName: 'mobileAppFAQ';
+    pluralName: 'mobile-app-faqs';
+    singularName: 'mobile-app-faq';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::mobile-app-faq.mobile-app-faq'
+    > &
+      Schema.Attribute.Private;
+    mobileAppFAQ_Answer: Schema.Attribute.RichText;
+    mobileAppFAQ_ID: Schema.Attribute.UID;
+    mobileAppFAQ_Question: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1839,6 +1874,7 @@ declare module '@strapi/strapi' {
       'api::log.log': ApiLogLog;
       'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
       'api::mobile-app-areasof-interest.mobile-app-areasof-interest': ApiMobileAppAreasofInterestMobileAppAreasofInterest;
+      'api::mobile-app-faq.mobile-app-faq': ApiMobileAppFaqMobileAppFaq;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::partner.partner': ApiPartnerPartner;
       'api::partners-home-page.partners-home-page': ApiPartnersHomePagePartnersHomePage;
