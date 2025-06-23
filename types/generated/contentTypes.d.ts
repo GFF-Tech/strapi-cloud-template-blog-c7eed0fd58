@@ -486,6 +486,7 @@ export interface ApiConfirmedSpeakerConfirmedSpeaker
     aboutSpeaker: Schema.Attribute.Text;
     additionalMessage: Schema.Attribute.Text;
     biodata: Schema.Attribute.Media<'files'>;
+    biodataUrl: Schema.Attribute.String;
     brandName: Schema.Attribute.String;
     buisnessEmailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
     city: Schema.Attribute.String;
@@ -516,6 +517,7 @@ export interface ApiConfirmedSpeakerConfirmedSpeaker
     pocMobileNumber: Schema.Attribute.String;
     pocOfficialEmailAddress: Schema.Attribute.String & Schema.Attribute.Unique;
     profilePhoto: Schema.Attribute.Media<'images'>;
+    profilePhotoUrl: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     registeredCompanyName: Schema.Attribute.String;
     state: Schema.Attribute.String;
@@ -764,7 +766,7 @@ export interface ApiLogLog extends Struct.CollectionTypeSchema {
   collectionName: 'logs';
   info: {
     description: '';
-    displayName: 'Log';
+    displayName: 'Logs';
     pluralName: 'logs';
     singularName: 'log';
   };
@@ -814,6 +816,71 @@ export interface ApiMicroSiteHomePageMicroSiteHomePage
     > &
       Schema.Attribute.Private;
     logoSection: Schema.Attribute.Component<'common.logo-section', true>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiMobileAppAreasofInterestMobileAppAreasofInterest
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'mobile_app_areasof_interests';
+  info: {
+    displayName: 'mobileAppAreasofInterests';
+    pluralName: 'mobile-app-areasof-interests';
+    singularName: 'mobile-app-areasof-interest';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::mobile-app-areasof-interest.mobile-app-areasof-interest'
+    > &
+      Schema.Attribute.Private;
+    mobileAppAreasofInterestsIcon: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    mobileAppAreasofInterestsID: Schema.Attribute.UID;
+    mobileAppAreasofInterestsName: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiMobileAppFaqMobileAppFaq
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'mobile_app_faqs';
+  info: {
+    displayName: 'mobileAppFAQ';
+    pluralName: 'mobile-app-faqs';
+    singularName: 'mobile-app-faq';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::mobile-app-faq.mobile-app-faq'
+    > &
+      Schema.Attribute.Private;
+    mobileAppFAQ_Answer: Schema.Attribute.RichText;
+    mobileAppFAQ_ID: Schema.Attribute.UID;
+    mobileAppFAQ_Question: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -879,7 +946,7 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
       Schema.Attribute.Required;
     partnerLogoAltText: Schema.Attribute.String;
     partnerName: Schema.Attribute.String & Schema.Attribute.Required;
-    partnerPriority: Schema.Attribute.Integer;
+    partnerPriority: Schema.Attribute.Decimal;
     partnerSubType: Schema.Attribute.Enumeration<
       [
         'Co-Powered By',
@@ -905,6 +972,8 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
         'Silver Partners',
         'Mobile App Security Partner',
         'Bronze Partners',
+        'By-Invite Diamond Partners',
+        'VIP Lounge Partner',
       ]
     >;
     partnerType: Schema.Attribute.Enumeration<
@@ -1218,8 +1287,9 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     desgination: Schema.Attribute.String;
     featureinHomePage: Schema.Attribute.Boolean;
-    fullName: Schema.Attribute.String;
-    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    fullName: Schema.Attribute.String & Schema.Attribute.Required;
+    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
+      Schema.Attribute.Required;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     linkedinProfile: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1231,10 +1301,15 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     salutation: Schema.Attribute.Enumeration<
       ['Shri', 'Mr.', 'Ms.', 'Mrs', 'Dr.', 'Smt.', 'Lt']
-    >;
+    > &
+      Schema.Attribute.Required;
     speakerId: Schema.Attribute.UID;
     speakerPriorityinHomePage: Schema.Attribute.Decimal;
     speakerPriorityinSpeakerPage: Schema.Attribute.Decimal;
+    speakerType: Schema.Attribute.Enumeration<
+      ['One - Tier 1', 'Two - Category A', 'Three - Category B']
+    > &
+      Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1802,6 +1877,8 @@ declare module '@strapi/strapi' {
       'api::hotel.hotel': ApiHotelHotel;
       'api::log.log': ApiLogLog;
       'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
+      'api::mobile-app-areasof-interest.mobile-app-areasof-interest': ApiMobileAppAreasofInterestMobileAppAreasofInterest;
+      'api::mobile-app-faq.mobile-app-faq': ApiMobileAppFaqMobileAppFaq;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::partner.partner': ApiPartnerPartner;
       'api::partners-home-page.partners-home-page': ApiPartnersHomePagePartnersHomePage;
