@@ -75,9 +75,9 @@
       "type": "enumeration",
       "required": true,
       "enum": [
-        "Tier 1",
-        "Category A",
-        "Category B"
+        "One - Tier 1",
+        "Two - Category A",
+        "Three - Category B"
       ]
     }
   }
