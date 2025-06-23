@@ -14,7 +14,8 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-"x-generation-date": "2025-06-23T05:19:10.326Z"  },
+    "x-generation-date": "2025-06-23T06:56:35.411Z"
+  },
   "x-strapi-config": {
     "plugins": [
       "upload",
@@ -15954,6 +15955,12 @@
               "mobileNumber": {
                 "type": "string"
               },
+              "profilePhotoUrl": {
+                "type": "string"
+              },
+              "biodataUrl": {
+                "type": "string"
+              },
               "locale": {
                 "type": "string"
               },
@@ -16790,6 +16797,12 @@
           "mobileNumber": {
             "type": "string"
           },
+          "profilePhotoUrl": {
+            "type": "string"
+          },
+          "biodataUrl": {
+            "type": "string"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -17173,6 +17186,12 @@
                   "type": "boolean"
                 },
                 "mobileNumber": {
+                  "type": "string"
+                },
+                "profilePhotoUrl": {
+                  "type": "string"
+                },
+                "biodataUrl": {
                   "type": "string"
                 },
                 "createdAt": {

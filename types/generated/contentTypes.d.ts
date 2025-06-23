@@ -34,10 +34,6 @@ export interface AdminApiToken extends Struct.CollectionTypeSchema {
         minLength: 1;
       }> &
       Schema.Attribute.DefaultTo<''>;
-    encryptedKey: Schema.Attribute.Text &
-      Schema.Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
     expiresAt: Schema.Attribute.DateTime;
     lastUsedAt: Schema.Attribute.DateTime;
     lifespan: Schema.Attribute.BigInteger;
@@ -490,6 +486,7 @@ export interface ApiConfirmedSpeakerConfirmedSpeaker
     aboutSpeaker: Schema.Attribute.Text;
     additionalMessage: Schema.Attribute.Text;
     biodata: Schema.Attribute.Media<'files'>;
+    biodataUrl: Schema.Attribute.String;
     brandName: Schema.Attribute.String;
     buisnessEmailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
     city: Schema.Attribute.String;
@@ -520,6 +517,7 @@ export interface ApiConfirmedSpeakerConfirmedSpeaker
     pocMobileNumber: Schema.Attribute.String;
     pocOfficialEmailAddress: Schema.Attribute.String & Schema.Attribute.Unique;
     profilePhoto: Schema.Attribute.Media<'images'>;
+    profilePhotoUrl: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     registeredCompanyName: Schema.Attribute.String;
     state: Schema.Attribute.String;
