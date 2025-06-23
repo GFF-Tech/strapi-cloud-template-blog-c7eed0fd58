@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-06-23T07:28:32.538Z"
+    "x-generation-date": "2025-06-23T07:44:04.778Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -30086,9 +30086,9 @@
               "speakerType": {
                 "type": "string",
                 "enum": [
-                  "Tier 1",
-                  "Category A",
-                  "Category B"
+                  "One - Tier 1",
+                  "Two - Category A",
+                  "Three - Category B"
                 ]
               },
               "locale": {
@@ -30881,9 +30881,9 @@
           "speakerType": {
             "type": "string",
             "enum": [
-              "Tier 1",
-              "Category A",
-              "Category B"
+              "One - Tier 1",
+              "Two - Category A",
+              "Three - Category B"
             ]
           },
           "createdAt": {
@@ -31121,9 +31121,9 @@
                 "speakerType": {
                   "type": "string",
                   "enum": [
-                    "Tier 1",
-                    "Category A",
-                    "Category B"
+                    "One - Tier 1",
+                    "Two - Category A",
+                    "Three - Category B"
                   ]
                 },
                 "createdAt": {

@@ -1305,7 +1305,7 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
     speakerPriorityinHomePage: Schema.Attribute.Decimal;
     speakerPriorityinSpeakerPage: Schema.Attribute.Decimal;
     speakerType: Schema.Attribute.Enumeration<
-      ['Tier 1', 'Category A', 'Category B']
+      ['One - Tier 1', 'Two - Category A', 'Three - Category B']
     > &
       Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
