@@ -369,6 +369,38 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAgendaAgenda extends Struct.CollectionTypeSchema {
+  collectionName: 'agendas';
+  info: {
+    displayName: 'agenda';
+    pluralName: 'agendas';
+    singularName: 'agenda';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    agendaDate: Schema.Attribute.String;
+    agendaID: Schema.Attribute.UID;
+    agendaName: Schema.Attribute.String;
+    agendaTopic: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::agenda.agenda'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    speaker: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiAreaOfExpertiseAreaOfExpertise
   extends Struct.CollectionTypeSchema {
   collectionName: 'area_of_expertises';
@@ -1865,6 +1897,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::agenda.agenda': ApiAgendaAgenda;
       'api::area-of-expertise.area-of-expertise': ApiAreaOfExpertiseAreaOfExpertise;
       'api::become-a-speaker.become-a-speaker': ApiBecomeASpeakerBecomeASpeaker;
       'api::company-list.company-list': ApiCompanyListCompanyList;
