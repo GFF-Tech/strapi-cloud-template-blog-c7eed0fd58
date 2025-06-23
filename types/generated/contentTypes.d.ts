@@ -859,6 +859,37 @@ export interface ApiMobileAppAreasofInterestMobileAppAreasofInterest
   };
 }
 
+export interface ApiMobileAppFaqMobileAppFaq
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'mobile_app_faqs';
+  info: {
+    displayName: 'mobileAppFAQ';
+    pluralName: 'mobile-app-faqs';
+    singularName: 'mobile-app-faq';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::mobile-app-faq.mobile-app-faq'
+    > &
+      Schema.Attribute.Private;
+    mobileAppFAQ_Answer: Schema.Attribute.RichText;
+    mobileAppFAQ_ID: Schema.Attribute.UID;
+    mobileAppFAQ_Question: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiNewsletterNewsletter extends Struct.CollectionTypeSchema {
   collectionName: 'newsletters';
   info: {
@@ -1847,6 +1878,7 @@ declare module '@strapi/strapi' {
       'api::log.log': ApiLogLog;
       'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
       'api::mobile-app-areasof-interest.mobile-app-areasof-interest': ApiMobileAppAreasofInterestMobileAppAreasofInterest;
+      'api::mobile-app-faq.mobile-app-faq': ApiMobileAppFaqMobileAppFaq;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::partner.partner': ApiPartnerPartner;
       'api::partners-home-page.partners-home-page': ApiPartnersHomePagePartnersHomePage;
