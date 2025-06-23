@@ -1306,6 +1306,10 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
     speakerId: Schema.Attribute.UID;
     speakerPriorityinHomePage: Schema.Attribute.Decimal;
     speakerPriorityinSpeakerPage: Schema.Attribute.Decimal;
+    speakerType: Schema.Attribute.Enumeration<
+      ['Tier 1', 'Category A', 'Category B']
+    > &
+      Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
