@@ -8,7 +8,7 @@ const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::confirmed-speaker.confirmed-speaker', ({ strapi }) => ({
   async create(ctx) {
-    const baseUrl = process.env.STRAPI_PUBLIC_URL;
+    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
     const { files, body } = ctx.request;
 
     let data;
