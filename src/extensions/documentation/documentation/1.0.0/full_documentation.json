@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-06-20T16:28:02.939Z"
+    "x-generation-date": "2025-06-23T05:19:10.326Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -29020,6 +29020,9 @@
         ],
         "properties": {
           "data": {
+            "required": [
+              "speakerType"
+            ],
             "type": "object",
             "properties": {
               "salutation": {
@@ -29088,6 +29091,14 @@
                 "type": "number",
                 "format": "float"
               },
+              "speakerType": {
+                "type": "string",
+                "enum": [
+                  "Tier 1",
+                  "Category A",
+                  "Category B"
+                ]
+              },
               "locale": {
                 "type": "string"
               },
@@ -29146,6 +29157,9 @@
       },
       "Speaker": {
         "type": "object",
+        "required": [
+          "speakerType"
+        ],
         "properties": {
           "id": {
             "type": "number"
@@ -29872,6 +29886,14 @@
             "type": "number",
             "format": "float"
           },
+          "speakerType": {
+            "type": "string",
+            "enum": [
+              "Tier 1",
+              "Category A",
+              "Category B"
+            ]
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -30103,6 +30125,14 @@
                 "speakerPriorityinHomePage": {
                   "type": "number",
                   "format": "float"
+                },
+                "speakerType": {
+                  "type": "string",
+                  "enum": [
+                    "Tier 1",
+                    "Category A",
+                    "Category B"
+                  ]
                 },
                 "createdAt": {
                   "type": "string",

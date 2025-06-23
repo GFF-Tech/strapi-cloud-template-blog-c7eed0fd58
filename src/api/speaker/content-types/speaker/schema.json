@@ -10,6 +10,7 @@
   "options": {
     "draftAndPublish": false
   },
+  "pluginOptions": {},
   "attributes": {
     "salutation": {
       "type": "enumeration",
@@ -69,6 +70,15 @@
     },
     "speakerPriorityinHomePage": {
       "type": "decimal"
+    },
+    "speakerType": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "Tier 1",
+        "Category A",
+        "Category B"
+      ]
     }
   }
 }
