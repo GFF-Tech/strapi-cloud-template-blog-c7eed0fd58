@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "agendas",
+  "info": {
+    "singularName": "agenda",
+    "pluralName": "agendas",
+    "displayName": "agenda"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "agendaID": {
+      "type": "uid"
+    },
+    "agendaName": {
+      "type": "string"
+    },
+    "agendaTopic": {
+      "type": "string"
+    },
+    "agendaDate": {
+      "type": "string"
+    },
+    "speaker": {
+      "type": "string"
+    }
+  }
+}
