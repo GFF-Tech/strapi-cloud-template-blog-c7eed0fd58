@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-06-23T07:44:04.778Z"
+    "x-generation-date": "2025-06-23T08:34:58.604Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -30013,6 +30013,9 @@
         "properties": {
           "data": {
             "required": [
+              "salutation",
+              "fullName",
+              "image",
               "speakerType"
             ],
             "type": "object",
@@ -30150,6 +30153,9 @@
       "Speaker": {
         "type": "object",
         "required": [
+          "salutation",
+          "fullName",
+          "image",
           "speakerType"
         ],
         "properties": {

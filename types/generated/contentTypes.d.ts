@@ -1287,8 +1287,9 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     desgination: Schema.Attribute.String;
     featureinHomePage: Schema.Attribute.Boolean;
-    fullName: Schema.Attribute.String;
-    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    fullName: Schema.Attribute.String & Schema.Attribute.Required;
+    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
+      Schema.Attribute.Required;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     linkedinProfile: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1300,7 +1301,8 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     salutation: Schema.Attribute.Enumeration<
       ['Shri', 'Mr.', 'Ms.', 'Mrs', 'Dr.', 'Smt.', 'Lt']
-    >;
+    > &
+      Schema.Attribute.Required;
     speakerId: Schema.Attribute.UID;
     speakerPriorityinHomePage: Schema.Attribute.Decimal;
     speakerPriorityinSpeakerPage: Schema.Attribute.Decimal;
