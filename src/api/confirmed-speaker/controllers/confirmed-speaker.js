@@ -8,7 +8,7 @@ const { createCoreController } = require('@strapi/strapi').factories;
 
 module.exports = createCoreController('api::confirmed-speaker.confirmed-speaker', ({ strapi }) => ({
   async create(ctx) {
-    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+    // const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
     const { files, body } = ctx.request;
 
     let data;
@@ -41,7 +41,8 @@ module.exports = createCoreController('api::confirmed-speaker.confirmed-speaker'
         data.profilePhoto = profileFile.id;
 
         // ✅ NEW: store file URL in plain text field
-        data.profilePhotoUrl = `${baseUrl}${profileFile.url}`;
+        // data.profilePhotoUrl = `${baseUrl}${profileFile.url}`;
+        data.profilePhotoUrl = profileFile.url;
       }
     }
 
@@ -62,7 +63,8 @@ module.exports = createCoreController('api::confirmed-speaker.confirmed-speaker'
         data.biodata = biodataFile.id;
 
         // ✅ NEW: store file URL in plain text field
-        data.biodataUrl = `${baseUrl}${biodataFile.url}`;
+        // data.biodataUrl = `${baseUrl}${biodataFile.url}`;
+         data.biodataUrl = biodataFile.url;
       }
     }
 
