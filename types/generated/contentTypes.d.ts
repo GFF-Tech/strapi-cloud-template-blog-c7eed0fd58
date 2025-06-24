@@ -547,7 +547,7 @@ export interface ApiConfirmedSpeakerConfirmedSpeaker
     pocFirstName: Schema.Attribute.String;
     pocLastName: Schema.Attribute.String;
     pocMobileNumber: Schema.Attribute.String;
-    pocOfficialEmailAddress: Schema.Attribute.String & Schema.Attribute.Unique;
+    pocOfficialEmailAddress: Schema.Attribute.String;
     profilePhoto: Schema.Attribute.Media<'images'>;
     profilePhotoUrl: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
