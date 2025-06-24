@@ -1,9 +1,24 @@
 'use strict';
 
-/**
- * company-list router
- */
-
-const { createCoreRouter } = require('@strapi/strapi').factories;
-
-module.exports = createCoreRouter('api::company-list.company-list');
+module.exports = {
+  routes: [
+    {
+      method: 'POST',
+      path: '/company-lists/bulk',
+      handler: 'company-list.bulkCreate',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+     {
+      method: 'GET',
+      path: '/company-lists',
+      handler: 'company-list.find',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+  ],
+};
