@@ -726,7 +726,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
                 invoiceDetails = {
                   invoiceNumber: invoiceResponse?.Name || '',
                   paymentDate: paymentDate,
-                  amountPaid: invoiceResponse?.Amount_Paid || '',
+                  amountPaid: invoiceResponse?.Gross_Total || '',
                   invoiceLink: invoiceResponse?.Content_Document_URL__c || '',
                 };
 
