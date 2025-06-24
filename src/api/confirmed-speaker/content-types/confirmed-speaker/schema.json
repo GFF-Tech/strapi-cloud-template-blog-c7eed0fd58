@@ -90,7 +90,7 @@
     },
     "pocOfficialEmailAddress": {
       "type": "string",
-      "unique": true
+      "unique": false
     },
     "pocCountry": {
       "type": "string"
