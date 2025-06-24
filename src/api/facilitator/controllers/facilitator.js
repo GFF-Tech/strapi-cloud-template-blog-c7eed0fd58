@@ -726,7 +726,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
                 invoiceDetails = {
                   invoiceNumber: invoiceResponse?.Name || '',
                   paymentDate: paymentDate,
-                  amountPaid: invoiceResponse?.Amount_Paid + ' + Tax' || '',
+                  amountPaid: invoiceResponse?.Gross_Total || '',
                   invoiceLink: invoiceResponse?.Content_Document_URL__c || '',
                 };
 
@@ -756,7 +756,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
                   additionalInfo: {
                     facilitatorId: id,
                     registrationPaymentId: result?.registrationPaymentId || '',
-                    error: invoiceError.message,
+                    error: invoiceError,
                   },
                 });
               }
@@ -791,7 +791,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
               origin: 'facilitator.update',
               additionalInfo: {
                 facilitatorId: id,
-                error: err?.message || 'No error message',
+                error: err,
               },
             });
 

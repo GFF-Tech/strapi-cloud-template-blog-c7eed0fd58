@@ -4,18 +4,14 @@
  * confirmed-speaker router
  */
 
-const { createCoreRouter } = require('@strapi/strapi').factories;
-
-module.exports = createCoreRouter('api::confirmed-speaker.confirmed-speaker');
 module.exports = {
     routes: [
-        {
+       {
       method: 'GET',
-      path: '/confirmed-speakers',
+      path: '/confirmed-speakers-auth',
       handler: 'confirmed-speaker.find',
       config: {
-        policies: [],
-        middlewares: [],
+        policies: ['global::api-token-auth'],
       },
     },
       {
@@ -24,7 +20,6 @@ module.exports = {
         handler: 'confirmed-speaker.create',
         config: {
           policies: [],
-          middlewares: [],
         },
       },
     ],
