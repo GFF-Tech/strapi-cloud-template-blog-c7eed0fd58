@@ -4,6 +4,23 @@
  * early-stage-pitch router
  */
 
-const { createCoreRouter } = require('@strapi/strapi').factories;
-
-module.exports = createCoreRouter('api::early-stage-pitch.early-stage-pitch');
+module.exports = {
+    routes: [
+       {
+      method: 'GET',
+      path: '/early-stage-pitches-auth',
+      handler: 'early-stage-pitch.find',
+      config: {
+        policies: ['global::api-token-auth'],
+      },
+    },
+      {
+        method: 'POST',
+        path: '/early-stage-pitches',
+        handler: 'early-stage-pitch.create',
+        config: {
+          policies: [],
+        },
+      },
+    ],
+  };
