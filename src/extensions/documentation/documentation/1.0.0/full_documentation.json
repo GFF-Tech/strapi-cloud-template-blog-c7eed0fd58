@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-06-25T07:26:43.717Z"
+    "x-generation-date": "2025-06-25T09:29:59.359Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -23742,20 +23742,19 @@
                   "Cloud Communications Partner",
                   "Speaker Lounge Partner",
                   "Banking Innovation Partner",
+                  "By-Invite Dinner Partners",
                   "Diamond Partners",
-                  "Credit Insights Partner",
+                  "Credit Innovation Partner",
                   "Gourmet Partner",
                   "Platinum Partner",
                   "Charging Station Partner",
                   "Notepad Partner",
                   "Caffeine Partner",
                   "Gold Partners",
-                  "Credit Innovation Partner",
                   "Spend Management Partner",
                   "Silver Partners",
                   "Mobile App Security Partner",
                   "Bronze Partners",
-                  "By-Invite Diamond Partners",
                   "VIP Lounge Partner"
                 ]
               },
@@ -24466,20 +24465,19 @@
               "Cloud Communications Partner",
               "Speaker Lounge Partner",
               "Banking Innovation Partner",
+              "By-Invite Dinner Partners",
               "Diamond Partners",
-              "Credit Insights Partner",
+              "Credit Innovation Partner",
               "Gourmet Partner",
               "Platinum Partner",
               "Charging Station Partner",
               "Notepad Partner",
               "Caffeine Partner",
               "Gold Partners",
-              "Credit Innovation Partner",
               "Spend Management Partner",
               "Silver Partners",
               "Mobile App Security Partner",
               "Bronze Partners",
-              "By-Invite Diamond Partners",
               "VIP Lounge Partner"
             ]
           },
@@ -24699,20 +24697,19 @@
                     "Cloud Communications Partner",
                     "Speaker Lounge Partner",
                     "Banking Innovation Partner",
+                    "By-Invite Dinner Partners",
                     "Diamond Partners",
-                    "Credit Insights Partner",
+                    "Credit Innovation Partner",
                     "Gourmet Partner",
                     "Platinum Partner",
                     "Charging Station Partner",
                     "Notepad Partner",
                     "Caffeine Partner",
                     "Gold Partners",
-                    "Credit Innovation Partner",
                     "Spend Management Partner",
                     "Silver Partners",
                     "Mobile App Security Partner",
                     "Bronze Partners",
-                    "By-Invite Diamond Partners",
                     "VIP Lounge Partner"
                   ]
                 },
