@@ -649,7 +649,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           const mobilePhone = cognitoUser?.phone_number || '';
           const companyName = cognitoUser?.companyName || '';
           const isGstPresent = !!updated?.gstDetails?.companyGstNo;
-
+          const currencySymbol = wooOrder.currency === 'INR' ? '₹' : wooOrder.currency === 'USD' ? '$' : '';
 
           const payload = {
             invoice: 'true',
@@ -726,7 +726,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
                 invoiceDetails = {
                   invoiceNumber: invoiceResponse?.Name || '',
                   paymentDate: paymentDate,
-                  amountPaid: invoiceResponse?.Gross_Total || '',
+                  amountPaid: currencySymbol + ' ' + invoiceResponse?.Gross_Total || '',
                   invoiceLink: invoiceResponse?.Content_Document_URL__c || '',
                 };
 
