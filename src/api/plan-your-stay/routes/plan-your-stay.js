@@ -4,6 +4,23 @@
  * plan-your-stay router
  */
 
-const { createCoreRouter } = require('@strapi/strapi').factories;
-
-module.exports = createCoreRouter('api::plan-your-stay.plan-your-stay');
+module.exports = {
+    routes: [
+       {
+      method: 'GET',
+      path: '/plan-your-stays-auth',
+      handler: 'plan-your-stay.find',
+      config: {
+        policies: ['global::api-token-auth'],
+      },
+    },
+      {
+        method: 'POST',
+        path: '/plan-your-stays',
+        handler: 'plan-your-stay.create',
+        config: {
+          policies: [],
+        },
+      },
+    ],
+  };
