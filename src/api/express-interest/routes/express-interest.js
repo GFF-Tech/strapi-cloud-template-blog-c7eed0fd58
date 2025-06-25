@@ -3,7 +3,23 @@
 /**
  * express-interest router
  */
-
-const { createCoreRouter } = require('@strapi/strapi').factories;
-
-module.exports = createCoreRouter('api::express-interest.express-interest');
+module.exports = {
+    routes: [
+       {
+      method: 'GET',
+      path: '/express-interests-auth',
+      handler: 'express-interest.find',
+      config: {
+        policies: ['global::api-token-auth'],
+      },
+    },
+      {
+        method: 'POST',
+        path: '/express-interests',
+        handler: 'express-interest.create',
+        config: {
+          policies: [],
+        },
+      },
+    ],
+  };
