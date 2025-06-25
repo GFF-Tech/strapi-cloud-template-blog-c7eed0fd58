@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-06-25T12:40:08.108Z"
+    "x-generation-date": "2025-06-25T12:45:29.994Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -23756,6 +23756,7 @@
                   "Mobile App Security Partner",
                   "Bronze Partners",
                   "By-Invite Diamond Partners",
+                  "By-Invite Dinner Partners",
                   "VIP Lounge Partner"
                 ]
               },
@@ -24480,6 +24481,7 @@
               "Mobile App Security Partner",
               "Bronze Partners",
               "By-Invite Diamond Partners",
+              "By-Invite Dinner Partners",
               "VIP Lounge Partner"
             ]
           },
@@ -24713,6 +24715,7 @@
                     "Mobile App Security Partner",
                     "Bronze Partners",
                     "By-Invite Diamond Partners",
+                    "By-Invite Dinner Partners",
                     "VIP Lounge Partner"
                   ]
                 },
