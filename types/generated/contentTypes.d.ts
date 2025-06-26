@@ -1010,8 +1010,6 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
         'Silver Partners',
         'Mobile App Security Partner',
         'Bronze Partners',
-        'By-Invite Diamond Partners',
-        'By-Invite Dinner Partners',
         'VIP Lounge Partner',
       ]
     >;
