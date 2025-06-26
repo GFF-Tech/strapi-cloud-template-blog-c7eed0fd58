@@ -372,6 +372,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiAgendaAgenda extends Struct.CollectionTypeSchema {
   collectionName: 'agendas';
   info: {
+    description: '';
     displayName: 'agenda';
     pluralName: 'agendas';
     singularName: 'agenda';
@@ -380,10 +381,8 @@ export interface ApiAgendaAgenda extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    agendaDate: Schema.Attribute.String;
+    agenda_code: Schema.Attribute.String;
     agendaID: Schema.Attribute.UID;
-    agendaName: Schema.Attribute.String;
-    agendaTopic: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -394,7 +393,14 @@ export interface ApiAgendaAgenda extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    speaker: Schema.Attribute.String;
+    session_date: Schema.Attribute.String;
+    session_desc: Schema.Attribute.Blocks;
+    session_end_time: Schema.Attribute.String;
+    session_format: Schema.Attribute.String;
+    session_hall: Schema.Attribute.String;
+    session_name: Schema.Attribute.String;
+    session_start_time: Schema.Attribute.String;
+    session_sub_hall: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1004,6 +1010,8 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
         'Silver Partners',
         'Mobile App Security Partner',
         'Bronze Partners',
+        'By-Invite Diamond Partners',
+        'By-Invite Dinner Partners',
         'VIP Lounge Partner',
       ]
     >;
