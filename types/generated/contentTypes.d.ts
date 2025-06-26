@@ -977,6 +977,8 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
       'api::partner.partner'
     > &
       Schema.Attribute.Private;
+    partnerfeatureinHomePage: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     partnerID: Schema.Attribute.UID<'partnerName'>;
     partnerLogo: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
