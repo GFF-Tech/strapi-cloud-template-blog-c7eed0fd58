@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-06-25T12:45:29.994Z"
+    "x-generation-date": "2025-06-26T01:54:17.488Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -13561,16 +13561,29 @@
               "agendaID": {
                 "type": "string"
               },
-              "agendaName": {
+              "agenda_code": {
                 "type": "string"
               },
-              "agendaTopic": {
+              "session_date": {
                 "type": "string"
               },
-              "agendaDate": {
+              "session_start_time": {
                 "type": "string"
               },
-              "speaker": {
+              "session_end_time": {
+                "type": "string"
+              },
+              "session_name": {
+                "type": "string"
+              },
+              "session_desc": {},
+              "session_hall": {
+                "type": "string"
+              },
+              "session_sub_hall": {
+                "type": "string"
+              },
+              "session_format": {
                 "type": "string"
               },
               "locale": {
@@ -13641,16 +13654,29 @@
           "agendaID": {
             "type": "string"
           },
-          "agendaName": {
+          "agenda_code": {
             "type": "string"
           },
-          "agendaTopic": {
+          "session_date": {
             "type": "string"
           },
-          "agendaDate": {
+          "session_start_time": {
             "type": "string"
           },
-          "speaker": {
+          "session_end_time": {
+            "type": "string"
+          },
+          "session_name": {
+            "type": "string"
+          },
+          "session_desc": {},
+          "session_hall": {
+            "type": "string"
+          },
+          "session_sub_hall": {
+            "type": "string"
+          },
+          "session_format": {
             "type": "string"
           },
           "createdAt": {
@@ -13956,16 +13982,29 @@
                 "agendaID": {
                   "type": "string"
                 },
-                "agendaName": {
+                "agenda_code": {
                   "type": "string"
                 },
-                "agendaTopic": {
+                "session_date": {
                   "type": "string"
                 },
-                "agendaDate": {
+                "session_start_time": {
                   "type": "string"
                 },
-                "speaker": {
+                "session_end_time": {
+                  "type": "string"
+                },
+                "session_name": {
+                  "type": "string"
+                },
+                "session_desc": {},
+                "session_hall": {
+                  "type": "string"
+                },
+                "session_sub_hall": {
+                  "type": "string"
+                },
+                "session_format": {
                   "type": "string"
                 },
                 "createdAt": {

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "agenda",
     "pluralName": "agendas",
-    "displayName": "agenda"
+    "displayName": "agenda",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -13,16 +14,31 @@
     "agendaID": {
       "type": "uid"
     },
-    "agendaName": {
+    "agenda_code": {
       "type": "string"
     },
-    "agendaTopic": {
+    "session_date": {
       "type": "string"
     },
-    "agendaDate": {
+    "session_start_time": {
       "type": "string"
     },
-    "speaker": {
+    "session_end_time": {
+      "type": "string"
+    },
+    "session_name": {
+      "type": "string"
+    },
+    "session_desc": {
+      "type": "blocks"
+    },
+    "session_hall": {
+      "type": "string"
+    },
+    "session_sub_hall": {
+      "type": "string"
+    },
+    "session_format": {
       "type": "string"
     }
   }
