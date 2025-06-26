@@ -79,6 +79,10 @@
     },
     "partnerLogoAltText": {
       "type": "string"
+    },
+    "partnerfeatureinHomePage": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
