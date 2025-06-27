@@ -1004,6 +1004,7 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
         'Banking Innovation Partner',
         'By-Invite Dinner Partners',
         'Diamond Partners',
+        'Credit Insights Partner',
         'Credit Innovation Partner',
         'Gourmet Partner',
         'Platinum Partner',
