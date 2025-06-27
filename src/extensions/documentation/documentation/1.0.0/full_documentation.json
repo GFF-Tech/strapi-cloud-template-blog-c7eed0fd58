@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-06-27T09:55:28.816Z"
+    "x-generation-date": "2025-06-27T14:15:33.480Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -23816,6 +23816,7 @@
                   "Banking Innovation Partner",
                   "By-Invite Dinner Partners",
                   "Diamond Partners",
+                  "Credit Insights Partner",
                   "Credit Innovation Partner",
                   "Gourmet Partner",
                   "Platinum Partner",
@@ -24543,6 +24544,7 @@
               "Banking Innovation Partner",
               "By-Invite Dinner Partners",
               "Diamond Partners",
+              "Credit Insights Partner",
               "Credit Innovation Partner",
               "Gourmet Partner",
               "Platinum Partner",
@@ -24779,6 +24781,7 @@
                     "Banking Innovation Partner",
                     "By-Invite Dinner Partners",
                     "Diamond Partners",
+                    "Credit Insights Partner",
                     "Credit Innovation Partner",
                     "Gourmet Partner",
                     "Platinum Partner",
