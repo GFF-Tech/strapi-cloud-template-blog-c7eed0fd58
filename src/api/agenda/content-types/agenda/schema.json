@@ -29,9 +29,6 @@
     "session_name": {
       "type": "string"
     },
-    "session_desc": {
-      "type": "blocks"
-    },
     "session_hall": {
       "type": "string"
     },
@@ -49,6 +46,9 @@
     },
     "session_speakers": {
       "type": "string"
+    },
+    "session_desc": {
+      "type": "text"
     }
   }
 }
