@@ -705,7 +705,10 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
               });
 
               await strapi.entityService.update('api::facilitator.facilitator', id, {
-                data: { wooOrderDetails: updatedWooOrderDetails },
+                data: { 
+                  wooOrderDetails: updatedWooOrderDetails,
+                  gstDetails: data.gstDetails ?? null,
+                 },
               });
 
               let invoiceDetails = null;
