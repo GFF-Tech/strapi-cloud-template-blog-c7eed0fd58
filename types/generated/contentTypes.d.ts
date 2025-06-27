@@ -398,12 +398,12 @@ export interface ApiAgendaAgenda extends Struct.CollectionTypeSchema {
     session_end_time: Schema.Attribute.String;
     session_format: Schema.Attribute.String;
     session_hall: Schema.Attribute.String;
-    session_host: Schema.Attribute.String;
+    session_host: Schema.Attribute.Text;
     session_name: Schema.Attribute.String;
-    session_speakers: Schema.Attribute.String;
+    session_speakers: Schema.Attribute.Text;
     session_start_time: Schema.Attribute.String;
     session_sub_hall: Schema.Attribute.String;
-    session_tags: Schema.Attribute.String;
+    session_tags: Schema.Attribute.Text;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
