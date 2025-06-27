@@ -394,7 +394,7 @@ export interface ApiAgendaAgenda extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     session_date: Schema.Attribute.String;
-    session_desc: Schema.Attribute.Blocks;
+    session_desc: Schema.Attribute.Text;
     session_end_time: Schema.Attribute.String;
     session_format: Schema.Attribute.String;
     session_hall: Schema.Attribute.String;
