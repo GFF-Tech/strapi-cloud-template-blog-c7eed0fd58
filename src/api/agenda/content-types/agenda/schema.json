@@ -40,6 +40,15 @@
     },
     "session_format": {
       "type": "string"
+    },
+    "session_tags": {
+      "type": "string"
+    },
+    "session_host": {
+      "type": "string"
+    },
+    "session_speakers": {
+      "type": "string"
     }
   }
 }
