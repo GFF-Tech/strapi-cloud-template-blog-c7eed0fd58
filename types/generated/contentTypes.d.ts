@@ -394,13 +394,16 @@ export interface ApiAgendaAgenda extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     session_date: Schema.Attribute.String;
-    session_desc: Schema.Attribute.Blocks;
+    session_desc: Schema.Attribute.Text;
     session_end_time: Schema.Attribute.String;
     session_format: Schema.Attribute.String;
     session_hall: Schema.Attribute.String;
+    session_host: Schema.Attribute.Text;
     session_name: Schema.Attribute.String;
+    session_speakers: Schema.Attribute.Text;
     session_start_time: Schema.Attribute.String;
     session_sub_hall: Schema.Attribute.String;
+    session_tags: Schema.Attribute.Text;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1001,6 +1004,7 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
         'Banking Innovation Partner',
         'By-Invite Dinner Partners',
         'Diamond Partners',
+        'Credit Insights Partner',
         'Credit Innovation Partner',
         'Gourmet Partner',
         'Platinum Partner',

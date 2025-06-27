@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-06-26T17:01:52.121Z"
+    "x-generation-date": "2025-06-27T14:15:33.480Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -13576,7 +13576,6 @@
               "session_name": {
                 "type": "string"
               },
-              "session_desc": {},
               "session_hall": {
                 "type": "string"
               },
@@ -13584,6 +13583,18 @@
                 "type": "string"
               },
               "session_format": {
+                "type": "string"
+              },
+              "session_tags": {
+                "type": "string"
+              },
+              "session_host": {
+                "type": "string"
+              },
+              "session_speakers": {
+                "type": "string"
+              },
+              "session_desc": {
                 "type": "string"
               },
               "locale": {
@@ -13669,7 +13680,6 @@
           "session_name": {
             "type": "string"
           },
-          "session_desc": {},
           "session_hall": {
             "type": "string"
           },
@@ -13677,6 +13687,18 @@
             "type": "string"
           },
           "session_format": {
+            "type": "string"
+          },
+          "session_tags": {
+            "type": "string"
+          },
+          "session_host": {
+            "type": "string"
+          },
+          "session_speakers": {
+            "type": "string"
+          },
+          "session_desc": {
             "type": "string"
           },
           "createdAt": {
@@ -13997,7 +14019,6 @@
                 "session_name": {
                   "type": "string"
                 },
-                "session_desc": {},
                 "session_hall": {
                   "type": "string"
                 },
@@ -14005,6 +14026,18 @@
                   "type": "string"
                 },
                 "session_format": {
+                  "type": "string"
+                },
+                "session_tags": {
+                  "type": "string"
+                },
+                "session_host": {
+                  "type": "string"
+                },
+                "session_speakers": {
+                  "type": "string"
+                },
+                "session_desc": {
                   "type": "string"
                 },
                 "createdAt": {
@@ -23783,6 +23816,7 @@
                   "Banking Innovation Partner",
                   "By-Invite Dinner Partners",
                   "Diamond Partners",
+                  "Credit Insights Partner",
                   "Credit Innovation Partner",
                   "Gourmet Partner",
                   "Platinum Partner",
@@ -24510,6 +24544,7 @@
               "Banking Innovation Partner",
               "By-Invite Dinner Partners",
               "Diamond Partners",
+              "Credit Insights Partner",
               "Credit Innovation Partner",
               "Gourmet Partner",
               "Platinum Partner",
@@ -24746,6 +24781,7 @@
                     "Banking Innovation Partner",
                     "By-Invite Dinner Partners",
                     "Diamond Partners",
+                    "Credit Insights Partner",
                     "Credit Innovation Partner",
                     "Gourmet Partner",
                     "Platinum Partner",

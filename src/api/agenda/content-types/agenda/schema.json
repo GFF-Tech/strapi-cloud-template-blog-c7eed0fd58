@@ -29,9 +29,6 @@
     "session_name": {
       "type": "string"
     },
-    "session_desc": {
-      "type": "blocks"
-    },
     "session_hall": {
       "type": "string"
     },
@@ -40,6 +37,18 @@
     },
     "session_format": {
       "type": "string"
+    },
+    "session_tags": {
+      "type": "text"
+    },
+    "session_host": {
+      "type": "text"
+    },
+    "session_speakers": {
+      "type": "text"
+    },
+    "session_desc": {
+      "type": "text"
     }
   }
 }

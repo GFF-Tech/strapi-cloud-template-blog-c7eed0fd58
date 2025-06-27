@@ -563,13 +563,31 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       }
 
       const existingWooOrders = existing.wooOrderDetails || [];
+      const incomingWooOrders = data.wooOrderDetails || [];
+
+      const existingOrderIds = existingWooOrders.map(order => order.wcOrderId);
+      const duplicateOrders = incomingWooOrders.filter(order => existingOrderIds.includes(order.wcOrderId));
+
+      if (duplicateOrders.length > 0) {
+          await log({
+            logType: 'Error',
+            message: 'Duplicate WooCommerce order(s) detected in facilitator update',
+            origin: 'facilitator.update',
+            details: '',
+            additionalInfo: {
+              facilitatorId: id,
+              duplicateOrderIds: duplicateOrders.map(o => o.wcOrderId),
+            },
+          });
+          return ctx.badRequest(`Duplicate WooCommerce order(s) found: ${duplicateOrders.map(o => o.wcOrderId).join(', ')}`);
+        }
+
       const addParticpant =
         existingWooOrders.length > 0 &&
           existingWooOrders.some(order => order.wcOrderStatus === 'completed')
           ? 'true'
           : 'false';
 
-      const incomingWooOrders = data.wooOrderDetails || [];
 
       await log({
         logType: 'Success',
@@ -705,7 +723,10 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
               });
 
               await strapi.entityService.update('api::facilitator.facilitator', id, {
-                data: { wooOrderDetails: updatedWooOrderDetails },
+                data: { 
+                  wooOrderDetails: updatedWooOrderDetails,
+                  gstDetails: data.gstDetails ?? null,
+                 },
               });
 
               let invoiceDetails = null;
