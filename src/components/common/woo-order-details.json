@@ -7,7 +7,8 @@
   "options": {},
   "attributes": {
     "wcOrderId": {
-      "type": "string"
+      "type": "string",
+      "unique": false
     },
     "wcOrderStatus": {
       "type": "string"
