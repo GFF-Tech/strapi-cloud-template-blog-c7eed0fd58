@@ -39,13 +39,13 @@
       "type": "string"
     },
     "session_tags": {
-      "type": "string"
+      "type": "text"
     },
     "session_host": {
-      "type": "string"
+      "type": "text"
     },
     "session_speakers": {
-      "type": "string"
+      "type": "text"
     },
     "session_desc": {
       "type": "text"
