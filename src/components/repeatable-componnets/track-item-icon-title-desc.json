@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_repeatable_componnets_track_item_icon_title_descs",
+  "info": {
+    "displayName": "TrackItem_IconTitleDesc"
+  },
+  "options": {},
+  "attributes": {
+    "Icon": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "Title": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "text"
+    }
+  }
+}

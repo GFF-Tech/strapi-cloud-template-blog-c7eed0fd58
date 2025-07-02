@@ -18920,6 +18920,9 @@
           },
           "companyAddress": {
             "type": "string"
+          },
+          "isCompanyAddressSameAsBilling": {
+            "type": "boolean"
           }
         }
       },

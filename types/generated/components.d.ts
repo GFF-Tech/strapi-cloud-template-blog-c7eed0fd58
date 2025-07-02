@@ -28,10 +28,23 @@ export interface CommonComponentsRegText extends Struct.ComponentSchema {
     RegularText: Schema.Attribute.Blocks;
   };
 }
-
+export interface CommonComponentsTracksSection extends Struct.ComponentSchema {
+  collectionName: 'components_common_components_tracks_sections';
+  info: {
+    displayName: 'Tracks Section';
+  };
+  attributes: {
+    eachTrackItem: Schema.Attribute.Component<
+      'repeatable-componnets.track-item-icon-title-desc',
+      true
+    >;
+    Title: Schema.Attribute.String;
+  };
+}
 export interface CommonGstDetails extends Struct.ComponentSchema {
   collectionName: 'components_common_gst_details';
   info: {
+    description: '';
     displayName: 'GstDetails';
   };
   attributes: {
@@ -40,6 +53,7 @@ export interface CommonGstDetails extends Struct.ComponentSchema {
     companyGstNo: Schema.Attribute.String;
     companyName: Schema.Attribute.String;
     companyPOC: Schema.Attribute.String;
+    isCompanyAddressSameAsBilling: Schema.Attribute.Boolean;
     pincode: Schema.Attribute.String;
   };
 }
@@ -103,16 +117,31 @@ export interface CommonWooOrderDetails extends Struct.ComponentSchema {
   };
 }
 
+export interface RepeatableComponnetsTrackItemIconTitleDesc
+  extends Struct.ComponentSchema {
+  collectionName: 'components_repeatable_componnets_track_item_icon_title_descs';
+  info: {
+    displayName: 'TrackItem_IconTitleDesc';
+  };
+  attributes: {
+    Description: Schema.Attribute.Text;
+    Icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    Title: Schema.Attribute.String;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'common-components.hero-section': CommonComponentsHeroSection;
       'common-components.reg-text': CommonComponentsRegText;
+      'common-components.tracks-section': CommonComponentsTracksSection;
       'common.gst-details': CommonGstDetails;
       'common.logo': CommonLogo;
       'common.logo-section': CommonLogoSection;
       'common.partner-show-in-page': CommonPartnerShowInPage;
       'common.woo-order-details': CommonWooOrderDetails;
+      'repeatable-componnets.track-item-icon-title-desc': RepeatableComponnetsTrackItemIconTitleDesc;
     }
   }
 }
