@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-07-02T20:28:26.585Z"
+    "x-generation-date": "2025-07-02T21:07:09.686Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -29393,6 +29393,9 @@
                     },
                     {
                       "$ref": "#/components/schemas/CommonComponentsHeroSectionComponent"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CommonComponentsTracksSectionComponent"
                     }
                   ]
                 },
@@ -29400,9 +29403,16 @@
                   "propertyName": "__component",
                   "mapping": {
                     "common-components.reg-text": "#/components/schemas/CommonComponentsRegTextComponent",
-                    "common-components.hero-section": "#/components/schemas/CommonComponentsHeroSectionComponent"
+                    "common-components.hero-section": "#/components/schemas/CommonComponentsHeroSectionComponent",
+                    "common-components.tracks-section": "#/components/schemas/CommonComponentsTracksSectionComponent"
                   }
                 }
+              },
+              "pageName": {
+                "type": "string"
+              },
+              "pageID": {
+                "type": "string"
               },
               "locale": {
                 "type": "string"
@@ -29478,6 +29488,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/CommonComponentsHeroSectionComponent"
+                },
+                {
+                  "$ref": "#/components/schemas/CommonComponentsTracksSectionComponent"
                 }
               ]
             },
@@ -29485,9 +29498,16 @@
               "propertyName": "__component",
               "mapping": {
                 "common-components.reg-text": "#/components/schemas/CommonComponentsRegTextComponent",
-                "common-components.hero-section": "#/components/schemas/CommonComponentsHeroSectionComponent"
+                "common-components.hero-section": "#/components/schemas/CommonComponentsHeroSectionComponent",
+                "common-components.tracks-section": "#/components/schemas/CommonComponentsTracksSectionComponent"
               }
             }
+          },
+          "pageName": {
+            "type": "string"
+          },
+          "pageID": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -29546,6 +29566,9 @@
                       },
                       {
                         "$ref": "#/components/schemas/CommonComponentsHeroSectionComponent"
+                      },
+                      {
+                        "$ref": "#/components/schemas/CommonComponentsTracksSectionComponent"
                       }
                     ]
                   },
@@ -29553,9 +29576,16 @@
                     "propertyName": "__component",
                     "mapping": {
                       "common-components.reg-text": "#/components/schemas/CommonComponentsRegTextComponent",
-                      "common-components.hero-section": "#/components/schemas/CommonComponentsHeroSectionComponent"
+                      "common-components.hero-section": "#/components/schemas/CommonComponentsHeroSectionComponent",
+                      "common-components.tracks-section": "#/components/schemas/CommonComponentsTracksSectionComponent"
                     }
                   }
+                },
+                "pageName": {
+                  "type": "string"
+                },
+                "pageID": {
+                  "type": "string"
                 },
                 "createdAt": {
                   "type": "string",
@@ -29914,6 +29944,172 @@
           },
           "HeroText": {
             "type": "string"
+          }
+        }
+      },
+      "RepeatableComponnetsTrackItemIconTitleDescComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "Icon": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "documentId": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "alternativeText": {
+                "type": "string"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "width": {
+                "type": "integer"
+              },
+              "height": {
+                "type": "integer"
+              },
+              "formats": {},
+              "hash": {
+                "type": "string"
+              },
+              "ext": {
+                "type": "string"
+              },
+              "mime": {
+                "type": "string"
+              },
+              "size": {
+                "type": "number",
+                "format": "float"
+              },
+              "url": {
+                "type": "string"
+              },
+              "previewUrl": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "provider_metadata": {},
+              "related": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "folder": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "folderPath": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "publishedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "createdBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "updatedBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "locale": {
+                "type": "string"
+              },
+              "localizations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "Title": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonComponentsTracksSectionComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "__component": {
+            "type": "string",
+            "enum": [
+              "common-components.tracks-section"
+            ]
+          },
+          "Title": {
+            "type": "string"
+          },
+          "eachTrackItem": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RepeatableComponnetsTrackItemIconTitleDescComponent"
+            }
           }
         }
       },
