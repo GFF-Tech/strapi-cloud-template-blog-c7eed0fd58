@@ -1251,6 +1251,36 @@ export interface ApiRegistrationFaqRegistrationFaq
   };
 }
 
+export interface ApiRegularPageRegularPage extends Struct.CollectionTypeSchema {
+  collectionName: 'regular_pages';
+  info: {
+    displayName: 'Regular Page';
+    pluralName: 'regular-pages';
+    singularName: 'regular-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::regular-page.regular-page'
+    > &
+      Schema.Attribute.Private;
+    PageSections: Schema.Attribute.DynamicZone<
+      ['common-components.reg-text', 'common-components.hero-section']
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiSalutationSalutation extends Struct.CollectionTypeSchema {
   collectionName: 'salutations';
   info: {
@@ -1932,6 +1962,7 @@ declare module '@strapi/strapi' {
       'api::post-conference-report-form-2024.post-conference-report-form-2024': ApiPostConferenceReportForm2024PostConferenceReportForm2024;
       'api::referral-source.referral-source': ApiReferralSourceReferralSource;
       'api::registration-faq.registration-faq': ApiRegistrationFaqRegistrationFaq;
+      'api::regular-page.regular-page': ApiRegularPageRegularPage;
       'api::salutation.salutation': ApiSalutationSalutation;
       'api::sector.sector': ApiSectorSector;
       'api::speaker.speaker': ApiSpeakerSpeaker;

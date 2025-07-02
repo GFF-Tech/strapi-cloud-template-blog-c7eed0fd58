@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "regular_pages",
+  "info": {
+    "singularName": "regular-page",
+    "pluralName": "regular-pages",
+    "displayName": "Regular Page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "PageSections": {
+      "type": "dynamiczone",
+      "components": [
+        "common-components.reg-text",
+        "common-components.hero-section"
+      ]
+    }
+  }
+}
