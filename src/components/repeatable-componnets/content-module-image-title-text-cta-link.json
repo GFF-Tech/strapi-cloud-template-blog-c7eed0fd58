@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_repeatable_componnets_content_module_image_title_text_cta_links",
+  "info": {
+    "displayName": "contentModuleImageTitleTextCTALink"
+  },
+  "options": {},
+  "attributes": {
+    "uploadImage": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "string"
+    },
+    "ctaText": {
+      "type": "string"
+    },
+    "ctaLink": {
+      "type": "string"
+    }
+  }
+}
