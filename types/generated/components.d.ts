@@ -28,7 +28,6 @@ export interface CommonComponentsRegText extends Struct.ComponentSchema {
     RegularText: Schema.Attribute.Blocks;
   };
 }
-
 export interface CommonComponentsTracksSection extends Struct.ComponentSchema {
   collectionName: 'components_common_components_tracks_sections';
   info: {
@@ -42,7 +41,6 @@ export interface CommonComponentsTracksSection extends Struct.ComponentSchema {
     Title: Schema.Attribute.String;
   };
 }
-
 export interface CommonGstDetails extends Struct.ComponentSchema {
   collectionName: 'components_common_gst_details';
   info: {
