@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_common_components_hero_sections",
+  "info": {
+    "displayName": "Hero Section",
+    "icon": "apps"
+  },
+  "options": {},
+  "attributes": {
+    "TabletDesktopHeroImage": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "MobileImage": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "HeroHeadline": {
+      "type": "string"
+    },
+    "HeroText": {
+      "type": "text"
+    }
+  }
+}
