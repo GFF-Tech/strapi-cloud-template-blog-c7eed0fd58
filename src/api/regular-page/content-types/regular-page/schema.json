@@ -4,7 +4,8 @@
   "info": {
     "singularName": "regular-page",
     "pluralName": "regular-pages",
-    "displayName": "Regular Page"
+    "displayName": "Regular Page",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -14,8 +15,15 @@
       "type": "dynamiczone",
       "components": [
         "common-components.reg-text",
-        "common-components.hero-section"
+        "common-components.hero-section",
+        "common-components.tracks-section"
       ]
+    },
+    "pageName": {
+      "type": "string"
+    },
+    "pageID": {
+      "type": "uid"
     }
   }
 }
