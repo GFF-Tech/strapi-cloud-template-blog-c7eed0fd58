@@ -1254,6 +1254,7 @@ export interface ApiRegistrationFaqRegistrationFaq
 export interface ApiRegularPageRegularPage extends Struct.CollectionTypeSchema {
   collectionName: 'regular_pages';
   info: {
+    description: '';
     displayName: 'Regular Page';
     pluralName: 'regular-pages';
     singularName: 'regular-page';
@@ -1271,8 +1272,14 @@ export interface ApiRegularPageRegularPage extends Struct.CollectionTypeSchema {
       'api::regular-page.regular-page'
     > &
       Schema.Attribute.Private;
+    pageID: Schema.Attribute.UID;
+    pageName: Schema.Attribute.String;
     PageSections: Schema.Attribute.DynamicZone<
-      ['common-components.reg-text', 'common-components.hero-section']
+      [
+        'common-components.reg-text',
+        'common-components.hero-section',
+        'common-components.tracks-section',
+      ]
     >;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
