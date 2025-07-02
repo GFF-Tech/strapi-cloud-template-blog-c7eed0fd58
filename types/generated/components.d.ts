@@ -1,5 +1,34 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface CommonComponentsHeroSection extends Struct.ComponentSchema {
+  collectionName: 'components_common_components_hero_sections';
+  info: {
+    displayName: 'Hero Section';
+    icon: 'apps';
+  };
+  attributes: {
+    HeroHeadline: Schema.Attribute.String;
+    HeroText: Schema.Attribute.Text;
+    MobileImage: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    TabletDesktopHeroImage: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+  };
+}
+
+export interface CommonComponentsRegText extends Struct.ComponentSchema {
+  collectionName: 'components_common_components_reg_texts';
+  info: {
+    displayName: 'Reg Text';
+    icon: 'bulletList';
+  };
+  attributes: {
+    RegularText: Schema.Attribute.Blocks;
+  };
+}
+
 export interface CommonGstDetails extends Struct.ComponentSchema {
   collectionName: 'components_common_gst_details';
   info: {
@@ -77,6 +106,8 @@ export interface CommonWooOrderDetails extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'common-components.hero-section': CommonComponentsHeroSection;
+      'common-components.reg-text': CommonComponentsRegText;
       'common.gst-details': CommonGstDetails;
       'common.logo': CommonLogo;
       'common.logo-section': CommonLogoSection;
