@@ -1,5 +1,19 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface CommonComponentsCmImageTitleTextCta
+  extends Struct.ComponentSchema {
+  collectionName: 'components_common_components_cm_image_title_text_ctas';
+  info: {
+    displayName: 'CMImageTitleTextCTA';
+  };
+  attributes: {
+    imageTitleTextCTA: Schema.Attribute.Component<
+      'repeatable-componnets.content-module-image-title-text-cta-link',
+      true
+    >;
+  };
+}
+
 export interface CommonComponentsHeroSection extends Struct.ComponentSchema {
   collectionName: 'components_common_components_hero_sections';
   info: {
@@ -28,6 +42,7 @@ export interface CommonComponentsRegText extends Struct.ComponentSchema {
     RegularText: Schema.Attribute.Blocks;
   };
 }
+
 export interface CommonComponentsTracksSection extends Struct.ComponentSchema {
   collectionName: 'components_common_components_tracks_sections';
   info: {
@@ -41,6 +56,7 @@ export interface CommonComponentsTracksSection extends Struct.ComponentSchema {
     Title: Schema.Attribute.String;
   };
 }
+
 export interface CommonGstDetails extends Struct.ComponentSchema {
   collectionName: 'components_common_gst_details';
   info: {
@@ -117,6 +133,23 @@ export interface CommonWooOrderDetails extends Struct.ComponentSchema {
   };
 }
 
+export interface RepeatableComponnetsContentModuleImageTitleTextCtaLink
+  extends Struct.ComponentSchema {
+  collectionName: 'components_repeatable_componnets_content_module_image_title_text_cta_links';
+  info: {
+    displayName: 'contentModuleImageTitleTextCTALink';
+  };
+  attributes: {
+    ctaLink: Schema.Attribute.String;
+    ctaText: Schema.Attribute.String;
+    text: Schema.Attribute.String;
+    title: Schema.Attribute.String;
+    uploadImage: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+  };
+}
+
 export interface RepeatableComponnetsTrackItemIconTitleDesc
   extends Struct.ComponentSchema {
   collectionName: 'components_repeatable_componnets_track_item_icon_title_descs';
@@ -133,6 +166,7 @@ export interface RepeatableComponnetsTrackItemIconTitleDesc
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'common-components.cm-image-title-text-cta': CommonComponentsCmImageTitleTextCta;
       'common-components.hero-section': CommonComponentsHeroSection;
       'common-components.reg-text': CommonComponentsRegText;
       'common-components.tracks-section': CommonComponentsTracksSection;
@@ -141,6 +175,7 @@ declare module '@strapi/strapi' {
       'common.logo-section': CommonLogoSection;
       'common.partner-show-in-page': CommonPartnerShowInPage;
       'common.woo-order-details': CommonWooOrderDetails;
+      'repeatable-componnets.content-module-image-title-text-cta-link': RepeatableComponnetsContentModuleImageTitleTextCtaLink;
       'repeatable-componnets.track-item-icon-title-desc': RepeatableComponnetsTrackItemIconTitleDesc;
     }
   }
