@@ -35,6 +35,26 @@ export interface CommonComponentsHeroSection extends Struct.ComponentSchema {
   };
 }
 
+export interface CommonComponentsIconTitleSlider
+  extends Struct.ComponentSchema {
+  collectionName: 'components_common_components_icon_title_sliders';
+  info: {
+    description: '';
+    displayName: 'TitleTwoWayiconTitleSliders';
+  };
+  attributes: {
+    iconTitleSliderLeftToRight: Schema.Attribute.Component<
+      'repeatable-componnets.icon-title',
+      true
+    >;
+    iconTitleSliderRightToLeft: Schema.Attribute.Component<
+      'repeatable-componnets.icon-title',
+      true
+    >;
+    ModuleTitle: Schema.Attribute.String;
+  };
+}
+
 export interface CommonComponentsRegText extends Struct.ComponentSchema {
   collectionName: 'components_common_components_reg_texts';
   info: {
@@ -169,6 +189,19 @@ export interface RepeatableComponnetsContentModuleImageTitleTextCtaLink
   };
 }
 
+export interface RepeatableComponnetsIconTitle extends Struct.ComponentSchema {
+  collectionName: 'components_repeatable_componnets_icon_titles';
+  info: {
+    displayName: 'IconTitle';
+  };
+  attributes: {
+    Title: Schema.Attribute.String;
+    uploadIcon: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+  };
+}
+
 export interface RepeatableComponnetsIconTitleText
   extends Struct.ComponentSchema {
   collectionName: 'components_repeatable_componnets_icon_title_texts';
@@ -200,6 +233,7 @@ declare module '@strapi/strapi' {
     export interface ComponentSchemas {
       'common-components.cm-image-title-text-cta': CommonComponentsCmImageTitleTextCta;
       'common-components.hero-section': CommonComponentsHeroSection;
+      'common-components.icon-title-slider': CommonComponentsIconTitleSlider;
       'common-components.reg-text': CommonComponentsRegText;
       'common-components.title-text-icon-title-text-slider': CommonComponentsTitleTextIconTitleTextSlider;
       'common-components.tracks-section': CommonComponentsTracksSection;
@@ -209,6 +243,7 @@ declare module '@strapi/strapi' {
       'common.partner-show-in-page': CommonPartnerShowInPage;
       'common.woo-order-details': CommonWooOrderDetails;
       'repeatable-componnets.content-module-image-title-text-cta-link': RepeatableComponnetsContentModuleImageTitleTextCtaLink;
+      'repeatable-componnets.icon-title': RepeatableComponnetsIconTitle;
       'repeatable-componnets.icon-title-text': RepeatableComponnetsIconTitleText;
       'repeatable-componnets.track-item-icon-title-desc': RepeatableComponnetsTrackItemIconTitleDesc;
     }
