@@ -6,7 +6,8 @@ module.exports = () => ({
               "api::express-interest.express-interest",
               "api::early-stage-pitch.early-stage-pitch",
               "api::newsletter.newsletter",
-              "api::confirmed-speaker.confirmed-speaker"
+              "api::confirmed-speaker.confirmed-speaker",
+              "api::hotel-information-form.hotel-information-form"
             ],
             // authorizedImports: ["api::become-a-speaker.become-a-speaker"]
   }
