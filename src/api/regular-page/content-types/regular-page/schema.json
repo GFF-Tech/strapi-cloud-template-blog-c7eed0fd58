@@ -17,7 +17,8 @@
         "common-components.reg-text",
         "common-components.hero-section",
         "common-components.tracks-section",
-        "common-components.cm-image-title-text-cta"
+        "common-components.cm-image-title-text-cta",
+        "common-components.title-text-icon-title-text-slider"
       ]
     },
     "pageName": {
