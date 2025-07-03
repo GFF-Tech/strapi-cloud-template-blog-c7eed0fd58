@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "regular_pages",
+  "info": {
+    "singularName": "regular-page",
+    "pluralName": "regular-pages",
+    "displayName": "Regular Page",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "PageSections": {
+      "type": "dynamiczone",
+      "components": [
+        "common-components.reg-text",
+        "common-components.hero-section",
+        "common-components.tracks-section",
+        "common-components.cm-image-title-text-cta",
+        "common-components.title-text-icon-title-text-slider"
+      ]
+    },
+    "pageName": {
+      "type": "string"
+    },
+    "pageID": {
+      "type": "uid"
+    }
+  }
+}
