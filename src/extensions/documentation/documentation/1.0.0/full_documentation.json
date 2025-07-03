@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-07-03T03:06:51.662Z"
+    "x-generation-date": "2025-07-03T05:35:55.181Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -29402,6 +29402,9 @@
                     },
                     {
                       "$ref": "#/components/schemas/CommonComponentsTitleTextIconTitleTextSliderComponent"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CommonComponentsIconTitleSliderComponent"
                     }
                   ]
                 },
@@ -29412,7 +29415,8 @@
                     "common-components.hero-section": "#/components/schemas/CommonComponentsHeroSectionComponent",
                     "common-components.tracks-section": "#/components/schemas/CommonComponentsTracksSectionComponent",
                     "common-components.cm-image-title-text-cta": "#/components/schemas/CommonComponentsCmImageTitleTextCtaComponent",
-                    "common-components.title-text-icon-title-text-slider": "#/components/schemas/CommonComponentsTitleTextIconTitleTextSliderComponent"
+                    "common-components.title-text-icon-title-text-slider": "#/components/schemas/CommonComponentsTitleTextIconTitleTextSliderComponent",
+                    "common-components.icon-title-slider": "#/components/schemas/CommonComponentsIconTitleSliderComponent"
                   }
                 }
               },
@@ -29505,6 +29509,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/CommonComponentsTitleTextIconTitleTextSliderComponent"
+                },
+                {
+                  "$ref": "#/components/schemas/CommonComponentsIconTitleSliderComponent"
                 }
               ]
             },
@@ -29515,7 +29522,8 @@
                 "common-components.hero-section": "#/components/schemas/CommonComponentsHeroSectionComponent",
                 "common-components.tracks-section": "#/components/schemas/CommonComponentsTracksSectionComponent",
                 "common-components.cm-image-title-text-cta": "#/components/schemas/CommonComponentsCmImageTitleTextCtaComponent",
-                "common-components.title-text-icon-title-text-slider": "#/components/schemas/CommonComponentsTitleTextIconTitleTextSliderComponent"
+                "common-components.title-text-icon-title-text-slider": "#/components/schemas/CommonComponentsTitleTextIconTitleTextSliderComponent",
+                "common-components.icon-title-slider": "#/components/schemas/CommonComponentsIconTitleSliderComponent"
               }
             }
           },
@@ -29591,6 +29599,9 @@
                       },
                       {
                         "$ref": "#/components/schemas/CommonComponentsTitleTextIconTitleTextSliderComponent"
+                      },
+                      {
+                        "$ref": "#/components/schemas/CommonComponentsIconTitleSliderComponent"
                       }
                     ]
                   },
@@ -29601,7 +29612,8 @@
                       "common-components.hero-section": "#/components/schemas/CommonComponentsHeroSectionComponent",
                       "common-components.tracks-section": "#/components/schemas/CommonComponentsTracksSectionComponent",
                       "common-components.cm-image-title-text-cta": "#/components/schemas/CommonComponentsCmImageTitleTextCtaComponent",
-                      "common-components.title-text-icon-title-text-slider": "#/components/schemas/CommonComponentsTitleTextIconTitleTextSliderComponent"
+                      "common-components.title-text-icon-title-text-slider": "#/components/schemas/CommonComponentsTitleTextIconTitleTextSliderComponent",
+                      "common-components.icon-title-slider": "#/components/schemas/CommonComponentsIconTitleSliderComponent"
                     }
                   }
                 },
@@ -30478,6 +30490,175 @@
             "items": {
               "$ref": "#/components/schemas/RepeatableComponnetsIconTitleTextComponent"
             }
+          }
+        }
+      },
+      "RepeatableComponnetsIconTitleComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "uploadIcon": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "documentId": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "alternativeText": {
+                "type": "string"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "width": {
+                "type": "integer"
+              },
+              "height": {
+                "type": "integer"
+              },
+              "formats": {},
+              "hash": {
+                "type": "string"
+              },
+              "ext": {
+                "type": "string"
+              },
+              "mime": {
+                "type": "string"
+              },
+              "size": {
+                "type": "number",
+                "format": "float"
+              },
+              "url": {
+                "type": "string"
+              },
+              "previewUrl": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "provider_metadata": {},
+              "related": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "folder": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "folderPath": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "publishedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "createdBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "updatedBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "locale": {
+                "type": "string"
+              },
+              "localizations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "Title": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonComponentsIconTitleSliderComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "__component": {
+            "type": "string",
+            "enum": [
+              "common-components.icon-title-slider"
+            ]
+          },
+          "iconTitleSliderRightToLeft": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RepeatableComponnetsIconTitleComponent"
+            }
+          },
+          "iconTitleSliderLeftToRight": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RepeatableComponnetsIconTitleComponent"
+            }
+          },
+          "ModuleTitle": {
+            "type": "string"
           }
         }
       },
