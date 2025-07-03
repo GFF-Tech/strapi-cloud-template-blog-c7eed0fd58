@@ -54,6 +54,9 @@
     },
     "sector": {
       "type": "string"
+    },
+    "IsMember": {
+      "type": "boolean"
     }
   }
 }
