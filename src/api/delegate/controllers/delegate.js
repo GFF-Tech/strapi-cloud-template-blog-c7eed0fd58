@@ -596,6 +596,32 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
     }
   },
 
+async resendInviteMail(ctx) {
+  try {
+    const { data } = ctx.request.body;
+    
+    if (!data.officialEmailAddress || !data.firstName || !data.lastName) {
+      return ctx.badRequest('Missing required fields');
+    }
+
+    const officialEmailAddress = data.officialEmailAddress;
+    const firstName = data.firstName;
+    const lastName = data.lastName;
+
+    await sendEmail({
+      to: officialEmailAddress,
+      subject: 'Your Delegate Registration is Confirmed - Welcome to GFF 2025!',
+      templateName: 'delegate-confirmation',
+      replacements: { firstName, lastName },
+    });
+
+    ctx.send({ message: 'Invitation email resent successfully.' });
+  } catch (error) {
+    strapi.log.error('Failed to resend invite mail:', error);
+    ctx.internalServerError('Failed to send email');
+  }
+},
+
 }));
 
 async function getCognitoUserBySub(sub) {
