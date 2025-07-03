@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_repeatable_componnets_icon_titles",
+  "info": {
+    "displayName": "IconTitle"
+  },
+  "options": {},
+  "attributes": {
+    "uploadIcon": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "Title": {
+      "type": "string"
+    }
+  }
+}
