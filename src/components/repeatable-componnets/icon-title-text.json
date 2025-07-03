@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_repeatable_componnets_icon_title_texts",
+  "info": {
+    "displayName": "iconTitleText"
+  },
+  "options": {},
+  "attributes": {
+    "icon": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text"
+    }
+  }
+}

@@ -46,6 +46,22 @@ export interface CommonComponentsRegText extends Struct.ComponentSchema {
   };
 }
 
+export interface CommonComponentsTitleTextIconTitleTextSlider
+  extends Struct.ComponentSchema {
+  collectionName: 'components_common_components_title_text_icon_title_text_sliders';
+  info: {
+    displayName: 'TitleText_IconTitleTextSlider';
+  };
+  attributes: {
+    IconTitleText: Schema.Attribute.Component<
+      'repeatable-componnets.icon-title-text',
+      true
+    >;
+    Text: Schema.Attribute.Text;
+    Title: Schema.Attribute.String;
+  };
+}
+
 export interface CommonComponentsTracksSection extends Struct.ComponentSchema {
   collectionName: 'components_common_components_tracks_sections';
   info: {
@@ -153,6 +169,19 @@ export interface RepeatableComponnetsContentModuleImageTitleTextCtaLink
   };
 }
 
+export interface RepeatableComponnetsIconTitleText
+  extends Struct.ComponentSchema {
+  collectionName: 'components_repeatable_componnets_icon_title_texts';
+  info: {
+    displayName: 'iconTitleText';
+  };
+  attributes: {
+    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    text: Schema.Attribute.Text;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface RepeatableComponnetsTrackItemIconTitleDesc
   extends Struct.ComponentSchema {
   collectionName: 'components_repeatable_componnets_track_item_icon_title_descs';
@@ -172,6 +201,7 @@ declare module '@strapi/strapi' {
       'common-components.cm-image-title-text-cta': CommonComponentsCmImageTitleTextCta;
       'common-components.hero-section': CommonComponentsHeroSection;
       'common-components.reg-text': CommonComponentsRegText;
+      'common-components.title-text-icon-title-text-slider': CommonComponentsTitleTextIconTitleTextSlider;
       'common-components.tracks-section': CommonComponentsTracksSection;
       'common.gst-details': CommonGstDetails;
       'common.logo': CommonLogo;
@@ -179,6 +209,7 @@ declare module '@strapi/strapi' {
       'common.partner-show-in-page': CommonPartnerShowInPage;
       'common.woo-order-details': CommonWooOrderDetails;
       'repeatable-componnets.content-module-image-title-text-cta-link': RepeatableComponnetsContentModuleImageTitleTextCtaLink;
+      'repeatable-componnets.icon-title-text': RepeatableComponnetsIconTitleText;
       'repeatable-componnets.track-item-icon-title-desc': RepeatableComponnetsTrackItemIconTitleDesc;
     }
   }
