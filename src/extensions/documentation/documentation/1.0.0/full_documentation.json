@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-07-02T23:52:03.358Z"
+    "x-generation-date": "2025-07-03T02:14:06.054Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -29955,6 +29955,12 @@
             "type": "string"
           },
           "HeroText": {
+            "type": "string"
+          },
+          "CTAText": {
+            "type": "string"
+          },
+          "CTALink": {
             "type": "string"
           }
         }
