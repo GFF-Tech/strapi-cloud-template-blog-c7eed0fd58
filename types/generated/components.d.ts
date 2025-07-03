@@ -17,10 +17,13 @@ export interface CommonComponentsCmImageTitleTextCta
 export interface CommonComponentsHeroSection extends Struct.ComponentSchema {
   collectionName: 'components_common_components_hero_sections';
   info: {
+    description: '';
     displayName: 'Hero Section';
     icon: 'apps';
   };
   attributes: {
+    CTALink: Schema.Attribute.String;
+    CTAText: Schema.Attribute.String;
     HeroHeadline: Schema.Attribute.String;
     HeroText: Schema.Attribute.Text;
     MobileImage: Schema.Attribute.Media<
