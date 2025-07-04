@@ -1,0 +1,17 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_primary_targets",
+  "info": {
+    "singularName": "product-primary-target",
+    "pluralName": "product-primary-targets",
+    "displayName": "Product Primary Targets"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "productPrimaryTarget": {
+      "type": "string"
+    }
+  }
+}
