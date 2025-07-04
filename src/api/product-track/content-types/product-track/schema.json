@@ -1,0 +1,17 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_tracks",
+  "info": {
+    "singularName": "product-track",
+    "pluralName": "product-tracks",
+    "displayName": "Product Tracks"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "productTrack": {
+      "type": "string"
+    }
+  }
+}

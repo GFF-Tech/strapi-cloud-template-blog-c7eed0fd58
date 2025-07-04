@@ -1,0 +1,17 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_stages",
+  "info": {
+    "singularName": "product-stage",
+    "pluralName": "product-stages",
+    "displayName": "Product Stages"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "productStage": {
+      "type": "string"
+    }
+  }
+}
