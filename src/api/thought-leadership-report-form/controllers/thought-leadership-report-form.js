@@ -14,9 +14,8 @@ module.exports = createCoreController('api::thought-leadership-report-form.thoug
 
     let data;
     try {
-      console.log('body.data = ', body.data);
-      data = JSON.parse(body.data);
-      console.log('data = ', data);
+       data = JSON.parse(body.data);
+      
     } catch (err) {
       return ctx.badRequest('Invalid JSON in `data` field');
     }
@@ -51,21 +50,19 @@ module.exports = createCoreController('api::thought-leadership-report-form.thoug
 
      const email = data?.officialEmailAddress || '';
     const name = data?.name || '';
-    // const lastName = data?.lastName || '';
-    // Step 2: Send email using SES
-    // try {
-    //  console.log(email);
-    //  await sendEmail({
-    //    to: email,
-    //    subject: 'Thank You for your interest to book your stay for GFF 2025!',
-    //    templateName: 'plan-your-stay-form',
-    //    replacements: { name },
-    //  });
+   
+    try {
+     await sendEmail({
+       to: email,
+       subject: 'Thank You for Thought Leadership Report Submission for Review ',
+       templateName: 'thought-leadership-report-form',
+       replacements: { name },
+     });
 
-    //   strapi.log.info(`Confirmation email sent to ${email}`);
-    // } catch (err) {
-    //   strapi.log.error('Failed to send email:', err);
-    // }
+      strapi.log.info(`Confirmation email sent to ${email}`);
+    } catch (err) {
+      strapi.log.error('Failed to send email:', err);
+    }
 
     const sanitizedEntry = await this.sanitizeOutput(entry, ctx);
     return this.transformResponse(sanitizedEntry);
