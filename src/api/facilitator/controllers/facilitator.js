@@ -346,6 +346,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           country: data.country,
           sector: data.sector || null,
           pciFccMember: data.pciFccMember,
+          registerAsIndividual: data.registerAsIndividual,
           cognitoId,
         },
       });
