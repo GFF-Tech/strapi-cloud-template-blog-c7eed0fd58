@@ -71,7 +71,7 @@
     "otherProductTechnology": {
       "type": "string"
     },
-    "prodcutPrimaryTarget": {
+    "productPrimaryTarget": {
       "type": "string"
     },
     "productInnovative": {
