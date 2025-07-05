@@ -1,0 +1,17 @@
+{
+  "kind": "collectionType",
+  "collectionName": "thought_leadership_report_primary_target_audiences",
+  "info": {
+    "singularName": "thought-leadership-report-primary-target-audience",
+    "pluralName": "thought-leadership-report-primary-target-audiences",
+    "displayName": "Thought Leadership Report Primary Target Audiences"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "primaryTargetAudience": {
+      "type": "string"
+    }
+  }
+}
