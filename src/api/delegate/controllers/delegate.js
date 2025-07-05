@@ -97,6 +97,8 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       if (!delegateToUpdate.wcProductName) updatedFields.wcProductName = data.wcProductName;
       if (!delegateToUpdate.isFacilitator) updatedFields.isFacilitator = data.isFacilitator || false;
       if (!delegateToUpdate.country) updatedFields.country = data.country;
+      if (!delegateToUpdate.pciFccMember) updatedFields.pciFccMember = data.pciFccMember;
+      if (!delegateToUpdate.registerAsIndividual) updatedFields.registerAsIndividual = data.registerAsIndividual;
       if (!delegateToUpdate.sector) updatedFields.sector = data.sector || null;
 
       // 5. Create Cognito user if not facilitator and cognitoId missing
