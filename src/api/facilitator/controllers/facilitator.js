@@ -681,22 +681,21 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
             sgst: (wooOrder.meta_data.find(m => m.key === 'sgst') || {}).value || '',
             email,
             mobilePhone,
-            pocFirstName: firstName,
-            pocLastName: lastName,
-            company: companyName || 'INDIVIDUAL',
-            sector: updated?.sector?.name || '',
+            billingFirstName: firstName,
+            billingLastName: lastName,
+            company: companyName,
             linkdinProfile: updated.linkedinUrl || '',
             passes,
             gstInfo: {
-              companyAddress: updated?.gstDetails?.companyAddress || '',
-              billingFirstName: isGstPresent ? firstName : '',
-              billingLastName: isGstPresent ? lastName : '',
+              companyName:updated?.gstDetails?.companyName || '',
               gstNumber: updated?.gstDetails?.companyGstNo || '',
+              billingAdress: updated?.gstDetails?.billingAddress || '',
+              companyAddress: updated?.gstDetails?.companyAddress || '',
               pincode: updated?.gstDetails?.pincode || '',
             },
           };
 
-          console.log('payload = ', payload);
+          console.log('salesforce payload = ', payload);
 
           try {
             const result = await insertIntoSalesforce(payload);

@@ -193,23 +193,34 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
 
       const salesforcePayload = {
         upgrade: 'false',
-        passType: passType,
-        price: fullDelegate.passPrice,
-        confirmationId: fullDelegate.confirmationId,
         email: data.officialEmailAddress,
         mobilePhone: `${fullDelegate.country.countryCode}${data.mobileNumber}`,
         participantFirstName: data.firstName,
         participantLastName: data.lastName,
         company: data.companyName || 'INDIVIDUAL',
-        sector: fullDelegate.sector?.name || '',
         vertical: '',
         level: '',
         GenderIdentity: '',
-        title: '',
-        linkdinProfile: fullDelegate.linkedinUrl || '',
+         title: '',
+         linkdinProfile: fullDelegate.linkedinUrl || '',
         twitterProfile: '',
         instagramProfile: '',
-        personalEmail: ''
+         personalEmail: '',
+         confirmationId: fullDelegate.confirmationId,
+        passType: passType,
+        price: fullDelegate.passPrice,
+       salutation: '',
+       marketServedByCompany: '',
+       shortBio: '',
+       participantCategory: '',
+       participationObjective: '',
+       eventYearsAttendedBefore: '',
+       city: '',
+       country: '',
+       networkingGoals: '',
+       languageSpoken: '',
+       preferredTracks: '',
+       interestAreas: ''
       };
 
       try {
@@ -323,15 +334,11 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
 
       const salesforcePayload = {
         upgrade: 'true',
-        passType: existing.passType,
-        price: existing.passPrice,
-        confirmationId: existing.confirmationId,
         email: email,
-        mobilePhone: `${existing.country.countryCode}${mobilePhone}`,
-        participantFirstName: data.firstName,
+        mobilePhone: mobilePhone,
+         participantFirstName: data.firstName,
         participantLastName: data.lastName,
         company: companyName || 'INDIVIDUAL',
-        sector: existing.sector?.name || '',
         vertical: '',
         level: '',
         GenderIdentity: '',
@@ -339,7 +346,22 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         linkdinProfile: existing.linkedinUrl || '',
         twitterProfile: '',
         instagramProfile: '',
-        personalEmail: ''
+        personalEmail: '',
+        confirmationId: existing.confirmationId,
+        passType: existing.passType,
+        price: existing.passPrice,
+        salutation: '',
+       marketServedByCompany: '',
+       shortBio: '',
+       participantCategory: '',
+       participationObjective: '',
+       eventYearsAttendedBefore: '',
+       city: '',
+       country: '',
+       networkingGoals: '',
+       languageSpoken: '',
+       preferredTracks: '',
+       interestAreas: ''
       };
 
       console.log("salesforcePayload = ", salesforcePayload);
