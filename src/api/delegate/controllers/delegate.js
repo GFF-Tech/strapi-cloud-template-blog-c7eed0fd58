@@ -618,7 +618,7 @@ async resendInviteMail(ctx) {
     ctx.send({ message: 'Invitation email resent successfully.' });
   } catch (error) {
     strapi.log.error('Failed to resend invite mail:', error);
-    ctx.internalServerError('Failed to send email');
+    ctx.internalServerError('Failed to resend invite mail');
   }
 },
 

@@ -57,6 +57,9 @@
     },
     "linkedinUrl": {
       "type": "string"
+    },
+    "registerAsIndividual": {
+      "type": "boolean"
     }
   }
 }
