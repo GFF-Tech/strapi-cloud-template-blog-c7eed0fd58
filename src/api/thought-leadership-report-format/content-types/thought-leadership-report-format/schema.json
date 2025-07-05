@@ -1,0 +1,17 @@
+{
+  "kind": "collectionType",
+  "collectionName": "thought_leadership_report_formats",
+  "info": {
+    "singularName": "thought-leadership-report-format",
+    "pluralName": "thought-leadership-report-formats",
+    "displayName": "Thought Leadership Report Formats"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "format": {
+      "type": "string"
+    }
+  }
+}
