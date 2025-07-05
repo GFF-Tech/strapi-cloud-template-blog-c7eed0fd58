@@ -9,21 +9,21 @@ module.exports = createCoreController('api::hotel-information-form.hotel-informa
     const response = await super.create(ctx);
     const email = ctx.request.body.data?.officialEmailAddress || '';
     const firstName = ctx.request.body.data?.firstName || '';
+    const middleName = ctx.request.body.data?.middleName || '';
     const lastName = ctx.request.body.data?.lastName || '';
-    // Step 2: Send email using SES
-    // try {
-    //  console.log(email);
-    //  await sendEmail({
-    //    to: email,
-    //    subject: 'Thank You for your interest to book your stay for GFF 2025!',
-    //    templateName: 'plan-your-stay-form',
-    //    replacements: { firstName, lastName },
-    //  });
+   
+    try {
+     await sendEmail({
+       to: email,
+       subject: 'Thank You for Submitting Your Hotel Information for GFF2025',
+       templateName: 'hotel-information-form',
+       replacements: { firstName, middleName, lastName },
+     });
 
-    //   strapi.log.info(`Confirmation email sent to ${email}`);
-    // } catch (err) {
-    //   strapi.log.error('Failed to send email:', err);
-    // }
+      strapi.log.info(`Confirmation email sent to ${email}`);
+    } catch (err) {
+      strapi.log.error('Failed to send email:', err);
+    }
 
     return response;
   }
