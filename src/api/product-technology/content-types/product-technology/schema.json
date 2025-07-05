@@ -4,13 +4,14 @@
   "info": {
     "singularName": "product-technology",
     "pluralName": "product-technologies",
-    "displayName": "Product Technologies"
+    "displayName": "Product Technologies",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
   },
   "attributes": {
-    "prodcutTechnology": {
+    "productTechnology": {
       "type": "string"
     }
   }
