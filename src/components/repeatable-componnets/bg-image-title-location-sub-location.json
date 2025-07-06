@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_repeatable_componnets_bg_image_title_location_sub_locations",
+  "info": {
+    "displayName": "BGImageTitleLocationSubLocation"
+  },
+  "options": {},
+  "attributes": {
+    "BGImage": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "Title": {
+      "type": "string"
+    },
+    "Location": {
+      "type": "string"
+    },
+    "SubLocation": {
+      "type": "string"
+    }
+  }
+}

@@ -18,6 +18,11 @@
     },
     "ModuleTitle": {
       "type": "string"
+    },
+    "Settings": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common-components.module-settings"
     }
   }
 }

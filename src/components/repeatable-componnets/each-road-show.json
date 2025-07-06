@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_repeatable_componnets_each_road_shows",
+  "info": {
+    "displayName": "EachRoadShow",
+    "icon": "chartCircle"
+  },
+  "options": {},
+  "attributes": {
+    "RoadShowBGImage": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "RSIHoverTitle": {
+      "type": "string"
+    },
+    "RSIHoverText": {
+      "type": "text"
+    },
+    "RSIGalleryImages": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
+    }
+  }
+}
