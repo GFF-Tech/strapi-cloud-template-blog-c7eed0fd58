@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-07-06T18:10:03.756Z"
+    "x-generation-date": "2025-07-06T19:05:46.378Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -39594,6 +39594,18 @@
                     },
                     {
                       "$ref": "#/components/schemas/CommonComponentsIconTitleSliderComponent"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CommonComponentsSmallTitleTitleTitleIconBgImageComponent"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CommonComponentsRoadShowsComponent"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CommonComponentsLocationsComponent"
+                    },
+                    {
+                      "$ref": "#/components/schemas/CommonComponentsCtaBlock01Component"
                     }
                   ]
                 },
@@ -39605,7 +39617,11 @@
                     "common-components.tracks-section": "#/components/schemas/CommonComponentsTracksSectionComponent",
                     "common-components.cm-image-title-text-cta": "#/components/schemas/CommonComponentsCmImageTitleTextCtaComponent",
                     "common-components.title-text-icon-title-text-slider": "#/components/schemas/CommonComponentsTitleTextIconTitleTextSliderComponent",
-                    "common-components.icon-title-slider": "#/components/schemas/CommonComponentsIconTitleSliderComponent"
+                    "common-components.icon-title-slider": "#/components/schemas/CommonComponentsIconTitleSliderComponent",
+                    "common-components.small-title-title-title-icon-bg-image": "#/components/schemas/CommonComponentsSmallTitleTitleTitleIconBgImageComponent",
+                    "common-components.road-shows": "#/components/schemas/CommonComponentsRoadShowsComponent",
+                    "common-components.locations": "#/components/schemas/CommonComponentsLocationsComponent",
+                    "common-components.cta-block01": "#/components/schemas/CommonComponentsCtaBlock01Component"
                   }
                 }
               },
@@ -39701,6 +39717,18 @@
                 },
                 {
                   "$ref": "#/components/schemas/CommonComponentsIconTitleSliderComponent"
+                },
+                {
+                  "$ref": "#/components/schemas/CommonComponentsSmallTitleTitleTitleIconBgImageComponent"
+                },
+                {
+                  "$ref": "#/components/schemas/CommonComponentsRoadShowsComponent"
+                },
+                {
+                  "$ref": "#/components/schemas/CommonComponentsLocationsComponent"
+                },
+                {
+                  "$ref": "#/components/schemas/CommonComponentsCtaBlock01Component"
                 }
               ]
             },
@@ -39712,7 +39740,11 @@
                 "common-components.tracks-section": "#/components/schemas/CommonComponentsTracksSectionComponent",
                 "common-components.cm-image-title-text-cta": "#/components/schemas/CommonComponentsCmImageTitleTextCtaComponent",
                 "common-components.title-text-icon-title-text-slider": "#/components/schemas/CommonComponentsTitleTextIconTitleTextSliderComponent",
-                "common-components.icon-title-slider": "#/components/schemas/CommonComponentsIconTitleSliderComponent"
+                "common-components.icon-title-slider": "#/components/schemas/CommonComponentsIconTitleSliderComponent",
+                "common-components.small-title-title-title-icon-bg-image": "#/components/schemas/CommonComponentsSmallTitleTitleTitleIconBgImageComponent",
+                "common-components.road-shows": "#/components/schemas/CommonComponentsRoadShowsComponent",
+                "common-components.locations": "#/components/schemas/CommonComponentsLocationsComponent",
+                "common-components.cta-block01": "#/components/schemas/CommonComponentsCtaBlock01Component"
               }
             }
           },
@@ -39791,6 +39823,18 @@
                       },
                       {
                         "$ref": "#/components/schemas/CommonComponentsIconTitleSliderComponent"
+                      },
+                      {
+                        "$ref": "#/components/schemas/CommonComponentsSmallTitleTitleTitleIconBgImageComponent"
+                      },
+                      {
+                        "$ref": "#/components/schemas/CommonComponentsRoadShowsComponent"
+                      },
+                      {
+                        "$ref": "#/components/schemas/CommonComponentsLocationsComponent"
+                      },
+                      {
+                        "$ref": "#/components/schemas/CommonComponentsCtaBlock01Component"
                       }
                     ]
                   },
@@ -39802,7 +39846,11 @@
                       "common-components.tracks-section": "#/components/schemas/CommonComponentsTracksSectionComponent",
                       "common-components.cm-image-title-text-cta": "#/components/schemas/CommonComponentsCmImageTitleTextCtaComponent",
                       "common-components.title-text-icon-title-text-slider": "#/components/schemas/CommonComponentsTitleTextIconTitleTextSliderComponent",
-                      "common-components.icon-title-slider": "#/components/schemas/CommonComponentsIconTitleSliderComponent"
+                      "common-components.icon-title-slider": "#/components/schemas/CommonComponentsIconTitleSliderComponent",
+                      "common-components.small-title-title-title-icon-bg-image": "#/components/schemas/CommonComponentsSmallTitleTitleTitleIconBgImageComponent",
+                      "common-components.road-shows": "#/components/schemas/CommonComponentsRoadShowsComponent",
+                      "common-components.locations": "#/components/schemas/CommonComponentsLocationsComponent",
+                      "common-components.cta-block01": "#/components/schemas/CommonComponentsCtaBlock01Component"
                     }
                   }
                 },
@@ -40873,6 +40921,800 @@
             }
           },
           "ModuleTitle": {
+            "type": "string"
+          },
+          "Settings": {
+            "$ref": "#/components/schemas/CommonComponentsModuleSettingsComponent"
+          }
+        }
+      },
+      "RepeatableComponnetsTitleIconBgImageComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "Title": {
+            "type": "string"
+          },
+          "Icon": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "documentId": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "alternativeText": {
+                "type": "string"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "width": {
+                "type": "integer"
+              },
+              "height": {
+                "type": "integer"
+              },
+              "formats": {},
+              "hash": {
+                "type": "string"
+              },
+              "ext": {
+                "type": "string"
+              },
+              "mime": {
+                "type": "string"
+              },
+              "size": {
+                "type": "number",
+                "format": "float"
+              },
+              "url": {
+                "type": "string"
+              },
+              "previewUrl": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "provider_metadata": {},
+              "related": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "folder": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "folderPath": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "publishedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "createdBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "updatedBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "locale": {
+                "type": "string"
+              },
+              "localizations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "CornerBGImage": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "documentId": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "alternativeText": {
+                "type": "string"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "width": {
+                "type": "integer"
+              },
+              "height": {
+                "type": "integer"
+              },
+              "formats": {},
+              "hash": {
+                "type": "string"
+              },
+              "ext": {
+                "type": "string"
+              },
+              "mime": {
+                "type": "string"
+              },
+              "size": {
+                "type": "number",
+                "format": "float"
+              },
+              "url": {
+                "type": "string"
+              },
+              "previewUrl": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "provider_metadata": {},
+              "related": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "folder": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "folderPath": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "publishedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "createdBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "updatedBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "locale": {
+                "type": "string"
+              },
+              "localizations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CommonComponentsSmallTitleTitleTitleIconBgImageComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "__component": {
+            "type": "string",
+            "enum": [
+              "common-components.small-title-title-title-icon-bg-image"
+            ]
+          },
+          "smallTitle": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "TitleIconBGImage": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RepeatableComponnetsTitleIconBgImageComponent"
+            }
+          },
+          "Settings": {
+            "$ref": "#/components/schemas/CommonComponentsModuleSettingsComponent"
+          }
+        }
+      },
+      "RepeatableComponnetsEachRoadShowComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "RoadShowBGImage": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "documentId": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "alternativeText": {
+                "type": "string"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "width": {
+                "type": "integer"
+              },
+              "height": {
+                "type": "integer"
+              },
+              "formats": {},
+              "hash": {
+                "type": "string"
+              },
+              "ext": {
+                "type": "string"
+              },
+              "mime": {
+                "type": "string"
+              },
+              "size": {
+                "type": "number",
+                "format": "float"
+              },
+              "url": {
+                "type": "string"
+              },
+              "previewUrl": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "provider_metadata": {},
+              "related": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "folder": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "folderPath": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "publishedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "createdBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "updatedBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "locale": {
+                "type": "string"
+              },
+              "localizations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "RSIHoverTitle": {
+            "type": "string"
+          },
+          "RSIHoverText": {
+            "type": "string"
+          },
+          "RSIGalleryImages": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "documentId": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "alternativeText": {
+                  "type": "string"
+                },
+                "caption": {
+                  "type": "string"
+                },
+                "width": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                },
+                "formats": {},
+                "hash": {
+                  "type": "string"
+                },
+                "ext": {
+                  "type": "string"
+                },
+                "mime": {
+                  "type": "string"
+                },
+                "size": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "previewUrl": {
+                  "type": "string"
+                },
+                "provider": {
+                  "type": "string"
+                },
+                "provider_metadata": {},
+                "related": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      },
+                      "documentId": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "folder": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "folderPath": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "publishedAt": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "createdBy": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "updatedBy": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "locale": {
+                  "type": "string"
+                },
+                "localizations": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      },
+                      "documentId": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CommonComponentsRoadShowsComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "__component": {
+            "type": "string",
+            "enum": [
+              "common-components.road-shows"
+            ]
+          },
+          "roadShow": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RepeatableComponnetsEachRoadShowComponent"
+            }
+          },
+          "Settings": {
+            "$ref": "#/components/schemas/CommonComponentsModuleSettingsComponent"
+          }
+        }
+      },
+      "RepeatableComponnetsBgImageTitleLocationSubLocationComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "BGImage": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "documentId": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "alternativeText": {
+                "type": "string"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "width": {
+                "type": "integer"
+              },
+              "height": {
+                "type": "integer"
+              },
+              "formats": {},
+              "hash": {
+                "type": "string"
+              },
+              "ext": {
+                "type": "string"
+              },
+              "mime": {
+                "type": "string"
+              },
+              "size": {
+                "type": "number",
+                "format": "float"
+              },
+              "url": {
+                "type": "string"
+              },
+              "previewUrl": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "provider_metadata": {},
+              "related": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "folder": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "folderPath": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "publishedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "createdBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "updatedBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "locale": {
+                "type": "string"
+              },
+              "localizations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "Title": {
+            "type": "string"
+          },
+          "Location": {
+            "type": "string"
+          },
+          "SubLocation": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonComponentsLocationsComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "__component": {
+            "type": "string",
+            "enum": [
+              "common-components.locations"
+            ]
+          },
+          "eachLocation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RepeatableComponnetsBgImageTitleLocationSubLocationComponent"
+            }
+          },
+          "Settings": {
+            "$ref": "#/components/schemas/CommonComponentsModuleSettingsComponent"
+          }
+        }
+      },
+      "CommonComponentsCtaBlock01Component": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "__component": {
+            "type": "string",
+            "enum": [
+              "common-components.cta-block01"
+            ]
+          },
+          "Title": {
+            "type": "string"
+          },
+          "Text": {
+            "type": "string"
+          },
+          "CTAText": {
+            "type": "string"
+          },
+          "CTALink": {
             "type": "string"
           },
           "Settings": {
