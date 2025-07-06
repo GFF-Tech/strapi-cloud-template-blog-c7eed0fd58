@@ -1,18 +1,21 @@
 {
-  "collectionName": "components_common_components_tracks_sections",
+  "collectionName": "components_common_components_small_title_title_title_icon_bg_images",
   "info": {
-    "displayName": "Tracks Section",
+    "displayName": "SmallTitleTitle_TitleIconBGImage",
     "description": ""
   },
   "options": {},
   "attributes": {
-    "Title": {
+    "smallTitle": {
       "type": "string"
     },
-    "eachTrackItem": {
+    "title": {
+      "type": "string"
+    },
+    "TitleIconBGImage": {
       "type": "component",
       "repeatable": true,
-      "component": "repeatable-componnets.track-item-icon-title-desc"
+      "component": "repeatable-componnets.title-icon-bg-image"
     },
     "Settings": {
       "type": "component",

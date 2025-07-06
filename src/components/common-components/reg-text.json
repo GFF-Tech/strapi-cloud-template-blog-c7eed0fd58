@@ -2,12 +2,18 @@
   "collectionName": "components_common_components_reg_texts",
   "info": {
     "displayName": "Reg Text",
-    "icon": "bulletList"
+    "icon": "bulletList",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "RegularText": {
       "type": "blocks"
+    },
+    "Settings": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common-components.module-settings"
     }
   }
 }

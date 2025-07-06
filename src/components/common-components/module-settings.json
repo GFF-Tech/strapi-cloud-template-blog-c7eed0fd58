@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_common_components_module_settings",
+  "info": {
+    "displayName": "ModuleSettings",
+    "icon": "cog",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "BackgroundColor": {
+      "type": "string"
+    }
+  }
+}
