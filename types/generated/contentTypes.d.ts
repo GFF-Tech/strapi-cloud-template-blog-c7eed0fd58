@@ -1566,6 +1566,10 @@ export interface ApiRegularPageRegularPage extends Struct.CollectionTypeSchema {
         'common-components.cm-image-title-text-cta',
         'common-components.title-text-icon-title-text-slider',
         'common-components.icon-title-slider',
+        'common-components.small-title-title-title-icon-bg-image',
+        'common-components.road-shows',
+        'common-components.locations',
+        'common-components.cta-block01',
       ]
     >;
     publishedAt: Schema.Attribute.DateTime;
