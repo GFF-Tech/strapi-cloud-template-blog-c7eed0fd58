@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_common_components_cta_block01s",
+  "info": {
+    "displayName": "CTABlock01",
+    "icon": "cup"
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "text"
+    },
+    "Text": {
+      "type": "text"
+    },
+    "CTAText": {
+      "type": "string"
+    },
+    "CTALink": {
+      "type": "string"
+    },
+    "Settings": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common-components.module-settings"
+    }
+  }
+}
