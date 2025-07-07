@@ -1,0 +1,62 @@
+{
+  "kind": "collectionType",
+  "collectionName": "hotel_information_forms",
+  "info": {
+    "singularName": "hotel-information-form",
+    "pluralName": "hotel-information-forms",
+    "displayName": "Hotel Information Form",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "firstName": {
+      "type": "string"
+    },
+    "middleName": {
+      "type": "string"
+    },
+    "countryCode": {
+      "type": "string"
+    },
+    "mobileNumber": {
+      "type": "string"
+    },
+    "officialEmailAddress": {
+      "type": "email",
+      "unique": true
+    },
+    "organisation": {
+      "type": "string"
+    },
+    "designation": {
+      "type": "string"
+    },
+    "checkInDate": {
+      "type": "date"
+    },
+    "checkOutDate": {
+      "type": "date"
+    },
+    "noOfRoomsRequired": {
+      "type": "integer"
+    },
+    "referralSource": {
+      "type": "string"
+    },
+    "otherSource": {
+      "type": "string"
+    },
+    "nationality": {
+      "type": "string"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    },
+    "lastName": {
+      "type": "string"
+    }
+  }
+}

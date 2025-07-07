@@ -1,7 +1,8 @@
 {
   "collectionName": "components_common_gst_details",
   "info": {
-    "displayName": "GstDetails"
+    "displayName": "GstDetails",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -22,6 +23,9 @@
     },
     "companyAddress": {
       "type": "text"
+    },
+    "isCompanyAddressSameAsBilling": {
+      "type": "boolean"
     }
   }
 }

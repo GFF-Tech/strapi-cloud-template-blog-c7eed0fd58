@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_common_components_cm_image_title_text_ctas",
+  "info": {
+    "displayName": "CMImageTitleTextCTA",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "imageTitleTextCTA": {
+      "type": "component",
+      "repeatable": true,
+      "component": "repeatable-componnets.content-module-image-title-text-cta-link"
+    },
+    "Settings": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common-components.module-settings"
+    }
+  }
+}

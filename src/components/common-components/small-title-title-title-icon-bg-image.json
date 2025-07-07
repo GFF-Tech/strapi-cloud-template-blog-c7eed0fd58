@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_common_components_small_title_title_title_icon_bg_images",
+  "info": {
+    "displayName": "SmallTitleTitle_TitleIconBGImage",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "smallTitle": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "TitleIconBGImage": {
+      "type": "component",
+      "repeatable": true,
+      "component": "repeatable-componnets.title-icon-bg-image"
+    },
+    "Settings": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common-components.module-settings"
+    }
+  }
+}

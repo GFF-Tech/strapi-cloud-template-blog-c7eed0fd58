@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "thought_leadership_report_gff2025_tracks",
+  "info": {
+    "singularName": "thought-leadership-report-gff2025-track",
+    "pluralName": "thought-leadership-report-gff2025-tracks",
+    "displayName": "Thought Leadership Report Gff2025 Tracks",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "track": {
+      "type": "string"
+    }
+  }
+}

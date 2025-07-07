@@ -1,0 +1,17 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_preferred_launch_formats",
+  "info": {
+    "singularName": "product-preferred-launch-format",
+    "pluralName": "product-preferred-launch-formats",
+    "displayName": "Product Preferred Launch Formats"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "productPreferredLaunchFormat": {
+      "type": "string"
+    }
+  }
+}

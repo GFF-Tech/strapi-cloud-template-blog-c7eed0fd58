@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_common_components_locations",
+  "info": {
+    "displayName": "Locations",
+    "icon": "pinMap"
+  },
+  "options": {},
+  "attributes": {
+    "eachLocation": {
+      "type": "component",
+      "repeatable": true,
+      "component": "repeatable-componnets.bg-image-title-location-sub-location"
+    },
+    "Settings": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common-components.module-settings"
+    }
+  }
+}

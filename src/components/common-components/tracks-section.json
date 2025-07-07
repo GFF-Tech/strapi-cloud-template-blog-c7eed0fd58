@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_common_components_tracks_sections",
+  "info": {
+    "displayName": "Tracks Section",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "eachTrackItem": {
+      "type": "component",
+      "repeatable": true,
+      "component": "repeatable-componnets.track-item-icon-title-desc"
+    },
+    "Settings": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common-components.module-settings"
+    }
+  }
+}

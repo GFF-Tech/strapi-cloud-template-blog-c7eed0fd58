@@ -1,0 +1,103 @@
+{
+  "kind": "collectionType",
+  "collectionName": "thought_leadership_report_forms",
+  "info": {
+    "singularName": "thought-leadership-report-form",
+    "pluralName": "thought-leadership-report-forms",
+    "displayName": "Thought Leadership Report Form"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "designation": {
+      "type": "string"
+    },
+    "organisation": {
+      "type": "string"
+    },
+    "officialEmailAddress": {
+      "type": "email",
+      "unique": true
+    },
+    "countryCode": {
+      "type": "string"
+    },
+    "mobileNumber": {
+      "type": "string"
+    },
+    "officialPartner": {
+      "type": "string"
+    },
+    "titleOfTheContent": {
+      "type": "string"
+    },
+    "formats": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::thought-leadership-report-format.thought-leadership-report-format"
+    },
+    "otherFormat": {
+      "type": "string"
+    },
+    "briefAbstract": {
+      "type": "text"
+    },
+    "isContentPublished": {
+      "type": "string"
+    },
+    "isContentPublishedOther": {
+      "type": "string"
+    },
+    "gff2025Tracks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::thought-leadership-report-gff2025-track.thought-leadership-report-gff2025-track"
+    },
+    "otherGff2025Track": {
+      "type": "string"
+    },
+    "keyTechnologiesCovered": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::thought-leadership-report-key-technology-covered.thought-leadership-report-key-technology-covered"
+    },
+    "otherKeyTechnologiesCovered": {
+      "type": "string"
+    },
+    "keyProblem": {
+      "type": "string"
+    },
+    "otherPrimaryTargetAudience": {
+      "type": "string"
+    },
+    "primaryTargetAudience": {
+      "type": "string"
+    },
+    "externalCollaborators": {
+      "type": "string"
+    },
+    "proposeASpeakerOrPanelToAccompanyTheRelease": {
+      "type": "string"
+    },
+    "finalDocument": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "finalDocumentUrl": {
+      "type": "string"
+    },
+    "consent": {
+      "type": "boolean"
+    }
+  }
+}

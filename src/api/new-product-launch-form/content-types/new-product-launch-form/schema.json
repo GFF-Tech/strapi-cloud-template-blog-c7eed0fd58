@@ -1,0 +1,99 @@
+{
+  "kind": "collectionType",
+  "collectionName": "new_product_launch_forms",
+  "info": {
+    "singularName": "new-product-launch-form",
+    "pluralName": "new-product-launch-forms",
+    "displayName": "New Product Launch Form",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "designation": {
+      "type": "string"
+    },
+    "company": {
+      "type": "string"
+    },
+    "officialEmailAddress": {
+      "type": "email",
+      "unique": true
+    },
+    "countryCode": {
+      "type": "string"
+    },
+    "mobileNumber": {
+      "type": "string"
+    },
+    "participationRole": {
+      "type": "string"
+    },
+    "productName": {
+      "type": "string"
+    },
+    "productTypes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-type.product-type"
+    },
+    "otherProductType": {
+      "type": "string"
+    },
+    "productBriefDescription": {
+      "type": "text"
+    },
+    "productStages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-stage.product-stage"
+    },
+    "proposedLaunchDate": {
+      "type": "string"
+    },
+    "productTracks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-track.product-track"
+    },
+    "otherProductTrack": {
+      "type": "string"
+    },
+    "productTechnologies": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-technology.product-technology"
+    },
+    "otherProductTechnology": {
+      "type": "string"
+    },
+    "productPrimaryTarget": {
+      "type": "string"
+    },
+    "productInnovative": {
+      "type": "string"
+    },
+    "productMeasurableImpact": {
+      "type": "string"
+    },
+    "liveDemo": {
+      "type": "string"
+    },
+    "preferredLaunchFormat": {
+      "type": "string"
+    },
+    "otherPreferredLaunchFormat": {
+      "type": "string"
+    },
+    "isProductAlreadyLaunched": {
+      "type": "string"
+    },
+    "consent": {
+      "type": "boolean"
+    }
+  }
+}

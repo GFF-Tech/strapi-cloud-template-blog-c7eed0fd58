@@ -19,21 +19,6 @@
     "cognitoId": {
       "type": "string"
     },
-    "wcOrderId": {
-      "type": "string"
-    },
-    "wcOrderStatus": {
-      "type": "string"
-    },
-    "paymentStatus": {
-      "type": "string"
-    },
-    "paymentMode": {
-      "type": "string"
-    },
-    "totalAmount": {
-      "type": "decimal"
-    },
     "gstDetails": {
       "type": "component",
       "repeatable": false,
@@ -72,6 +57,9 @@
     },
     "linkedinUrl": {
       "type": "string"
+    },
+    "registerAsIndividual": {
+      "type": "boolean"
     }
   }
 }

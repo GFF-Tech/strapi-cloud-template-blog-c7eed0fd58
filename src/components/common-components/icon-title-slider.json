@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_common_components_icon_title_sliders",
+  "info": {
+    "displayName": "TitleTwoWayiconTitleSliders",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "iconTitleSliderRightToLeft": {
+      "type": "component",
+      "repeatable": true,
+      "component": "repeatable-componnets.icon-title"
+    },
+    "iconTitleSliderLeftToRight": {
+      "type": "component",
+      "repeatable": true,
+      "component": "repeatable-componnets.icon-title"
+    },
+    "ModuleTitle": {
+      "type": "string"
+    },
+    "Settings": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common-components.module-settings"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_technologies",
+  "info": {
+    "singularName": "product-technology",
+    "pluralName": "product-technologies",
+    "displayName": "Product Technologies",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "productTechnology": {
+      "type": "string"
+    }
+  }
+}

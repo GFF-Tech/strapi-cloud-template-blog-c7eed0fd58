@@ -54,6 +54,12 @@
     },
     "linkedinUrl": {
       "type": "string"
+    },
+    "registerAsIndividual": {
+      "type": "boolean"
+    },
+    "pciFccMember": {
+      "type": "boolean"
     }
   }
 }

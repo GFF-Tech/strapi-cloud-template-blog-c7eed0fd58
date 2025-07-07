@@ -636,7 +636,9 @@ export interface ApiDelegateDelegate extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     passPrice: Schema.Attribute.Decimal;
     passType: Schema.Attribute.String;
+    pciFccMember: Schema.Attribute.Boolean;
     publishedAt: Schema.Attribute.DateTime;
+    registerAsIndividual: Schema.Attribute.Boolean;
     sector: Schema.Attribute.Relation<'oneToOne', 'api::sector.sector'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -709,6 +711,7 @@ export interface ApiExpressInterestExpressInterest
     firstName: Schema.Attribute.String;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     IsDelegate: Schema.Attribute.Boolean;
+    IsMember: Schema.Attribute.Boolean;
     IsPartnerOrExhibitor: Schema.Attribute.Boolean;
     IsSpeaker: Schema.Attribute.Boolean;
     IsSupporter: Schema.Attribute.Boolean;
@@ -758,21 +761,61 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     passBought: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    paymentMode: Schema.Attribute.String;
-    paymentStatus: Schema.Attribute.String;
     pciFccMember: Schema.Attribute.Boolean;
     publishedAt: Schema.Attribute.DateTime;
+    registerAsIndividual: Schema.Attribute.Boolean;
     sector: Schema.Attribute.Relation<'oneToOne', 'api::sector.sector'>;
-    totalAmount: Schema.Attribute.Decimal;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    wcOrderId: Schema.Attribute.String;
-    wcOrderStatus: Schema.Attribute.String;
     wooOrderDetails: Schema.Attribute.Component<
       'common.woo-order-details',
       true
     >;
+  };
+}
+
+export interface ApiHotelInformationFormHotelInformationForm
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'hotel_information_forms';
+  info: {
+    description: '';
+    displayName: 'Hotel Information Form';
+    pluralName: 'hotel-information-forms';
+    singularName: 'hotel-information-form';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    checkInDate: Schema.Attribute.Date;
+    checkOutDate: Schema.Attribute.Date;
+    countryCode: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    designation: Schema.Attribute.String;
+    firstName: Schema.Attribute.String;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    lastName: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::hotel-information-form.hotel-information-form'
+    > &
+      Schema.Attribute.Private;
+    middleName: Schema.Attribute.String;
+    mobileNumber: Schema.Attribute.String;
+    nationality: Schema.Attribute.String;
+    noOfRoomsRequired: Schema.Attribute.Integer;
+    officialEmailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
+    organisation: Schema.Attribute.String;
+    otherSource: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    referralSource: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -922,6 +965,72 @@ export interface ApiMobileAppFaqMobileAppFaq
     mobileAppFAQ_Answer: Schema.Attribute.RichText;
     mobileAppFAQ_ID: Schema.Attribute.UID;
     mobileAppFAQ_Question: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiNewProductLaunchFormNewProductLaunchForm
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'new_product_launch_forms';
+  info: {
+    description: '';
+    displayName: 'New Product Launch Form';
+    pluralName: 'new-product-launch-forms';
+    singularName: 'new-product-launch-form';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    company: Schema.Attribute.String;
+    consent: Schema.Attribute.Boolean;
+    countryCode: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    designation: Schema.Attribute.String;
+    isProductAlreadyLaunched: Schema.Attribute.String;
+    liveDemo: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::new-product-launch-form.new-product-launch-form'
+    > &
+      Schema.Attribute.Private;
+    mobileNumber: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    officialEmailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
+    otherPreferredLaunchFormat: Schema.Attribute.String;
+    otherProductTechnology: Schema.Attribute.String;
+    otherProductTrack: Schema.Attribute.String;
+    otherProductType: Schema.Attribute.String;
+    participationRole: Schema.Attribute.String;
+    preferredLaunchFormat: Schema.Attribute.String;
+    productBriefDescription: Schema.Attribute.Text;
+    productInnovative: Schema.Attribute.String;
+    productMeasurableImpact: Schema.Attribute.String;
+    productName: Schema.Attribute.String;
+    productPrimaryTarget: Schema.Attribute.String;
+    productStages: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-stage.product-stage'
+    >;
+    productTechnologies: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-technology.product-technology'
+    >;
+    productTracks: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-track.product-track'
+    >;
+    productTypes: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-type.product-type'
+    >;
+    proposedLaunchDate: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1188,6 +1297,181 @@ export interface ApiPostConferenceReportForm2024PostConferenceReportForm2024
   };
 }
 
+export interface ApiProductPreferredLaunchFormatProductPreferredLaunchFormat
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_preferred_launch_formats';
+  info: {
+    displayName: 'Product Preferred Launch Formats';
+    pluralName: 'product-preferred-launch-formats';
+    singularName: 'product-preferred-launch-format';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-preferred-launch-format.product-preferred-launch-format'
+    > &
+      Schema.Attribute.Private;
+    productPreferredLaunchFormat: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductPrimaryTargetProductPrimaryTarget
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_primary_targets';
+  info: {
+    displayName: 'Product Primary Targets';
+    pluralName: 'product-primary-targets';
+    singularName: 'product-primary-target';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-primary-target.product-primary-target'
+    > &
+      Schema.Attribute.Private;
+    productPrimaryTarget: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductStageProductStage
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_stages';
+  info: {
+    displayName: 'Product Stages';
+    pluralName: 'product-stages';
+    singularName: 'product-stage';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-stage.product-stage'
+    > &
+      Schema.Attribute.Private;
+    productStage: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductTechnologyProductTechnology
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_technologies';
+  info: {
+    description: '';
+    displayName: 'Product Technologies';
+    pluralName: 'product-technologies';
+    singularName: 'product-technology';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-technology.product-technology'
+    > &
+      Schema.Attribute.Private;
+    productTechnology: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductTrackProductTrack
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'product_tracks';
+  info: {
+    displayName: 'Product Tracks';
+    pluralName: 'product-tracks';
+    singularName: 'product-track';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-track.product-track'
+    > &
+      Schema.Attribute.Private;
+    productTrack: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiProductTypeProductType extends Struct.CollectionTypeSchema {
+  collectionName: 'product_types';
+  info: {
+    description: '';
+    displayName: 'Product Types';
+    pluralName: 'product-types';
+    singularName: 'product-type';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::product-type.product-type'
+    > &
+      Schema.Attribute.Private;
+    productType: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiReferralSourceReferralSource
   extends Struct.CollectionTypeSchema {
   collectionName: 'referral_sources';
@@ -1254,6 +1538,7 @@ export interface ApiRegistrationFaqRegistrationFaq
 export interface ApiRegularPageRegularPage extends Struct.CollectionTypeSchema {
   collectionName: 'regular_pages';
   info: {
+    description: '';
     displayName: 'Regular Page';
     pluralName: 'regular-pages';
     singularName: 'regular-page';
@@ -1271,8 +1556,21 @@ export interface ApiRegularPageRegularPage extends Struct.CollectionTypeSchema {
       'api::regular-page.regular-page'
     > &
       Schema.Attribute.Private;
+    pageID: Schema.Attribute.UID;
+    pageName: Schema.Attribute.String;
     PageSections: Schema.Attribute.DynamicZone<
-      ['common-components.reg-text', 'common-components.hero-section']
+      [
+        'common-components.reg-text',
+        'common-components.hero-section',
+        'common-components.tracks-section',
+        'common-components.cm-image-title-text-cta',
+        'common-components.title-text-icon-title-text-slider',
+        'common-components.icon-title-slider',
+        'common-components.small-title-title-title-icon-bg-image',
+        'common-components.road-shows',
+        'common-components.locations',
+        'common-components.cta-block01',
+      ]
     >;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
@@ -1424,6 +1722,187 @@ export interface ApiSpeaker2024Speaker2024 extends Struct.CollectionTypeSchema {
     salutation: Schema.Attribute.Enumeration<
       ['Mr.', 'Ms.', 'Mrs.', 'Dr.', 'Prof.', 'Shri', 'Smt.']
     >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiThoughtLeadershipReportFormThoughtLeadershipReportForm
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'thought_leadership_report_forms';
+  info: {
+    displayName: 'Thought Leadership Report Form';
+    pluralName: 'thought-leadership-report-forms';
+    singularName: 'thought-leadership-report-form';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    briefAbstract: Schema.Attribute.Text;
+    consent: Schema.Attribute.Boolean;
+    countryCode: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    designation: Schema.Attribute.String;
+    externalCollaborators: Schema.Attribute.String;
+    finalDocument: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    finalDocumentUrl: Schema.Attribute.String;
+    formats: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::thought-leadership-report-format.thought-leadership-report-format'
+    >;
+    gff2025Tracks: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::thought-leadership-report-gff2025-track.thought-leadership-report-gff2025-track'
+    >;
+    isContentPublished: Schema.Attribute.String;
+    isContentPublishedOther: Schema.Attribute.String;
+    keyProblem: Schema.Attribute.String;
+    keyTechnologiesCovered: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::thought-leadership-report-key-technology-covered.thought-leadership-report-key-technology-covered'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::thought-leadership-report-form.thought-leadership-report-form'
+    > &
+      Schema.Attribute.Private;
+    mobileNumber: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    officialEmailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
+    officialPartner: Schema.Attribute.String;
+    organisation: Schema.Attribute.String;
+    otherFormat: Schema.Attribute.String;
+    otherGff2025Track: Schema.Attribute.String;
+    otherKeyTechnologiesCovered: Schema.Attribute.String;
+    otherPrimaryTargetAudience: Schema.Attribute.String;
+    primaryTargetAudience: Schema.Attribute.String;
+    proposeASpeakerOrPanelToAccompanyTheRelease: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    titleOfTheContent: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiThoughtLeadershipReportFormatThoughtLeadershipReportFormat
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'thought_leadership_report_formats';
+  info: {
+    displayName: 'Thought Leadership Report Formats';
+    pluralName: 'thought-leadership-report-formats';
+    singularName: 'thought-leadership-report-format';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    format: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::thought-leadership-report-format.thought-leadership-report-format'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiThoughtLeadershipReportGff2025TrackThoughtLeadershipReportGff2025Track
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'thought_leadership_report_gff2025_tracks';
+  info: {
+    description: '';
+    displayName: 'Thought Leadership Report Gff2025 Tracks';
+    pluralName: 'thought-leadership-report-gff2025-tracks';
+    singularName: 'thought-leadership-report-gff2025-track';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::thought-leadership-report-gff2025-track.thought-leadership-report-gff2025-track'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    track: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiThoughtLeadershipReportKeyTechnologyCoveredThoughtLeadershipReportKeyTechnologyCovered
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'thought_leadership_report_key_technologies_covereds';
+  info: {
+    displayName: 'Thought Leadership Report Key Technologies Covered';
+    pluralName: 'thought-leadership-report-key-technologies-covereds';
+    singularName: 'thought-leadership-report-key-technology-covered';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::thought-leadership-report-key-technology-covered.thought-leadership-report-key-technology-covered'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    technology: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiThoughtLeadershipReportPrimaryTargetAudienceThoughtLeadershipReportPrimaryTargetAudience
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'thought_leadership_report_primary_target_audiences';
+  info: {
+    displayName: 'Thought Leadership Report Primary Target Audiences';
+    pluralName: 'thought-leadership-report-primary-target-audiences';
+    singularName: 'thought-leadership-report-primary-target-audience';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::thought-leadership-report-primary-target-audience.thought-leadership-report-primary-target-audience'
+    > &
+      Schema.Attribute.Private;
+    primaryTargetAudience: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1949,17 +2428,25 @@ declare module '@strapi/strapi' {
       'api::early-stage-pitch.early-stage-pitch': ApiEarlyStagePitchEarlyStagePitch;
       'api::express-interest.express-interest': ApiExpressInterestExpressInterest;
       'api::facilitator.facilitator': ApiFacilitatorFacilitator;
+      'api::hotel-information-form.hotel-information-form': ApiHotelInformationFormHotelInformationForm;
       'api::hotel.hotel': ApiHotelHotel;
       'api::log.log': ApiLogLog;
       'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
       'api::mobile-app-areasof-interest.mobile-app-areasof-interest': ApiMobileAppAreasofInterestMobileAppAreasofInterest;
       'api::mobile-app-faq.mobile-app-faq': ApiMobileAppFaqMobileAppFaq;
+      'api::new-product-launch-form.new-product-launch-form': ApiNewProductLaunchFormNewProductLaunchForm;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::partner.partner': ApiPartnerPartner;
       'api::partners-home-page.partners-home-page': ApiPartnersHomePagePartnersHomePage;
       'api::partners-investment-pitches-page.partners-investment-pitches-page': ApiPartnersInvestmentPitchesPagePartnersInvestmentPitchesPage;
       'api::plan-your-stay.plan-your-stay': ApiPlanYourStayPlanYourStay;
       'api::post-conference-report-form-2024.post-conference-report-form-2024': ApiPostConferenceReportForm2024PostConferenceReportForm2024;
+      'api::product-preferred-launch-format.product-preferred-launch-format': ApiProductPreferredLaunchFormatProductPreferredLaunchFormat;
+      'api::product-primary-target.product-primary-target': ApiProductPrimaryTargetProductPrimaryTarget;
+      'api::product-stage.product-stage': ApiProductStageProductStage;
+      'api::product-technology.product-technology': ApiProductTechnologyProductTechnology;
+      'api::product-track.product-track': ApiProductTrackProductTrack;
+      'api::product-type.product-type': ApiProductTypeProductType;
       'api::referral-source.referral-source': ApiReferralSourceReferralSource;
       'api::registration-faq.registration-faq': ApiRegistrationFaqRegistrationFaq;
       'api::regular-page.regular-page': ApiRegularPageRegularPage;
@@ -1967,6 +2454,11 @@ declare module '@strapi/strapi' {
       'api::sector.sector': ApiSectorSector;
       'api::speaker.speaker': ApiSpeakerSpeaker;
       'api::speaker2024.speaker2024': ApiSpeaker2024Speaker2024;
+      'api::thought-leadership-report-form.thought-leadership-report-form': ApiThoughtLeadershipReportFormThoughtLeadershipReportForm;
+      'api::thought-leadership-report-format.thought-leadership-report-format': ApiThoughtLeadershipReportFormatThoughtLeadershipReportFormat;
+      'api::thought-leadership-report-gff2025-track.thought-leadership-report-gff2025-track': ApiThoughtLeadershipReportGff2025TrackThoughtLeadershipReportGff2025Track;
+      'api::thought-leadership-report-key-technology-covered.thought-leadership-report-key-technology-covered': ApiThoughtLeadershipReportKeyTechnologyCoveredThoughtLeadershipReportKeyTechnologyCovered;
+      'api::thought-leadership-report-primary-target-audience.thought-leadership-report-primary-target-audience': ApiThoughtLeadershipReportPrimaryTargetAudienceThoughtLeadershipReportPrimaryTargetAudience;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

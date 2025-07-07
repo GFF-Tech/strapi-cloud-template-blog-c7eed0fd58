@@ -97,6 +97,8 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       if (!delegateToUpdate.wcProductName) updatedFields.wcProductName = data.wcProductName;
       if (!delegateToUpdate.isFacilitator) updatedFields.isFacilitator = data.isFacilitator || false;
       if (!delegateToUpdate.country) updatedFields.country = data.country;
+      if (!delegateToUpdate.pciFccMember) updatedFields.pciFccMember = data.pciFccMember;
+      if (!delegateToUpdate.registerAsIndividual) updatedFields.registerAsIndividual = data.registerAsIndividual;
       if (!delegateToUpdate.sector) updatedFields.sector = data.sector || null;
 
       // 5. Create Cognito user if not facilitator and cognitoId missing
@@ -191,23 +193,34 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
 
       const salesforcePayload = {
         upgrade: 'false',
-        passType: passType,
-        price: fullDelegate.passPrice,
-        confirmationId: fullDelegate.confirmationId,
         email: data.officialEmailAddress,
         mobilePhone: `${fullDelegate.country.countryCode}${data.mobileNumber}`,
         participantFirstName: data.firstName,
         participantLastName: data.lastName,
         company: data.companyName || 'INDIVIDUAL',
-        sector: fullDelegate.sector?.name || '',
         vertical: '',
         level: '',
         GenderIdentity: '',
-        title: '',
-        linkdinProfile: fullDelegate.linkedinUrl || '',
+         title: '',
+         linkdinProfile: fullDelegate.linkedinUrl || '',
         twitterProfile: '',
         instagramProfile: '',
-        personalEmail: ''
+         personalEmail: '',
+         confirmationId: fullDelegate.confirmationId,
+        passType: passType,
+        price: fullDelegate.passPrice,
+       salutation: '',
+       marketServedByCompany: '',
+       shortBio: '',
+       participantCategory: '',
+       participationObjective: '',
+       eventYearsAttendedBefore: '',
+       city: '',
+       country: '',
+       networkingGoals: '',
+       languageSpoken: '',
+       preferredTracks: '',
+       interestAreas: ''
       };
 
       try {
@@ -321,15 +334,11 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
 
       const salesforcePayload = {
         upgrade: 'true',
-        passType: existing.passType,
-        price: existing.passPrice,
-        confirmationId: existing.confirmationId,
         email: email,
-        mobilePhone: `${existing.country.countryCode}${mobilePhone}`,
-        participantFirstName: data.firstName,
+        mobilePhone: mobilePhone,
+         participantFirstName: data.firstName,
         participantLastName: data.lastName,
         company: companyName || 'INDIVIDUAL',
-        sector: existing.sector?.name || '',
         vertical: '',
         level: '',
         GenderIdentity: '',
@@ -337,7 +346,22 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         linkdinProfile: existing.linkedinUrl || '',
         twitterProfile: '',
         instagramProfile: '',
-        personalEmail: ''
+        personalEmail: '',
+        confirmationId: existing.confirmationId,
+        passType: existing.passType,
+        price: existing.passPrice,
+        salutation: '',
+       marketServedByCompany: '',
+       shortBio: '',
+       participantCategory: '',
+       participationObjective: '',
+       eventYearsAttendedBefore: '',
+       city: '',
+       country: '',
+       networkingGoals: '',
+       languageSpoken: '',
+       preferredTracks: '',
+       interestAreas: ''
       };
 
       console.log("salesforcePayload = ", salesforcePayload);
@@ -595,6 +619,32 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       return ctx.internalServerError('An unexpected error occurred');
     }
   },
+
+async resendInviteMail(ctx) {
+  try {
+    const { data } = ctx.request.body;
+    
+    if (!data.officialEmailAddress || !data.firstName || !data.lastName) {
+      return ctx.badRequest('Missing required fields');
+    }
+
+    const officialEmailAddress = data.officialEmailAddress;
+    const firstName = data.firstName;
+    const lastName = data.lastName;
+
+    await sendEmail({
+      to: officialEmailAddress,
+      subject: 'Your Delegate Registration is Confirmed - Welcome to GFF 2025!',
+      templateName: 'delegate-confirmation',
+      replacements: { firstName, lastName },
+    });
+
+    ctx.send({ message: 'Invitation email resent successfully.' });
+  } catch (error) {
+    strapi.log.error('Failed to resend invite mail:', error);
+    ctx.internalServerError('Failed to resend invite mail');
+  }
+},
 
 }));
 

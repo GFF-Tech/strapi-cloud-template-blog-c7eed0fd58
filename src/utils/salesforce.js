@@ -164,21 +164,22 @@ async function fetchInvoiceFromSalesforce(registrationPaymentId) {
   }
 
   const fetchInvoice = async () => {
-    console.log('salesforceToken = ',salesforceToken);
-    console.log('JSON.stringify({ registrationPaymentId }) = ',JSON.stringify({ registrationPaymentId }));
+    console.log('salesforceToken = ', salesforceToken);
+    console.log('JSON.stringify({ registrationPaymentId }) = ', JSON.stringify({ registrationPaymentId }));
+
     const res = await fetch(getInvoiceUrlEndpoint, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${salesforceToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ "registrationPaymentId": registrationPaymentId }),
+      body: JSON.stringify({ registrationPaymentId }),
     });
 
     const text = await res.text();
     console.log('Salesforce raw response:', res.status, text);
-    let parsed;
 
+    let parsed;
     try {
       parsed = JSON.parse(text);
     } catch (e) {
@@ -192,34 +193,29 @@ async function fetchInvoiceFromSalesforce(registrationPaymentId) {
       bodyText.includes('INVALID_SESSION_ID') ||
       (bodyText.toLowerCase().includes('session') && bodyText.toLowerCase().includes('expired'));
 
-    if (isTokenExpired) {
-      return { retry: true };
-    }
-
-    if (!res.ok) {
-      console.error('Salesforce Invoice Fetch Error:', parsed);
-      throw new Error('Salesforce invoice fetch failed');
-    }
-
-    return { retry: false, data: parsed };
+    return {
+      ok: res.ok,
+      retry: !res.ok && !isTokenExpired,
+      data: parsed,
+    };
   };
 
-  // First attempt
   let result = await fetchInvoice();
 
-  // Retry if session expired
+  // Retry once if non-token error occurred
   if (result.retry) {
-    console.warn('Salesforce session expired during invoice fetch, retrying...');
-    await getSalesforceToken();
+    console.warn('Salesforce invoice fetch failed. Retrying once...');
     result = await fetchInvoice();
+  }
 
-    if (result.retry) {
-      throw new Error('Salesforce invoice fetch failed after token refresh');
-    }
+  if (!result.ok) {
+    console.error('Salesforce Invoice Fetch Final Error:', result.data);
+    throw new Error('Salesforce invoice fetch failed after retry');
   }
 
   return result.data;
 }
+
 
 module.exports = {
   insertIntoSalesforce,

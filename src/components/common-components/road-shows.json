@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_common_components_road_shows",
+  "info": {
+    "displayName": "RoadShows"
+  },
+  "options": {},
+  "attributes": {
+    "roadShow": {
+      "type": "component",
+      "repeatable": true,
+      "component": "repeatable-componnets.each-road-show"
+    },
+    "Settings": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common-components.module-settings"
+    }
+  }
+}

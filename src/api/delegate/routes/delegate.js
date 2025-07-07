@@ -78,5 +78,14 @@ module.exports = {
         middlewares: [],
       },
     },
+    {
+      method: 'POST',
+      path: '/delegates/resendInviteMail',
+      handler: 'delegate.resendInviteMail',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
   ],
 };

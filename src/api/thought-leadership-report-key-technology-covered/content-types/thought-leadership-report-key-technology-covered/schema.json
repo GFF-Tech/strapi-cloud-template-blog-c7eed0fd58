@@ -1,0 +1,17 @@
+{
+  "kind": "collectionType",
+  "collectionName": "thought_leadership_report_key_technologies_covereds",
+  "info": {
+    "singularName": "thought-leadership-report-key-technology-covered",
+    "pluralName": "thought-leadership-report-key-technologies-covereds",
+    "displayName": "Thought Leadership Report Key Technologies Covered"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "technology": {
+      "type": "string"
+    }
+  }
+}
