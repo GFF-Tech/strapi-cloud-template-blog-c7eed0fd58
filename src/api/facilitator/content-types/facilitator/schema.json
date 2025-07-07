@@ -60,6 +60,11 @@
     },
     "registerAsIndividual": {
       "type": "boolean"
+    },
+    "invoiceDetails": {
+      "type": "component",
+      "repeatable": true,
+      "component": "common.invoice-details"
     }
   }
 }

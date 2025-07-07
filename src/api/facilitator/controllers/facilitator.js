@@ -67,6 +67,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           country: true,
           sector: true,
           wooOrderDetails: true,
+          invoiceDetails: true,
           gstDetails: true,
           delegates: {
             populate: ['sector', 'country'],
@@ -622,6 +623,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           country: { fields: ['country', 'countryCode'] },
           sector: { fields: ['name'] },
           wooOrderDetails: true,
+          invoiceDetails: true,
         },
       });
 
@@ -789,6 +791,24 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
                 const passDetails = orderSummary;
                 const invoiceLink = invoiceDetails.invoiceLink;
 
+                const existingInvoiceDetails = updated.invoiceDetails || [];
+                const newInvoiceDetails = [
+                ...existingInvoiceDetails,
+                {
+                  wcOrderId: order.wcOrderId,
+                  paymentDate,
+                  invoiceNumber,
+                  amountPaid,
+                  invoiceLink,
+                },
+              ];
+
+                 await strapi.entityService.update('api::facilitator.facilitator', id, {
+                data: { 
+                  invoiceDetails: newInvoiceDetails
+                 },
+              });
+
                 await sendEmail({
                   to: email,
                   subject: 'Thank You for Your Payment for GFF 2025 Registration',
@@ -820,7 +840,19 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         }
       }
 
-      return updated;
+      const finalUpdated = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
+        populate: {
+          gstDetails: true,
+          country: { fields: ['country', 'countryCode'] },
+          sector: { fields: ['name'] },
+          wooOrderDetails: true,
+          invoiceDetails: true,
+        },
+      });
+
+      // return updated;
+      return finalUpdated;
+
     } catch (error) {
       console.error('Update error:', error);
       await log({
@@ -1046,6 +1078,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           country: true,
           sector: true,
           wooOrderDetails: true,
+          invoiceDetails: true,
           gstDetails: true,
           delegates: {
             populate: ['sector', 'country'],
