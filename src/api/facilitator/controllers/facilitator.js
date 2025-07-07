@@ -79,9 +79,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         await log({
           logType: 'Error',
           message: 'Facilitator not found',
-          details: '',
           origin: 'facilitator.findOne',
-          additionalInfo: { facilitatorId: id },
+          additionalInfo: {},
+          userType: 'Facilitator',
+          referenceId: facilitator.id || id,
+          cognitoId: facilitator.cognitoId || ''
         });
         return ctx.notFound('Facilitator not found');
       }
@@ -164,9 +166,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
             await log({
               logType: 'Error',
               message: 'Failed to fetch delegate Cognito data',
-              details: e.stack,
               origin: 'facilitator.findOne',
               additionalInfo: { delegateCognitoId: delegate.cognitoId },
+              userType: 'Facilitator',
+              referenceId: facilitator.id,
+              cognitoId: facilitator.cognitoId
             });
           }
         }
@@ -234,9 +238,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       await log({
         logType: 'Error',
         message: 'Failed to fetch facilitator',
-        details: error.stack,
         origin: 'facilitator.findOne',
         additionalInfo: { facilitatorId: ctx.params.id },
+        userType: 'Facilitator',
+        referenceId: id || '',
+        cognitoId: ''
       });
       return ctx.internalServerError('Failed to fetch facilitator');
     }
@@ -276,9 +282,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           await log({
             logType: 'Error',
             message: 'Blocked registration: email belongs to delegate',
-            details: '',
             origin: 'facilitator.create',
-            additionalInfo: { email: data.officialEmailAddress },
+            additionalInfo: { },
+            userType: 'Facilitator',
+            referenceId: '',
+            cognitoId: existingCognitoId || ''
           });
           return ctx.forbidden('This email is associated with a participant account. Please use other email to register.');
         }
@@ -294,13 +302,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
               await log({
                 logType: 'Error',
                 message: 'Registration blocked: email already registered',
-                details: '',
                 origin: 'facilitator.create',
-                additionalInfo: {
-                  email: data.officialEmailAddress,
-                  cognitoId: existingCognitoId,
-                  facilitatorId: facilitator.id,
-                },
+                additionalInfo: { },
+                userType: 'Facilitator',
+                referenceId: facilitator.id || '',
+                cognitoId:existingCognitoId || ''
               });
               return ctx.badRequest('Email already registered.');
             }
@@ -367,12 +373,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       await log({
         logType: 'Success',
         message: 'Facilitator created in Strapi',
-        details: '',
         origin: 'facilitator.create',
-        additionalInfo: {
-          facilitatorId: createdFacilitator.id,
-          cognitoId,
-        },
+        additionalInfo: { },
+        userType: 'Facilitator',
+        referenceId: createdFacilitator.id || '',
+        cognitoId: cognitoId ||''
       });
 
       return {
@@ -389,9 +394,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       await log({
         logType: 'Error',
         message: 'Unexpected error during facilitator creation',
-        details: error.stack,
         origin: 'facilitator.create',
         additionalInfo: data,
+        userType: 'Facilitator',
+        referenceId: '',
+        cognitoId:''
       });
       console.error('Unexpected error in facilitator creation:', error);
       return ctx.internalServerError('An unexpected error occurred while registering.');
@@ -429,9 +436,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         await log({
           logType: 'Error',
           message: 'Cognito ID (sub) not found after OTP verification',
-          details: '',
           origin: 'facilitator.verifyFacilitator',
-          additionalInfo: { officialEmailAddress },
+          additionalInfo: { },
+          userType: 'Facilitator',
+          referenceId: '',
+          cognitoId:''
         });
         return ctx.internalServerError('Cognito ID not found for user');
       }
@@ -446,13 +455,15 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           data: { isCognitoVerified: true },
         });
 
-        await log({
-          logType: 'Success',
-          message: 'Facilitator marked as verified',
-          details: '',
-          origin: 'facilitator.verifyFacilitator',
-          additionalInfo: { facilitatorId: existing.id, cognitoId },
-        });
+        // await log({
+        //   logType: 'Success',
+        //   message: 'Facilitator marked as verified',
+        //   origin: 'facilitator.verifyFacilitator',
+        //   additionalInfo: {},
+        //   userType: 'Facilitator',
+        //   referenceId: existing.id || '',
+        //   cognitoId: cognitoId || ''
+        // });
       }
 
       return {
@@ -475,9 +486,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       await log({
         logType: 'Error',
         message: logMessage,
-        details: error.stack,
         origin: 'facilitator.verifyFacilitator',
-        additionalInfo: { officialEmailAddress, otp },
+        additionalInfo: { officialEmailAddress },
+        userType: 'Facilitator',
+        referenceId: '',
+        cognitoId: ''
       });
 
       return ctx.badRequest(userMessage);
@@ -508,9 +521,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         await log({
           logType: 'Error',
           message: 'OTP resend failed: user not found in Cognito',
-          details: '',
           origin: 'facilitator.resendFacilitatorOtp',
           additionalInfo: { officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: '',
+          cognitoId: ''
         });
 
         return ctx.notFound('No user found with the provided email address.');
@@ -520,9 +535,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         await log({
           logType: 'Error',
           message: 'OTP resend failed: user may already be confirmed',
-          details: '',
           origin: 'facilitator.resendFacilitatorOtp',
           additionalInfo: { officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: '',
+          cognitoId: ''
         });
 
         return ctx.badRequest('Cannot resend OTP at this stage. The user might already be confirmed.');
@@ -531,9 +548,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       await log({
         logType: 'Error',
         message: 'Unexpected error during OTP resend',
-        details: error.stack,
         origin: 'facilitator.resendFacilitatorOtp',
         additionalInfo: { officialEmailAddress },
+        userType: 'Facilitator',
+        referenceId: '',
+        cognitoId: ''
       });
 
       return ctx.internalServerError('Failed to resend OTP due to an unexpected error.');
@@ -556,10 +575,12 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       if (!existing) {
         await log({
           logType: 'Error',
-          message: 'Facilitator not found in update',
-          details: '',
+          message: 'Facilitator not found',
           origin: 'facilitator.update',
           additionalInfo: { facilitatorId: id },
+          userType: 'Facilitator',
+          referenceId: id || '',
+          cognitoId: ''
         });
         return ctx.notFound('Facilitator not found');
       }
@@ -575,11 +596,12 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
             logType: 'Error',
             message: 'Duplicate WooCommerce order(s) detected in facilitator update',
             origin: 'facilitator.update',
-            details: '',
             additionalInfo: {
-              facilitatorId: id,
-              duplicateOrderIds: duplicateOrders.map(o => o.wcOrderId),
+               duplicateOrderIds: duplicateOrders.map(o => o.wcOrderId),
             },
+            userType: 'Facilitator',
+          referenceId: id || '',
+          cognitoId: existing.cognitoId || ''
           });
           return ctx.badRequest(`Duplicate WooCommerce order(s) found: ${duplicateOrders.map(o => o.wcOrderId).join(', ')}`);
         }
@@ -595,14 +617,15 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         logType: 'Success',
         message: 'Incoming WooCommerce order details received for facilitator update',
         origin: 'facilitator.update',
-        details: '',
         additionalInfo: {
-          facilitatorId: id,
           newOrders: incomingWooOrders.map(order => ({
             wcOrderId: order.wcOrderId,
             wcOrderStatus: order.wcOrderStatus,
           })),
         },
+        userType: 'Facilitator',
+          referenceId: id || '',
+          cognitoId: existing.cognitoId || ''
       });
 
       const mergedWooOrders = [...existingWooOrders, ...incomingWooOrders];
@@ -707,13 +730,14 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
             await log({
               logType: 'Success',
               message: 'Salesforce insert successful',
-              details: '',
               origin: 'facilitator.update',
               additionalInfo: {
-                facilitatorId: id,
                 registrationPaymentId: result?.registrationPaymentId || '',
                 passes,
               },
+              userType: 'Facilitator',
+              referenceId: id || '',
+              cognitoId: existing.cognitoId || ''
             });
 
             if (result?.registrationPaymentId) {
@@ -757,14 +781,15 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
                 await log({
                   logType: 'Success',
                   message: 'Invoice fetched successfully',
-                  details: '',
                   origin: 'facilitator.update',
                   additionalInfo: {
-                    facilitatorId: id,
                     registrationPaymentId: result.registrationPaymentId,
                     invoiceNumber: invoiceDetails.invoiceNumber,
                     invoiceLink: invoiceDetails.invoiceLink,
                   },
+                  userType: 'Facilitator',
+                  referenceId: id || '',
+                  cognitoId: existing.cognitoId || ''
                 });
               } catch (invoiceError) {
                 strapi.log.error('Failed to fetch invoice details:', {
@@ -774,13 +799,15 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
                 await log({
                   logType: 'Error',
                   message: 'Invoice fetch failed from Salesforce',
-                  details: invoiceError.stack,
                   origin: 'facilitator.update',
                   additionalInfo: {
-                    facilitatorId: id,
-                    registrationPaymentId: result?.registrationPaymentId || '',
-                    error: invoiceError,
+                     registrationPaymentId: result?.registrationPaymentId || '',
+                    errorMessage: invoiceError?.message || '',
+                    errorStack: invoiceError?.stack || ''
                   },
+                  userType: 'Facilitator',
+                  referenceId: id || '',
+                  cognitoId: existing.cognitoId || ''
                 });
               }
 
@@ -809,12 +836,29 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
                  },
               });
 
+              try{
                 await sendEmail({
                   to: email,
                   subject: 'Thank You for Your Payment for GFF 2025 Registration',
                   templateName: 'payment-invoice',
                   replacements: { firstName, lastName, invoiceNumber, amountPaid, paymentDate, passDetails, invoiceLink },
                 });
+              }catch (err) {
+              strapi.log.error('Failed to Send Invoice email:', err);
+               await log({
+              logType: 'Error',
+              message: 'Failed to Send Invoice Email',
+              origin: 'facilitator.update',
+              additionalInfo: {
+               errorMessage: err?.message || '',
+              stack: err?.stack || '',
+              },
+              userType: 'Facilitator',
+              referenceId: id || '',
+              cognitoId: existing.cognitoId || ''
+            });
+             }
+                
               }
 
             }
@@ -828,12 +872,14 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
             await log({
               logType: 'Error',
               message: 'Salesforce insert failed',
-              details: err?.stack || '',
               origin: 'facilitator.update',
               additionalInfo: {
-                facilitatorId: id,
-                error: err,
+               message: err?.message || '',
+              stack: err?.stack || '',
               },
+              userType: 'Facilitator',
+              referenceId: id || '',
+              cognitoId: existing.cognitoId || ''
             });
 
           }
@@ -858,9 +904,14 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       await log({
         logType: 'Error',
         message: 'Unexpected error during facilitator update',
-        details: error.stack,
         origin: 'facilitator.update',
-        additionalInfo: { facilitatorId: id },
+        additionalInfo: { 
+          errorMessage: error?.message || '',
+          errorStack: error?.stack || '',
+        },
+        userType: 'Facilitator',
+        referenceId: id || '',
+        cognitoId: ''
       });
       return ctx.internalServerError('An error occurred while updating the facilitator');
     }
@@ -904,9 +955,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         await log({
           logType: 'Error',
           message: 'Login failed: Cognito ID not found',
-          details: '',
           origin: 'facilitator.login',
           additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: '',
+          cognitoId: ''
         });
         return ctx.notFound('Email is not registered. Please register first.');
       }
@@ -915,9 +968,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         await log({
           logType: 'Error',
           message: 'Blocked login: email belongs to delegate',
-          details: '',
           origin: 'facilitator.login',
-          additionalInfo: { email: officialEmailAddress },
+          additionalInfo: { },
+          userType: 'Facilitator',
+          referenceId: '',
+          cognitoId: cognitoId || ''
         });
         return ctx.forbidden('This email is associated with a participant account. Please use the main contact email provided during registration to log in.');
       }
@@ -936,9 +991,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         await log({
           logType: 'Error',
           message: 'Blocked login: incomplete registration — user deleted',
-          details: '',
-          origin: 'facilitator.login',
-          additionalInfo: { email: officialEmailAddress, reason: 'facilitator not found in DB' },
+           origin: 'facilitator.login',
+          additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: '',
+          cognitoId: ''
         });
 
         return ctx.badRequest('Your registration was not completed. Please register again.');
@@ -958,9 +1015,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         await log({
           logType: 'Error',
           message: 'Blocked login: partially registered — user deleted',
-          details: '',
           origin: 'facilitator.login',
           additionalInfo: { email: officialEmailAddress, reason: 'UNCONFIRMED or pass not bought' },
+          userType: 'Facilitator',
+          referenceId: '',
+          cognitoId: ''
         });
 
         return ctx.badRequest('Your registration was not completed. Please register again.');
@@ -989,9 +1048,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         await log({
           logType: 'Error',
           message: 'Login failed: Cognito user not found',
-          details: error.stack,
           origin: 'facilitator.login',
           additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: '',
+          cognitoId: ''
         });
         return ctx.notFound('Email is not registered. Please register first.');
       }
@@ -999,9 +1060,13 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       await log({
         logType: 'Error',
         message: 'Unexpected error during login',
-        details: error.stack,
         origin: 'facilitator.login',
-        additionalInfo: { email: officialEmailAddress },
+        additionalInfo: { email: officialEmailAddress,
+                          errorMessage: error?.message || '',
+                          errorStack: error?.stack || '' },
+        userType: 'Facilitator',
+        referenceId: '',
+        cognitoId: ''
       });
 
       return ctx.internalServerError('Failed to process login');
@@ -1033,9 +1098,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         await log({
           logType: 'Error',
           message: 'OTP verification failed',
-          details: '',
           origin: 'facilitator.verifyLoginOtp',
           additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: '',
+          cognitoId: ''
         });
         return ctx.unauthorized('OTP verification failed.');
       }
@@ -1064,9 +1131,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         await log({
           logType: 'Error',
           message: 'Cognito ID missing after OTP verification',
-          details: '',
           origin: 'facilitator.verifyLoginOtp',
           additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: '',
+          cognitoId: ''
         });
         return ctx.internalServerError('Cognito ID missing');
       }
@@ -1090,9 +1159,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         await log({
           logType: 'Error',
           message: 'Facilitator not found in Strapi after successful OTP verification',
-          details: '',
           origin: 'facilitator.verifyLoginOtp',
-          additionalInfo: { email: officialEmailAddress, cognitoId },
+          additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: '',
+          cognitoId: cognitoId || ''
         });
         return ctx.notFound('User not found in the system.');
       }
@@ -1223,9 +1294,15 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       await log({
         logType: 'Error',
         message: 'Unexpected error in OTP verification',
-        details: error.stack,
         origin: 'facilitator.verifyLoginOtp',
-        additionalInfo: { email: officialEmailAddress },
+        additionalInfo: { 
+          email: officialEmailAddress,
+           errorMessage: error?.message || '',
+           stack: error?.stack || ''
+          },
+        userType: 'Facilitator',
+        referenceId: '',
+        cognitoId: ''
       });
       return ctx.internalServerError('OTP verification failed due to an unexpected error.');
     }
@@ -1302,9 +1379,15 @@ async function fetchWooOrder(wcOrderId) {
     await log({
       logType: 'Error',
       message: 'WooCommerce order fetch failed',
-      details: '',
-      origin: 'utils.fetchWooOrder',
-      additionalInfo: { wcOrderId, error: err.message },
+      origin: 'facilitator.fetchWooOrder',
+      additionalInfo: {
+          wcOrderId: wcOrderId,
+          errorMessage: err?.message || '',
+          stack: err?.stack || '',
+      },
+      userType: 'Facilitator',
+      referenceId: '',
+      cognitoId: ''
     });
     return { error: 'WooCommerce order fetch failed', details: err.message };
   }
@@ -1343,9 +1426,15 @@ async function getCognitoUserBySub(sub) {
     await log({
       logType: 'Error',
       message: 'Failed to fetch Cognito user by sub',
-      details: '',
-      origin: 'utils.getCognitoUserBySub',
-      additionalInfo: { sub, error: err.message },
+      origin: 'facilitator.getCognitoUserBySub',
+      additionalInfo: {
+        sub,
+        errorMessage: err?.message || '',
+        stack: err?.stack || '',
+     },
+      userType: 'Facilitator',
+          referenceId: '',
+          cognitoId: ''
     });
     return null;
   }
