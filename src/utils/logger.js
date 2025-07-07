@@ -1,6 +1,6 @@
 // src/utils/logger.js
 
-module.exports = async function log({ logType, message, details, origin, additionalInfo }) {
+module.exports = async function log({ logType, message, origin, additionalInfo, userType, referenceId, cognitoId }) {
   try {
     if (!logType || !['Success', 'Error'].includes(logType)) {
       throw new Error(`Invalid logType: must be 'Success' or 'Error'`);
@@ -10,9 +10,11 @@ module.exports = async function log({ logType, message, details, origin, additio
       data: {
         logType,
         message,
-        details: typeof details === 'object' ? JSON.stringify(details) : details,
         origin,
         additionalInfo,
+        userType,
+        referenceId,
+        cognitoId
       },
     });
   } catch (logErr) {
