@@ -1,15 +1,15 @@
 {
-  "collectionName": "components_common_components_cm_image_title_text_ctas",
+  "collectionName": "components_common_components_locations",
   "info": {
-    "displayName": "CMImageTitleTextCTA",
-    "description": ""
+    "displayName": "Locations",
+    "icon": "pinMap"
   },
   "options": {},
   "attributes": {
-    "imageTitleTextCTA": {
+    "eachLocation": {
       "type": "component",
       "repeatable": true,
-      "component": "repeatable-componnets.content-module-image-title-text-cta-link"
+      "component": "repeatable-componnets.bg-image-title-location-sub-location"
     },
     "Settings": {
       "type": "component",

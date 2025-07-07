@@ -1,7 +1,8 @@
 {
   "collectionName": "components_common_components_title_text_icon_title_text_sliders",
   "info": {
-    "displayName": "TitleText_IconTitleTextSlider"
+    "displayName": "TitleText_IconTitleTextSlider",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -15,6 +16,11 @@
       "type": "component",
       "repeatable": true,
       "component": "repeatable-componnets.icon-title-text"
+    },
+    "Settings": {
+      "type": "component",
+      "repeatable": false,
+      "component": "common-components.module-settings"
     }
   }
 }

@@ -4,6 +4,7 @@ export interface CommonComponentsCmImageTitleTextCta
   extends Struct.ComponentSchema {
   collectionName: 'components_common_components_cm_image_title_text_ctas';
   info: {
+    description: '';
     displayName: 'CMImageTitleTextCTA';
   };
   attributes: {
@@ -11,6 +12,28 @@ export interface CommonComponentsCmImageTitleTextCta
       'repeatable-componnets.content-module-image-title-text-cta-link',
       true
     >;
+    Settings: Schema.Attribute.Component<
+      'common-components.module-settings',
+      false
+    >;
+  };
+}
+
+export interface CommonComponentsCtaBlock01 extends Struct.ComponentSchema {
+  collectionName: 'components_common_components_cta_block01s';
+  info: {
+    displayName: 'CTABlock01';
+    icon: 'cup';
+  };
+  attributes: {
+    CTALink: Schema.Attribute.String;
+    CTAText: Schema.Attribute.String;
+    Settings: Schema.Attribute.Component<
+      'common-components.module-settings',
+      false
+    >;
+    Text: Schema.Attribute.Text;
+    Title: Schema.Attribute.Text;
   };
 }
 
@@ -28,6 +51,10 @@ export interface CommonComponentsHeroSection extends Struct.ComponentSchema {
     HeroText: Schema.Attribute.Text;
     MobileImage: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
+    >;
+    Settings: Schema.Attribute.Component<
+      'common-components.module-settings',
+      false
     >;
     TabletDesktopHeroImage: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
@@ -52,17 +79,94 @@ export interface CommonComponentsIconTitleSlider
       true
     >;
     ModuleTitle: Schema.Attribute.String;
+    Settings: Schema.Attribute.Component<
+      'common-components.module-settings',
+      false
+    >;
+  };
+}
+
+export interface CommonComponentsLocations extends Struct.ComponentSchema {
+  collectionName: 'components_common_components_locations';
+  info: {
+    displayName: 'Locations';
+    icon: 'pinMap';
+  };
+  attributes: {
+    eachLocation: Schema.Attribute.Component<
+      'repeatable-componnets.bg-image-title-location-sub-location',
+      true
+    >;
+    Settings: Schema.Attribute.Component<
+      'common-components.module-settings',
+      false
+    >;
+  };
+}
+
+export interface CommonComponentsModuleSettings extends Struct.ComponentSchema {
+  collectionName: 'components_common_components_module_settings';
+  info: {
+    description: '';
+    displayName: 'ModuleSettings';
+    icon: 'cog';
+  };
+  attributes: {
+    BackgroundColor: Schema.Attribute.String;
   };
 }
 
 export interface CommonComponentsRegText extends Struct.ComponentSchema {
   collectionName: 'components_common_components_reg_texts';
   info: {
+    description: '';
     displayName: 'Reg Text';
     icon: 'bulletList';
   };
   attributes: {
     RegularText: Schema.Attribute.Blocks;
+    Settings: Schema.Attribute.Component<
+      'common-components.module-settings',
+      false
+    >;
+  };
+}
+
+export interface CommonComponentsRoadShows extends Struct.ComponentSchema {
+  collectionName: 'components_common_components_road_shows';
+  info: {
+    displayName: 'RoadShows';
+  };
+  attributes: {
+    roadShow: Schema.Attribute.Component<
+      'repeatable-componnets.each-road-show',
+      true
+    >;
+    Settings: Schema.Attribute.Component<
+      'common-components.module-settings',
+      false
+    >;
+  };
+}
+
+export interface CommonComponentsSmallTitleTitleTitleIconBgImage
+  extends Struct.ComponentSchema {
+  collectionName: 'components_common_components_small_title_title_title_icon_bg_images';
+  info: {
+    description: '';
+    displayName: 'SmallTitleTitle_TitleIconBGImage';
+  };
+  attributes: {
+    Settings: Schema.Attribute.Component<
+      'common-components.module-settings',
+      false
+    >;
+    smallTitle: Schema.Attribute.String;
+    title: Schema.Attribute.String;
+    TitleIconBGImage: Schema.Attribute.Component<
+      'repeatable-componnets.title-icon-bg-image',
+      true
+    >;
   };
 }
 
@@ -70,12 +174,17 @@ export interface CommonComponentsTitleTextIconTitleTextSlider
   extends Struct.ComponentSchema {
   collectionName: 'components_common_components_title_text_icon_title_text_sliders';
   info: {
+    description: '';
     displayName: 'TitleText_IconTitleTextSlider';
   };
   attributes: {
     IconTitleText: Schema.Attribute.Component<
       'repeatable-componnets.icon-title-text',
       true
+    >;
+    Settings: Schema.Attribute.Component<
+      'common-components.module-settings',
+      false
     >;
     Text: Schema.Attribute.Text;
     Title: Schema.Attribute.String;
@@ -85,12 +194,17 @@ export interface CommonComponentsTitleTextIconTitleTextSlider
 export interface CommonComponentsTracksSection extends Struct.ComponentSchema {
   collectionName: 'components_common_components_tracks_sections';
   info: {
+    description: '';
     displayName: 'Tracks Section';
   };
   attributes: {
     eachTrackItem: Schema.Attribute.Component<
       'repeatable-componnets.track-item-icon-title-desc',
       true
+    >;
+    Settings: Schema.Attribute.Component<
+      'common-components.module-settings',
+      false
     >;
     Title: Schema.Attribute.String;
   };
@@ -172,6 +286,20 @@ export interface CommonWooOrderDetails extends Struct.ComponentSchema {
   };
 }
 
+export interface RepeatableComponnetsBgImageTitleLocationSubLocation
+  extends Struct.ComponentSchema {
+  collectionName: 'components_repeatable_componnets_bg_image_title_location_sub_locations';
+  info: {
+    displayName: 'BGImageTitleLocationSubLocation';
+  };
+  attributes: {
+    BGImage: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    Location: Schema.Attribute.String;
+    SubLocation: Schema.Attribute.String;
+    Title: Schema.Attribute.String;
+  };
+}
+
 export interface RepeatableComponnetsContentModuleImageTitleTextCtaLink
   extends Struct.ComponentSchema {
   collectionName: 'components_repeatable_componnets_content_module_image_title_text_cta_links';
@@ -186,6 +314,26 @@ export interface RepeatableComponnetsContentModuleImageTitleTextCtaLink
     uploadImage: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios'
     >;
+  };
+}
+
+export interface RepeatableComponnetsEachRoadShow
+  extends Struct.ComponentSchema {
+  collectionName: 'components_repeatable_componnets_each_road_shows';
+  info: {
+    displayName: 'EachRoadShow';
+    icon: 'chartCircle';
+  };
+  attributes: {
+    RoadShowBGImage: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    RSIGalleryImages: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    RSIHoverText: Schema.Attribute.Text;
+    RSIHoverTitle: Schema.Attribute.String;
   };
 }
 
@@ -215,6 +363,21 @@ export interface RepeatableComponnetsIconTitleText
   };
 }
 
+export interface RepeatableComponnetsTitleIconBgImage
+  extends Struct.ComponentSchema {
+  collectionName: 'components_repeatable_componnets_title_icon_bg_images';
+  info: {
+    displayName: 'TitleIconBGImage';
+  };
+  attributes: {
+    CornerBGImage: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    Icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    Title: Schema.Attribute.String;
+  };
+}
+
 export interface RepeatableComponnetsTrackItemIconTitleDesc
   extends Struct.ComponentSchema {
   collectionName: 'components_repeatable_componnets_track_item_icon_title_descs';
@@ -232,9 +395,14 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'common-components.cm-image-title-text-cta': CommonComponentsCmImageTitleTextCta;
+      'common-components.cta-block01': CommonComponentsCtaBlock01;
       'common-components.hero-section': CommonComponentsHeroSection;
       'common-components.icon-title-slider': CommonComponentsIconTitleSlider;
+      'common-components.locations': CommonComponentsLocations;
+      'common-components.module-settings': CommonComponentsModuleSettings;
       'common-components.reg-text': CommonComponentsRegText;
+      'common-components.road-shows': CommonComponentsRoadShows;
+      'common-components.small-title-title-title-icon-bg-image': CommonComponentsSmallTitleTitleTitleIconBgImage;
       'common-components.title-text-icon-title-text-slider': CommonComponentsTitleTextIconTitleTextSlider;
       'common-components.tracks-section': CommonComponentsTracksSection;
       'common.gst-details': CommonGstDetails;
@@ -242,9 +410,12 @@ declare module '@strapi/strapi' {
       'common.logo-section': CommonLogoSection;
       'common.partner-show-in-page': CommonPartnerShowInPage;
       'common.woo-order-details': CommonWooOrderDetails;
+      'repeatable-componnets.bg-image-title-location-sub-location': RepeatableComponnetsBgImageTitleLocationSubLocation;
       'repeatable-componnets.content-module-image-title-text-cta-link': RepeatableComponnetsContentModuleImageTitleTextCtaLink;
+      'repeatable-componnets.each-road-show': RepeatableComponnetsEachRoadShow;
       'repeatable-componnets.icon-title': RepeatableComponnetsIconTitle;
       'repeatable-componnets.icon-title-text': RepeatableComponnetsIconTitleText;
+      'repeatable-componnets.title-icon-bg-image': RepeatableComponnetsTitleIconBgImage;
       'repeatable-componnets.track-item-icon-title-desc': RepeatableComponnetsTrackItemIconTitleDesc;
     }
   }
