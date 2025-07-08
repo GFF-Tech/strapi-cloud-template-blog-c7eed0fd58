@@ -581,6 +581,63 @@ export interface ApiCompanyListCompanyList extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiConferenceTravelInformationFormConferenceTravelInformationForm
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'conference_travel_information_forms';
+  info: {
+    displayName: 'Conference Travel Information Form';
+    pluralName: 'conference-travel-information-forms';
+    singularName: 'conference-travel-information-form';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    alternateContactNumber: Schema.Attribute.String;
+    anyOtherSpecificRequests: Schema.Attribute.Text;
+    CountryIssue: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    dateofBirth: Schema.Attribute.Date;
+    dateofReturn: Schema.Attribute.Date;
+    dateofTravel: Schema.Attribute.Date;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::conference-travel-information-form.conference-travel-information-form'
+    > &
+      Schema.Attribute.Private;
+    mealPreference: Schema.Attribute.String;
+    passengerEMailID: Schema.Attribute.Email;
+    passengerFullName: Schema.Attribute.String;
+    passengerGender: Schema.Attribute.String;
+    passengerMobileNumber: Schema.Attribute.String;
+    passportExpiryDate: Schema.Attribute.Date;
+    passportNumber: Schema.Attribute.String;
+    preferredAirportArrival: Schema.Attribute.String;
+    preferredAirportDeparture: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    specialAssistanceRequired: Schema.Attribute.String;
+    travelersOriginCountry: Schema.Attribute.String;
+    travelFrom: Schema.Attribute.String;
+    travelto: Schema.Attribute.String;
+    travelType: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    uploadVisa: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    uploadyourPassport: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    visaStatus: Schema.Attribute.String;
+  };
+}
+
 export interface ApiConfirmedSpeakerConfirmedSpeaker
   extends Struct.CollectionTypeSchema {
   collectionName: 'confirmed_speakers';
@@ -2598,6 +2655,7 @@ declare module '@strapi/strapi' {
       'api::area-of-expertise.area-of-expertise': ApiAreaOfExpertiseAreaOfExpertise;
       'api::become-a-speaker.become-a-speaker': ApiBecomeASpeakerBecomeASpeaker;
       'api::company-list.company-list': ApiCompanyListCompanyList;
+      'api::conference-travel-information-form.conference-travel-information-form': ApiConferenceTravelInformationFormConferenceTravelInformationForm;
       'api::confirmed-speaker.confirmed-speaker': ApiConfirmedSpeakerConfirmedSpeaker;
       'api::country.country': ApiCountryCountry;
       'api::delegate.delegate': ApiDelegateDelegate;
