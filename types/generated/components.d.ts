@@ -227,6 +227,21 @@ export interface CommonGstDetails extends Struct.ComponentSchema {
   };
 }
 
+export interface CommonInvoiceDetails extends Struct.ComponentSchema {
+  collectionName: 'components_common_invoice_details';
+  info: {
+    description: '';
+    displayName: 'InvoiceDetails';
+  };
+  attributes: {
+    amountPaid: Schema.Attribute.String;
+    invoiceLink: Schema.Attribute.String;
+    invoiceNumber: Schema.Attribute.String;
+    paymentDate: Schema.Attribute.String;
+    wcOrderId: Schema.Attribute.String;
+  };
+}
+
 export interface CommonLogo extends Struct.ComponentSchema {
   collectionName: 'components_common_logos';
   info: {
@@ -406,6 +421,7 @@ declare module '@strapi/strapi' {
       'common-components.title-text-icon-title-text-slider': CommonComponentsTitleTextIconTitleTextSlider;
       'common-components.tracks-section': CommonComponentsTracksSection;
       'common.gst-details': CommonGstDetails;
+      'common.invoice-details': CommonInvoiceDetails;
       'common.logo': CommonLogo;
       'common.logo-section': CommonLogoSection;
       'common.partner-show-in-page': CommonPartnerShowInPage;

@@ -1,0 +1,82 @@
+{
+  "kind": "collectionType",
+  "collectionName": "agenda_dds",
+  "info": {
+    "singularName": "agenda-dd",
+    "pluralName": "agenda-dds",
+    "displayName": "agendaDD",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "agenda_code": {
+      "type": "string"
+    },
+    "session_date": {
+      "type": "date"
+    },
+    "session_start_time": {
+      "type": "time"
+    },
+    "session_end_time": {
+      "type": "time"
+    },
+    "session_name": {
+      "type": "string"
+    },
+    "session_desc": {
+      "type": "blocks"
+    },
+    "session_hall": {
+      "type": "enumeration",
+      "enum": [
+        "Hall 205A&B",
+        "Hall 104B",
+        "Jasmine1",
+        "Pavallion",
+        "Hall 203",
+        "Lotus2",
+        "Lotus1",
+        "Hall 202"
+      ]
+    },
+    "session_sub_hall": {
+      "type": "enumeration",
+      "enum": [
+        "T13, T15",
+        "A8, A9, A10, A11",
+        "D1",
+        "O19"
+      ]
+    },
+    "session_format": {
+      "type": "enumeration",
+      "enum": [
+        "Opening Session",
+        "Masterclass",
+        "Product Showcase",
+        "Fireside Chat",
+        "Panel Discussion"
+      ]
+    },
+    "session_speakers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::speaker.speaker",
+      "mappedBy": "agenda_dd"
+    },
+    "session_hosts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::speaker.speaker"
+    },
+    "session_tags": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::session-tag.session-tag",
+      "mappedBy": "agenda_dd"
+    }
+  }
+}
