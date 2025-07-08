@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "session_tags",
+  "info": {
+    "singularName": "session-tag",
+    "pluralName": "session-tags",
+    "displayName": "sessionTag"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "sessionTagName": {
+      "type": "string"
+    },
+    "agenda_dd": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::agenda-dd.agenda-dd",
+      "inversedBy": "session_tags"
+    }
+  }
+}

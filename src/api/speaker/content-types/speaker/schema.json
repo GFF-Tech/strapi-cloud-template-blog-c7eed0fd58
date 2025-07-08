@@ -81,6 +81,12 @@
         "Two - Category A",
         "Three - Category B"
       ]
+    },
+    "agenda_dd": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::agenda-dd.agenda-dd",
+      "inversedBy": "session_speakers"
     }
   }
 }
