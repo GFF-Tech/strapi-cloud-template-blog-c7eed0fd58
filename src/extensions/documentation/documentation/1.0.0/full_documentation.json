@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-07-09T18:12:39.147Z"
+    "x-generation-date": "2025-07-09T18:37:45.617Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -45774,6 +45774,15 @@
               "pageID": {
                 "type": "string"
               },
+              "SEOSettings": {
+                "$ref": "#/components/schemas/SharedSeoComponent"
+              },
+              "SocialSettings": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SharedOpenGraphComponent"
+                }
+              },
               "locale": {
                 "type": "string"
               },
@@ -45897,6 +45906,15 @@
           "pageID": {
             "type": "string"
           },
+          "SEOSettings": {
+            "$ref": "#/components/schemas/SharedSeoComponent"
+          },
+          "SocialSettings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedOpenGraphComponent"
+            }
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -46002,6 +46020,15 @@
                 },
                 "pageID": {
                   "type": "string"
+                },
+                "SEOSettings": {
+                  "$ref": "#/components/schemas/SharedSeoComponent"
+                },
+                "SocialSettings": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SharedOpenGraphComponent"
+                  }
                 },
                 "createdAt": {
                   "type": "string",
@@ -47863,6 +47890,314 @@
           "Settings": {
             "$ref": "#/components/schemas/CommonComponentsModuleSettingsComponent"
           }
+        }
+      },
+      "SharedOpenGraphComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "ogTitle": {
+            "type": "string"
+          },
+          "ogDescription": {
+            "type": "string"
+          },
+          "ogImage": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "documentId": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "alternativeText": {
+                "type": "string"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "width": {
+                "type": "integer"
+              },
+              "height": {
+                "type": "integer"
+              },
+              "formats": {},
+              "hash": {
+                "type": "string"
+              },
+              "ext": {
+                "type": "string"
+              },
+              "mime": {
+                "type": "string"
+              },
+              "size": {
+                "type": "number",
+                "format": "float"
+              },
+              "url": {
+                "type": "string"
+              },
+              "previewUrl": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "provider_metadata": {},
+              "related": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "folder": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "folderPath": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "publishedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "createdBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "updatedBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "locale": {
+                "type": "string"
+              },
+              "localizations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "ogUrl": {
+            "type": "string"
+          },
+          "ogType": {
+            "type": "string"
+          }
+        }
+      },
+      "SharedSeoComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "metaTitle": {
+            "type": "string"
+          },
+          "metaDescription": {
+            "type": "string"
+          },
+          "metaImage": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "documentId": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "alternativeText": {
+                "type": "string"
+              },
+              "caption": {
+                "type": "string"
+              },
+              "width": {
+                "type": "integer"
+              },
+              "height": {
+                "type": "integer"
+              },
+              "formats": {},
+              "hash": {
+                "type": "string"
+              },
+              "ext": {
+                "type": "string"
+              },
+              "mime": {
+                "type": "string"
+              },
+              "size": {
+                "type": "number",
+                "format": "float"
+              },
+              "url": {
+                "type": "string"
+              },
+              "previewUrl": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "provider_metadata": {},
+              "related": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "folder": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "folderPath": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "publishedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "createdBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "updatedBy": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "documentId": {
+                    "type": "string"
+                  }
+                }
+              },
+              "locale": {
+                "type": "string"
+              },
+              "localizations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number"
+                    },
+                    "documentId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "openGraph": {
+            "$ref": "#/components/schemas/SharedOpenGraphComponent"
+          },
+          "keywords": {
+            "type": "string"
+          },
+          "metaRobots": {
+            "type": "string"
+          },
+          "metaViewport": {
+            "type": "string"
+          },
+          "canonicalURL": {
+            "type": "string"
+          },
+          "structuredData": {}
         }
       },
       "SalutationRequest": {
