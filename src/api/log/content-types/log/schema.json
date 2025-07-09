@@ -21,14 +21,20 @@
     "message": {
       "type": "string"
     },
-    "details": {
-      "type": "blocks"
-    },
     "origin": {
       "type": "string"
     },
     "additionalInfo": {
       "type": "json"
+    },
+    "userType": {
+      "type": "string"
+    },
+    "cognitoId": {
+      "type": "string"
+    },
+    "referenceId": {
+      "type": "integer"
     }
   }
 }

@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_common_invoice_details",
+  "info": {
+    "displayName": "InvoiceDetails",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "wcOrderId": {
+      "type": "string"
+    },
+    "paymentDate": {
+      "type": "string"
+    },
+    "invoiceNumber": {
+      "type": "string"
+    },
+    "amountPaid": {
+      "type": "string"
+    },
+    "invoiceLink": {
+      "type": "string"
+    }
+  }
+}

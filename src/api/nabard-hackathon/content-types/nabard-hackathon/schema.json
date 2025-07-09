@@ -1,0 +1,129 @@
+{
+  "kind": "collectionType",
+  "collectionName": "nabard_hackathons",
+  "info": {
+    "singularName": "nabard-hackathon",
+    "pluralName": "nabard-hackathons",
+    "displayName": "nabardHackathon"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "teamName": {
+      "type": "string"
+    },
+    "institutionOrganization": {
+      "type": "string"
+    },
+    "teamMembers": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "teamLeaderFirstName": {
+      "type": "string"
+    },
+    "teamLeaderLastName": {
+      "type": "string"
+    },
+    "teamLeaderMobileNumber": {
+      "type": "string"
+    },
+    "teamLeaderEmailId": {
+      "type": "email"
+    },
+    "teamLeaderLinkedInURL": {
+      "type": "string"
+    },
+    "teamLeaderAgeGroup": {
+      "type": "string"
+    },
+    "hackathonPartiProblem": {
+      "type": "string"
+    },
+    "hackathonPartiDescription": {
+      "type": "text"
+    },
+    "hackathonPartiTechStack": {
+      "type": "string"
+    },
+    "declarationInformationAccurate": {
+      "type": "string"
+    },
+    "declarationAgreeRulesDecisions": {
+      "type": "string"
+    },
+    "declarationPitchDate": {
+      "type": "string"
+    },
+    "teamLeaderSignature": {
+      "type": "string"
+    },
+    "teamLeaderSignatureImage": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "teamMembers01FirstName": {
+      "type": "string"
+    },
+    "teamMembers02LastName": {
+      "type": "string"
+    },
+    "teamMembers01LastName": {
+      "type": "string"
+    },
+    "teamMembers01Email": {
+      "type": "string"
+    },
+    "teamMembers01Role": {
+      "type": "string"
+    },
+    "teamMembers02FirstName": {
+      "type": "string"
+    },
+    "teamMembers02Email": {
+      "type": "string"
+    },
+    "teamMembers02Role": {
+      "type": "string"
+    },
+    "teamMembers03FirstName": {
+      "type": "string"
+    },
+    "teamMembers03LastName": {
+      "type": "string"
+    },
+    "teamMembers03Email": {
+      "type": "string"
+    },
+    "teamMembers03Role": {
+      "type": "string"
+    },
+    "teamMembers04FirstName": {
+      "type": "string"
+    },
+    "teamMembers04LastName": {
+      "type": "string"
+    },
+    "teamMembers04Email": {
+      "type": "string"
+    },
+    "teamMembers04Role": {
+      "type": "string"
+    }
+  }
+}

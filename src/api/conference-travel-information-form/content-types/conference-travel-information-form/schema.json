@@ -1,0 +1,97 @@
+{
+  "kind": "collectionType",
+  "collectionName": "conference_travel_information_forms",
+  "info": {
+    "singularName": "conference-travel-information-form",
+    "pluralName": "conference-travel-information-forms",
+    "displayName": "Conference Travel Information Form"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "passengerFullName": {
+      "type": "string"
+    },
+    "dateofBirth": {
+      "type": "date"
+    },
+    "passengerGender": {
+      "type": "string"
+    },
+    "passengerEMailID": {
+      "type": "email"
+    },
+    "passengerMobileNumber": {
+      "type": "string"
+    },
+    "alternateContactNumber": {
+      "type": "string"
+    },
+    "travelType": {
+      "type": "string"
+    },
+    "travelFrom": {
+      "type": "string"
+    },
+    "travelto": {
+      "type": "string"
+    },
+    "travelersOriginCountry": {
+      "type": "string"
+    },
+    "dateofTravel": {
+      "type": "date"
+    },
+    "dateofReturn": {
+      "type": "date"
+    },
+    "preferredAirportDeparture": {
+      "type": "string"
+    },
+    "preferredAirportArrival": {
+      "type": "string"
+    },
+    "uploadyourPassport": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
+    },
+    "passportNumber": {
+      "type": "string"
+    },
+    "passportExpiryDate": {
+      "type": "date"
+    },
+    "CountryIssue": {
+      "type": "string"
+    },
+    "visaStatus": {
+      "type": "string"
+    },
+    "uploadVisa": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
+    },
+    "specialAssistanceRequired": {
+      "type": "string"
+    },
+    "mealPreference": {
+      "type": "string"
+    },
+    "anyOtherSpecificRequests": {
+      "type": "text"
+    }
+  }
+}

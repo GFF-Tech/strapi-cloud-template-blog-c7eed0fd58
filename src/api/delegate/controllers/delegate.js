@@ -147,10 +147,16 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         } catch (error) {
           await log({
             logType: 'Error',
-            message: 'Cognito user creation failed',
-            details: '',
+            message: 'Delegate Cognito user creation failed',
             origin: 'delegate.create',
-            additionalInfo: { email: data.officialEmailAddress, error: error.message },
+            additionalInfo: {
+              email: data.officialEmailAddress,
+              errorMessage: error?.message || '',
+              stack: error?.stack || ''
+            },
+            userType: 'Delegate',
+            referenceId: '',
+            cognitoId: ''
           });
           if (error.name === 'UsernameExistsException') {
             return ctx.conflict('Delegate already exists in Cognito');
@@ -184,12 +190,29 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       const email = data.officialEmailAddress;
       const passTypeForEmail = passType;
 
-      await sendEmail({
+      try{
+         await sendEmail({
         to: email,
         subject: 'Your Delegate Registration is Confirmed - Welcome to GFF 2025!',
         templateName: 'delegate-confirmation',
         replacements: { firstName, lastName },
       });
+      }catch (err) {
+      strapi.log.error('Failed to Send Delegate Invite Email:', err);
+       await log({
+          logType: 'Error',
+          message: 'Failed to Send Delegate Invite Email',
+          origin: 'delegate.create',
+          additionalInfo: {
+             errorMessage: err?.message || '',
+            stack: err?.stack || ''
+          },
+          userType: 'Delegate',
+          referenceId: fullDelegate.id || '',
+          cognitoId: fullDelegate.cognitoId || ''
+        });
+    }
+     
 
       const salesforcePayload = {
         upgrade: 'false',
@@ -228,22 +251,28 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         await log({
           logType: 'Success',
           message: 'Salesforce update success for delegate',
-          details: '',
-          origin: 'delegate.create',
+           origin: 'delegate.create',
           additionalInfo: { confirmationId: fullDelegate.confirmationId },
+          userType: 'Delegate',
+          referenceId: fullDelegate.id || '',
+          cognitoId: fullDelegate.cognitoId || ''
         });
+
         strapi.log.info(`Salesforce updated for delegate ${fullDelegate.confirmationId}`);
       } catch (error) {
         strapi.log.error('Salesforce update failed:', error.message || error);
         await log({
           logType: 'Error',
           message: 'Salesforce update failed for delegate',
-          details: '',
           origin: 'delegate.create',
           additionalInfo: {
-            confirmationId: fullDelegate.confirmationId,
-            error: error.message || error,
+            confirmationId: fullDelegate?.confirmationId || '',
+            errorMessage: error?.message || '',
+            stack: error?.stack || ''
           },
+          userType: 'Delegate',
+          referenceId: fullDelegate.id || '',
+          cognitoId: fullDelegate.cognitoId || ''
         });
       }
 
@@ -263,9 +292,15 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       await log({
         logType: 'Error',
         message: 'Unexpected error in delegate.create',
-        details: '',
         origin: 'delegate.create',
-        additionalInfo: { error: error.message || error },
+        additionalInfo: {
+          email: data.officialEmailAddress || '',
+          errorMessage: error?.message || '',
+          stack: error?.stack || ''
+        },
+        userType: 'Delegate',
+          referenceId: '',
+          cognitoId: ''
       });
       return ctx.internalServerError('Failed to create delegate');
     }
@@ -322,9 +357,11 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       await log({
         logType: 'Success',
         origin: 'delegate.update',
-        details: '',
         message: 'Cognito user attributes updated',
-        additionalInfo: { cognitoId: existing.cognitoId },
+        additionalInfo: { },
+        userType: 'Delegate',
+          referenceId: existing.id || '',
+          cognitoId: existing.cognitoId || ''
       });
 
       const cognitoUser = await getCognitoUserBySub(existing.cognitoId);
@@ -372,18 +409,26 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         await log({
           logType: 'Success',
           origin: 'delegate.update',
-          details: '',
-          message: 'Salesforce update success',
+          message: 'Delegate Salesforce update success',
           additionalInfo: { confirmationId: existing.confirmationId },
+          userType: 'Delegate',
+          referenceId: existing.id || '',
+          cognitoId: existing.cognitoId || ''
         });
       } catch (error) {
         strapi.log.error('Salesforce update failed:', error.message || error);
         await log({
           logType: 'Error',
           origin: 'delegate.update',
-          details: '',
-          message: 'Salesforce update failed',
-          additionalInfo: { confirmationId: existing.confirmationId, error: error.message },
+          message: 'Delegate Salesforce update failed',
+          additionalInfo: {
+            confirmationId: existing?.confirmationId || '',
+            errorMessage: error?.message || '',
+            stack: error?.stack || ''
+          },
+          userType: 'Delegate',
+          referenceId: existing.id || '',
+          cognitoId: existing.cognitoId || ''
         });
       }
 
@@ -394,9 +439,14 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       await log({
         logType: 'Error',
         origin: 'delegate.update',
-        details: '',
-        message: 'Unexpected update error',
-        additionalInfo: { error: error.message || error },
+        message: 'Unexpected error during delegate update',
+        additionalInfo: {
+          errorMessage: error?.message || '',
+          stack: error?.stack || ''
+        },
+        userType: 'Delegate',
+          referenceId: '',
+          cognitoId: ''
       });
       return ctx.internalServerError('An error occurred while updating the delegate');
     }
@@ -446,9 +496,11 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         await log({
           logType: 'Error',
           origin: 'delegate.login',
-          details: '',
           message: 'User not found in Cognito',
           additionalInfo: { officialEmailAddress },
+          userType: 'Delegate',
+          referenceId: '',
+          cognitoId: ''
         });
         return ctx.notFound('User not found in Cognito');
       }
@@ -487,9 +539,11 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
             await log({
               logType: 'Error',
               origin: 'delegate.login',
-              details: '',
-              message: msg,
+             message: msg,
               additionalInfo: { facilitatorId: facilitator.id },
+              userType: 'Delegate',
+              referenceId: '',
+              cognitoId: cognitoId || ''
             });
             strapi.log.warn(
               `Facilitator found for Cognito ID ${cognitoId}, but no delegate entry to update`
@@ -499,9 +553,11 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
           await log({
             logType: 'Error',
             origin: 'delegate.login',
-            details: '',
             message: 'Delegate or Facilitator not found',
-            additionalInfo: { cognitoId },
+            additionalInfo: { },
+            userType: 'Delegate',
+            referenceId: '',
+            cognitoId: cognitoId || ''
           });
           return ctx.notFound('Delegate or Facilitator not found');
         }
@@ -518,9 +574,13 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       await log({
         logType: 'Error',
         origin: 'delegate.login',
-        details: '',
         message: 'Login failed',
-        additionalInfo: { error: error.message || error },
+        additionalInfo: {
+        error: error.message || String(error),
+        },
+        userType: 'Delegate',
+        referenceId: '',
+        cognitoId: ''
       });
       return ctx.internalServerError('Failed to process login');
     }
@@ -612,25 +672,30 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       await log({
         logType: 'Error',
         origin: 'delegate.verifyLoginOtp',
-        details: '',
         message: 'OTP verification failed',
-        additionalInfo: { error: error.message || error, officialEmailAddress },
+         additionalInfo: {
+          officialEmailAddress,
+          error: error.message || String(error),
+        },
+        userType: 'Delegate',
+        referenceId: '',
+        cognitoId: ''
       });
       return ctx.internalServerError('An unexpected error occurred');
     }
   },
 
 async resendInviteMail(ctx) {
+
+  const data = ctx.request.body?.data || {};
+  const officialEmailAddress = data.officialEmailAddress || '';
+  const firstName = data.firstName || '';
+  const lastName = data.lastName || '';
   try {
-    const { data } = ctx.request.body;
-    
-    if (!data.officialEmailAddress || !data.firstName || !data.lastName) {
+   
+    if (!officialEmailAddress || !firstName || !lastName) {
       return ctx.badRequest('Missing required fields');
     }
-
-    const officialEmailAddress = data.officialEmailAddress;
-    const firstName = data.firstName;
-    const lastName = data.lastName;
 
     await sendEmail({
       to: officialEmailAddress,
@@ -642,6 +707,19 @@ async resendInviteMail(ctx) {
     ctx.send({ message: 'Invitation email resent successfully.' });
   } catch (error) {
     strapi.log.error('Failed to resend invite mail:', error);
+    await log({
+      logType: 'Error',
+      message: 'Failed to resend invite mail',
+      origin: 'delegate.resendInviteMail',
+      additionalInfo: {
+        email: data?.officialEmailAddress,
+        errorMessage: error?.message || '',
+        stack: error?.stack || '',
+      },
+      userType: 'Delegate',
+      referenceId: '',
+      cognitoId: '',
+    });
     ctx.internalServerError('Failed to resend invite mail');
   }
 },
@@ -680,10 +758,12 @@ async function getCognitoUserBySub(sub) {
     console.error('Failed to fetch Cognito user:', err);
     await log({
       logType: 'Error',
-      message: 'Failed to fetch Cognito user by sub',
-      details: '',
-      origin: 'utils.getCognitoUserBySub',
-      additionalInfo: { sub, error: err.message },
+      message: 'Failed to fetch Delegate Cognito user by sub',
+       origin: 'utils.getCognitoUserBySub',
+      additionalInfo: { error: err.message || String(err) },
+      userType: 'Delegate',
+          referenceId: '',
+          cognitoId: sub || ''
     });
     return null;
   }

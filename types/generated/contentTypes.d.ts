@@ -369,6 +369,76 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAgendaDdAgendaDd extends Struct.CollectionTypeSchema {
+  collectionName: 'agenda_dds';
+  info: {
+    description: '';
+    displayName: 'agendaDD';
+    pluralName: 'agenda-dds';
+    singularName: 'agenda-dd';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    agenda_code: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::agenda-dd.agenda-dd'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    session_date: Schema.Attribute.Date;
+    session_desc: Schema.Attribute.Blocks;
+    session_end_time: Schema.Attribute.Time;
+    session_format: Schema.Attribute.Enumeration<
+      [
+        'Opening Session',
+        'Masterclass',
+        'Product Showcase',
+        'Fireside Chat',
+        'Panel Discussion',
+      ]
+    >;
+    session_hall: Schema.Attribute.Enumeration<
+      [
+        'Hall 205A&B',
+        'Hall 104B',
+        'Jasmine1',
+        'Pavallion',
+        'Hall 203',
+        'Lotus2',
+        'Lotus1',
+        'Hall 202',
+      ]
+    >;
+    session_hosts: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::speaker.speaker'
+    >;
+    session_name: Schema.Attribute.String;
+    session_speakers: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::speaker.speaker'
+    >;
+    session_start_time: Schema.Attribute.Time;
+    session_sub_hall: Schema.Attribute.Enumeration<
+      ['T13, T15', 'A8, A9, A10, A11', 'D1', 'O19']
+    >;
+    session_tags: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::session-tag.session-tag'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiAgendaAgenda extends Struct.CollectionTypeSchema {
   collectionName: 'agendas';
   info: {
@@ -508,6 +578,63 @@ export interface ApiCompanyListCompanyList extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiConferenceTravelInformationFormConferenceTravelInformationForm
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'conference_travel_information_forms';
+  info: {
+    displayName: 'Conference Travel Information Form';
+    pluralName: 'conference-travel-information-forms';
+    singularName: 'conference-travel-information-form';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    alternateContactNumber: Schema.Attribute.String;
+    anyOtherSpecificRequests: Schema.Attribute.Text;
+    CountryIssue: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    dateofBirth: Schema.Attribute.Date;
+    dateofReturn: Schema.Attribute.Date;
+    dateofTravel: Schema.Attribute.Date;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::conference-travel-information-form.conference-travel-information-form'
+    > &
+      Schema.Attribute.Private;
+    mealPreference: Schema.Attribute.String;
+    passengerEMailID: Schema.Attribute.Email;
+    passengerFullName: Schema.Attribute.String;
+    passengerGender: Schema.Attribute.String;
+    passengerMobileNumber: Schema.Attribute.String;
+    passportExpiryDate: Schema.Attribute.Date;
+    passportNumber: Schema.Attribute.String;
+    preferredAirportArrival: Schema.Attribute.String;
+    preferredAirportDeparture: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    specialAssistanceRequired: Schema.Attribute.String;
+    travelersOriginCountry: Schema.Attribute.String;
+    travelFrom: Schema.Attribute.String;
+    travelto: Schema.Attribute.String;
+    travelType: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    uploadVisa: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    uploadyourPassport: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    visaStatus: Schema.Attribute.String;
   };
 }
 
@@ -750,6 +877,7 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     delegates: Schema.Attribute.Relation<'oneToMany', 'api::delegate.delegate'>;
     gstDetails: Schema.Attribute.Component<'common.gst-details', false>;
+    invoiceDetails: Schema.Attribute.Component<'common.invoice-details', true>;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     isCognitoVerified: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
@@ -859,10 +987,10 @@ export interface ApiLogLog extends Struct.CollectionTypeSchema {
   };
   attributes: {
     additionalInfo: Schema.Attribute.JSON;
+    cognitoId: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    details: Schema.Attribute.Blocks;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::log.log'> &
       Schema.Attribute.Private;
@@ -870,9 +998,11 @@ export interface ApiLogLog extends Struct.CollectionTypeSchema {
     message: Schema.Attribute.String;
     origin: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    referenceId: Schema.Attribute.Integer;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    userType: Schema.Attribute.String;
   };
 }
 
@@ -966,6 +1096,72 @@ export interface ApiMobileAppFaqMobileAppFaq
     mobileAppFAQ_ID: Schema.Attribute.UID;
     mobileAppFAQ_Question: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiNabardHackathonNabardHackathon
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'nabard_hackathons';
+  info: {
+    displayName: 'nabardHackathon';
+    pluralName: 'nabard-hackathons';
+    singularName: 'nabard-hackathon';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    city: Schema.Attribute.String;
+    country: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    declarationAgreeRulesDecisions: Schema.Attribute.String;
+    declarationInformationAccurate: Schema.Attribute.String;
+    declarationPitchDate: Schema.Attribute.String;
+    hackathonPartiDescription: Schema.Attribute.Text;
+    hackathonPartiProblem: Schema.Attribute.String;
+    hackathonPartiTechStack: Schema.Attribute.String;
+    institutionOrganization: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::nabard-hackathon.nabard-hackathon'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    state: Schema.Attribute.String;
+    teamLeaderAgeGroup: Schema.Attribute.String;
+    teamLeaderEmailId: Schema.Attribute.Email;
+    teamLeaderFirstName: Schema.Attribute.String;
+    teamLeaderLastName: Schema.Attribute.String;
+    teamLeaderLinkedInURL: Schema.Attribute.String;
+    teamLeaderMobileNumber: Schema.Attribute.String;
+    teamLeaderSignature: Schema.Attribute.String;
+    teamLeaderSignatureImage: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    teamMembers: Schema.Attribute.String;
+    teamMembers01Email: Schema.Attribute.String;
+    teamMembers01FirstName: Schema.Attribute.String;
+    teamMembers01LastName: Schema.Attribute.String;
+    teamMembers01Role: Schema.Attribute.String;
+    teamMembers02Email: Schema.Attribute.String;
+    teamMembers02FirstName: Schema.Attribute.String;
+    teamMembers02LastName: Schema.Attribute.String;
+    teamMembers02Role: Schema.Attribute.String;
+    teamMembers03Email: Schema.Attribute.String;
+    teamMembers03FirstName: Schema.Attribute.String;
+    teamMembers03LastName: Schema.Attribute.String;
+    teamMembers03Role: Schema.Attribute.String;
+    teamMembers04Email: Schema.Attribute.String;
+    teamMembers04FirstName: Schema.Attribute.String;
+    teamMembers04LastName: Schema.Attribute.String;
+    teamMembers04Role: Schema.Attribute.String;
+    teamName: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1127,6 +1323,8 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
         'Bronze Partners',
         'VIP Lounge Partner',
         'Beer Booth Partner',
+        'Banking Transformation Partner',
+        'Financial Inclusion Partner',
       ]
     >;
     partnerType: Schema.Attribute.Enumeration<
@@ -1639,6 +1837,38 @@ export interface ApiSectorSector extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiSessionTagSessionTag extends Struct.CollectionTypeSchema {
+  collectionName: 'session_tags';
+  info: {
+    displayName: 'sessionTag';
+    pluralName: 'session-tags';
+    singularName: 'session-tag';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    agenda_dd: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::agenda-dd.agenda-dd'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::session-tag.session-tag'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    sessionTagName: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
   collectionName: 'speakers';
   info: {
@@ -1651,6 +1881,10 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
+    agenda_dd: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::agenda-dd.agenda-dd'
+    >;
     bio: Schema.Attribute.Text;
     companyName: Schema.Attribute.String;
     country: Schema.Attribute.Relation<'oneToOne', 'api::country.country'>;
@@ -2418,10 +2652,12 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::agenda-dd.agenda-dd': ApiAgendaDdAgendaDd;
       'api::agenda.agenda': ApiAgendaAgenda;
       'api::area-of-expertise.area-of-expertise': ApiAreaOfExpertiseAreaOfExpertise;
       'api::become-a-speaker.become-a-speaker': ApiBecomeASpeakerBecomeASpeaker;
       'api::company-list.company-list': ApiCompanyListCompanyList;
+      'api::conference-travel-information-form.conference-travel-information-form': ApiConferenceTravelInformationFormConferenceTravelInformationForm;
       'api::confirmed-speaker.confirmed-speaker': ApiConfirmedSpeakerConfirmedSpeaker;
       'api::country.country': ApiCountryCountry;
       'api::delegate.delegate': ApiDelegateDelegate;
@@ -2434,6 +2670,7 @@ declare module '@strapi/strapi' {
       'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
       'api::mobile-app-areasof-interest.mobile-app-areasof-interest': ApiMobileAppAreasofInterestMobileAppAreasofInterest;
       'api::mobile-app-faq.mobile-app-faq': ApiMobileAppFaqMobileAppFaq;
+      'api::nabard-hackathon.nabard-hackathon': ApiNabardHackathonNabardHackathon;
       'api::new-product-launch-form.new-product-launch-form': ApiNewProductLaunchFormNewProductLaunchForm;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
       'api::partner.partner': ApiPartnerPartner;
@@ -2452,6 +2689,7 @@ declare module '@strapi/strapi' {
       'api::regular-page.regular-page': ApiRegularPageRegularPage;
       'api::salutation.salutation': ApiSalutationSalutation;
       'api::sector.sector': ApiSectorSector;
+      'api::session-tag.session-tag': ApiSessionTagSessionTag;
       'api::speaker.speaker': ApiSpeakerSpeaker;
       'api::speaker2024.speaker2024': ApiSpeaker2024Speaker2024;
       'api::thought-leadership-report-form.thought-leadership-report-form': ApiThoughtLeadershipReportFormThoughtLeadershipReportForm;

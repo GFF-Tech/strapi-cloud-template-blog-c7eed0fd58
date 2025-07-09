@@ -73,7 +73,8 @@ async function insertIntoSalesforce(payload) {
 
   if (!res.ok) {
     console.error('Salesforce Insert Error:', parsed);
-    throw new Error('Salesforce insert failed');
+    // throw new Error('Salesforce insert failed');
+    throw new Error(typeof parsed === 'string' ? parsed : parsed?.error || 'Salesforce insert failed');
   }
   console.log('parsed = ',parsed);
   
