@@ -5,7 +5,7 @@ export interface CommonComponentsCmImageTitleTextCta
   collectionName: 'components_common_components_cm_image_title_text_ctas';
   info: {
     description: '';
-    displayName: 'CMImageTitleTextCTA';
+    displayName: 'CM04 CMImageTitleTextCTA';
   };
   attributes: {
     imageTitleTextCTA: Schema.Attribute.Component<
@@ -22,7 +22,8 @@ export interface CommonComponentsCmImageTitleTextCta
 export interface CommonComponentsCtaBlock01 extends Struct.ComponentSchema {
   collectionName: 'components_common_components_cta_block01s';
   info: {
-    displayName: 'CTABlock01';
+    description: '';
+    displayName: 'CM09 CTABlock01';
     icon: 'cup';
   };
   attributes: {
@@ -41,7 +42,7 @@ export interface CommonComponentsHeroSection extends Struct.ComponentSchema {
   collectionName: 'components_common_components_hero_sections';
   info: {
     description: '';
-    displayName: 'Hero Section';
+    displayName: 'CM02 Hero Section';
     icon: 'apps';
   };
   attributes: {
@@ -67,7 +68,7 @@ export interface CommonComponentsIconTitleSlider
   collectionName: 'components_common_components_icon_title_sliders';
   info: {
     description: '';
-    displayName: 'TitleTwoWayiconTitleSliders';
+    displayName: 'CM06 TitleTwoWayiconTitleSliders';
   };
   attributes: {
     iconTitleSliderLeftToRight: Schema.Attribute.Component<
@@ -120,7 +121,7 @@ export interface CommonComponentsRegText extends Struct.ComponentSchema {
   collectionName: 'components_common_components_reg_texts';
   info: {
     description: '';
-    displayName: 'Reg Text';
+    displayName: 'CM01 Reg Text';
     icon: 'bulletList';
   };
   attributes: {
@@ -135,7 +136,8 @@ export interface CommonComponentsRegText extends Struct.ComponentSchema {
 export interface CommonComponentsRoadShows extends Struct.ComponentSchema {
   collectionName: 'components_common_components_road_shows';
   info: {
-    displayName: 'RoadShows';
+    description: '';
+    displayName: 'CM10 RoadShows';
   };
   attributes: {
     roadShow: Schema.Attribute.Component<
@@ -154,7 +156,7 @@ export interface CommonComponentsSmallTitleTitleTitleIconBgImage
   collectionName: 'components_common_components_small_title_title_title_icon_bg_images';
   info: {
     description: '';
-    displayName: 'SmallTitleTitle_TitleIconBGImage';
+    displayName: 'CM07 SmallTitleTitle_TitleIconBGImage';
   };
   attributes: {
     Settings: Schema.Attribute.Component<
@@ -175,7 +177,7 @@ export interface CommonComponentsTitleTextIconTitleTextSlider
   collectionName: 'components_common_components_title_text_icon_title_text_sliders';
   info: {
     description: '';
-    displayName: 'TitleText_IconTitleTextSlider';
+    displayName: 'CM05 TitleText_IconTitleTextSlider';
   };
   attributes: {
     IconTitleText: Schema.Attribute.Component<
@@ -195,7 +197,7 @@ export interface CommonComponentsTracksSection extends Struct.ComponentSchema {
   collectionName: 'components_common_components_tracks_sections';
   info: {
     description: '';
-    displayName: 'Tracks Section';
+    displayName: 'CM03 Tracks Section';
   };
   attributes: {
     eachTrackItem: Schema.Attribute.Component<
