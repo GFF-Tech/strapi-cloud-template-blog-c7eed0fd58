@@ -1,8 +1,9 @@
 {
   "collectionName": "components_common_components_cta_block01s",
   "info": {
-    "displayName": "CTABlock01",
-    "icon": "cup"
+    "displayName": "CM09 CTABlock01",
+    "icon": "cup",
+    "description": ""
   },
   "options": {},
   "attributes": {
