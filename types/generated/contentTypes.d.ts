@@ -903,6 +903,48 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiFaqFaq extends Struct.CollectionTypeSchema {
+  collectionName: 'faqs';
+  info: {
+    displayName: 'FAQs';
+    pluralName: 'faqs';
+    singularName: 'faq';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    answer: Schema.Attribute.Blocks;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    faqID: Schema.Attribute.UID;
+    faqType: Schema.Attribute.Enumeration<
+      [
+        'Registration & Badges',
+        'Access & Pass Details',
+        'Attendance & Participation',
+        'Networking & Sessions',
+        'Venue & Onsite Logistics',
+        'Sponsorship & Exhibition',
+        'Digital Access & Virtual Participation',
+        'Media',
+      ]
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::faq.faq'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    question: Schema.Attribute.String;
+    showInMobileApp: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    showInWeb: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiHotelInformationFormHotelInformationForm
   extends Struct.CollectionTypeSchema {
   collectionName: 'hotel_information_forms';
@@ -1064,37 +1106,6 @@ export interface ApiMobileAppAreasofInterestMobileAppAreasofInterest
     >;
     mobileAppAreasofInterestsID: Schema.Attribute.UID;
     mobileAppAreasofInterestsName: Schema.Attribute.String;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiMobileAppFaqMobileAppFaq
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'mobile_app_faqs';
-  info: {
-    displayName: 'mobileAppFAQ';
-    pluralName: 'mobile-app-faqs';
-    singularName: 'mobile-app-faq';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::mobile-app-faq.mobile-app-faq'
-    > &
-      Schema.Attribute.Private;
-    mobileAppFAQ_Answer: Schema.Attribute.RichText;
-    mobileAppFAQ_ID: Schema.Attribute.UID;
-    mobileAppFAQ_Question: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -2664,12 +2675,12 @@ declare module '@strapi/strapi' {
       'api::early-stage-pitch.early-stage-pitch': ApiEarlyStagePitchEarlyStagePitch;
       'api::express-interest.express-interest': ApiExpressInterestExpressInterest;
       'api::facilitator.facilitator': ApiFacilitatorFacilitator;
+      'api::faq.faq': ApiFaqFaq;
       'api::hotel-information-form.hotel-information-form': ApiHotelInformationFormHotelInformationForm;
       'api::hotel.hotel': ApiHotelHotel;
       'api::log.log': ApiLogLog;
       'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
       'api::mobile-app-areasof-interest.mobile-app-areasof-interest': ApiMobileAppAreasofInterestMobileAppAreasofInterest;
-      'api::mobile-app-faq.mobile-app-faq': ApiMobileAppFaqMobileAppFaq;
       'api::nabard-hackathon.nabard-hackathon': ApiNabardHackathonNabardHackathon;
       'api::new-product-launch-form.new-product-launch-form': ApiNewProductLaunchFormNewProductLaunchForm;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;

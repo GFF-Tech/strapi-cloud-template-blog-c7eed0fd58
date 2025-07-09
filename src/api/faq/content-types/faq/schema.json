@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "faqs",
+  "info": {
+    "singularName": "faq",
+    "pluralName": "faqs",
+    "displayName": "FAQs"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "question": {
+      "type": "string"
+    },
+    "answer": {
+      "type": "blocks"
+    },
+    "showInWeb": {
+      "type": "boolean",
+      "default": true
+    },
+    "showInMobileApp": {
+      "type": "boolean",
+      "default": true
+    },
+    "faqType": {
+      "type": "enumeration",
+      "enum": [
+        "Registration & Badges",
+        "Access & Pass Details",
+        "Attendance & Participation",
+        "Networking & Sessions",
+        "Venue & Onsite Logistics",
+        "Sponsorship & Exhibition",
+        "Digital Access & Virtual Participation",
+        "Media"
+      ]
+    },
+    "faqID": {
+      "type": "uid"
+    }
+  }
+}
