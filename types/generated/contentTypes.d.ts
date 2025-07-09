@@ -1782,6 +1782,8 @@ export interface ApiRegularPageRegularPage extends Struct.CollectionTypeSchema {
       ]
     >;
     publishedAt: Schema.Attribute.DateTime;
+    SEOSettings: Schema.Attribute.Component<'shared.seo', false>;
+    SocialSettings: Schema.Attribute.Component<'shared.open-graph', true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
