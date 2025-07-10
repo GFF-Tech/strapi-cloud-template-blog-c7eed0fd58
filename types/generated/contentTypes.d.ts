@@ -1164,6 +1164,7 @@ export interface ApiNabardHackathonNabardHackathon
     declarationAgreeRulesDecisions: Schema.Attribute.String;
     declarationInformationAccurate: Schema.Attribute.String;
     declarationPitchDate: Schema.Attribute.String;
+    hackathonName: Schema.Attribute.String;
     hackathonPartiDescription: Schema.Attribute.Text;
     hackathonPartiProblem: Schema.Attribute.String;
     hackathonPartiTechStack: Schema.Attribute.String;
