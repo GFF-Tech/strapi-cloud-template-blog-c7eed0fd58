@@ -980,11 +980,13 @@ export interface ApiHotelInformationFormHotelInformationForm
     mobileNumber: Schema.Attribute.String;
     nationality: Schema.Attribute.String;
     noOfRoomsRequired: Schema.Attribute.Integer;
+    occupancyType: Schema.Attribute.String;
     officialEmailAddress: Schema.Attribute.Email & Schema.Attribute.Unique;
     organisation: Schema.Attribute.String;
     otherSource: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     referralSource: Schema.Attribute.String;
+    specialRequest: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
