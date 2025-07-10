@@ -1147,6 +1147,7 @@ export interface ApiNabardHackathonNabardHackathon
   extends Struct.CollectionTypeSchema {
   collectionName: 'nabard_hackathons';
   info: {
+    description: '';
     displayName: 'nabardHackathon';
     pluralName: 'nabard-hackathons';
     singularName: 'nabard-hackathon';
@@ -1173,6 +1174,15 @@ export interface ApiNabardHackathonNabardHackathon
       'api::nabard-hackathon.nabard-hackathon'
     > &
       Schema.Attribute.Private;
+    prototypeAddressProblem: Schema.Attribute.String;
+    prototypeDemoLink: Schema.Attribute.String;
+    prototypeDescription: Schema.Attribute.Blocks;
+    prototypeFeatures: Schema.Attribute.Blocks;
+    prototypeImpact: Schema.Attribute.String;
+    prototypeInnovation: Schema.Attribute.Blocks;
+    prototypeName: Schema.Attribute.String;
+    prototypeStage: Schema.Attribute.String;
+    prototypeUniqueSolution: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
     state: Schema.Attribute.String;
     teamLeaderAgeGroup: Schema.Attribute.String;
