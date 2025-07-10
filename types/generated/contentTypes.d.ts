@@ -957,7 +957,7 @@ export interface ApiHotelInformationFormHotelInformationForm
     singularName: 'hotel-information-form';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   attributes: {
     checkInDate: Schema.Attribute.Date;
