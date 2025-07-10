@@ -4,7 +4,8 @@
   "info": {
     "singularName": "faq",
     "pluralName": "faqs",
-    "displayName": "FAQs"
+    "displayName": "FAQs",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -39,6 +40,9 @@
     },
     "faqID": {
       "type": "uid"
+    },
+    "showInRegPage": {
+      "type": "boolean"
     }
   }
 }
