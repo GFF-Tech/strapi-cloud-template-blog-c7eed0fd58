@@ -63,6 +63,12 @@
     },
     "occupancyType": {
       "type": "string"
+    },
+    "travellingFrom": {
+      "type": "string"
+    },
+    "travellingTo": {
+      "type": "string"
     }
   }
 }
