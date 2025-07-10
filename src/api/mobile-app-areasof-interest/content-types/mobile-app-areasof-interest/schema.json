@@ -4,7 +4,8 @@
   "info": {
     "singularName": "mobile-app-areasof-interest",
     "pluralName": "mobile-app-areasof-interests",
-    "displayName": "mobileAppAreasofInterests"
+    "displayName": "mobileAppAreasofInterests",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -15,16 +16,6 @@
     },
     "mobileAppAreasofInterestsName": {
       "type": "string"
-    },
-    "mobileAppAreasofInterestsIcon": {
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ],
-      "type": "media",
-      "multiple": true
     }
   }
 }
