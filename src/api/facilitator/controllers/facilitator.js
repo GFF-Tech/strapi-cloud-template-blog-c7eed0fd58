@@ -695,15 +695,23 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           const isGstPresent = !!updated?.gstDetails?.companyGstNo;
           const currencySymbol = wooOrder.currency === 'INR' ? '₹' : wooOrder.currency === 'USD' ? '$' : '';
 
+          const taxableAmount = wooOrder.line_items.reduce(
+              (sum, item) => sum + Number(item.total),
+              0
+            ).toString();
+            const cgst = wooOrder.tax_lines.find(t => t.label.toLowerCase() === 'cgst')?.tax_total || '0';
+            const sgst = wooOrder.tax_lines.find(t => t.label.toLowerCase() === 'sgst')?.tax_total || '0';
+
           const payload = {
             invoice: 'true',
             promoCode: (wooOrder.meta_data.find(m => m.key === 'appliedCouponCode') || {}).value || '',
             addParticpant: addParticpant,
             eventId: process.env.CRM_EVENT_ID,
             currencyType: wooOrder.currency,
-            amount: (wooOrder.meta_data.find(m => m.key === 'taxableAmount') || {}).value?.toString() || '',
-            cgst: (wooOrder.meta_data.find(m => m.key === 'cgst') || {}).value || '',
-            sgst: (wooOrder.meta_data.find(m => m.key === 'sgst') || {}).value || '',
+            // amount: (wooOrder.meta_data.find(m => m.key === 'taxableAmount') || {}).value?.toString() || '',
+            amount: taxableAmount,
+            cgst: cgst,
+            sgst: sgst,
             email,
             mobilePhone,
             billingFirstName: firstName,
