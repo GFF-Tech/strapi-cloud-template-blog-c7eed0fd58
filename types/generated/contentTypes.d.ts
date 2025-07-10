@@ -1336,6 +1336,7 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
         'Beer Booth Partner',
         'Banking Transformation Partner',
         'Financial Inclusion Partner',
+        'Innovation Leadership Partner',
       ]
     >;
     partnerType: Schema.Attribute.Enumeration<

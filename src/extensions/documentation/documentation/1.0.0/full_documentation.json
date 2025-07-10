@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-07-09T19:04:51.085Z"
+    "x-generation-date": "2025-07-10T09:33:36.853Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -37966,7 +37966,8 @@
                   "VIP Lounge Partner",
                   "Beer Booth Partner",
                   "Banking Transformation Partner",
-                  "Financial Inclusion Partner"
+                  "Financial Inclusion Partner",
+                  "Innovation Leadership Partner"
                 ]
               },
               "partnerID": {
@@ -38696,7 +38697,8 @@
               "VIP Lounge Partner",
               "Beer Booth Partner",
               "Banking Transformation Partner",
-              "Financial Inclusion Partner"
+              "Financial Inclusion Partner",
+              "Innovation Leadership Partner"
             ]
           },
           "partnerID": {
@@ -38935,7 +38937,8 @@
                     "VIP Lounge Partner",
                     "Beer Booth Partner",
                     "Banking Transformation Partner",
-                    "Financial Inclusion Partner"
+                    "Financial Inclusion Partner",
+                    "Innovation Leadership Partner"
                   ]
                 },
                 "partnerID": {
