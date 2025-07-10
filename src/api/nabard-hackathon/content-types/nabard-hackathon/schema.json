@@ -4,7 +4,8 @@
   "info": {
     "singularName": "nabard-hackathon",
     "pluralName": "nabard-hackathons",
-    "displayName": "nabardHackathon"
+    "displayName": "nabardHackathon",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -68,14 +69,15 @@
       "type": "string"
     },
     "teamLeaderSignatureImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "teamMembers01FirstName": {
       "type": "string"
@@ -123,6 +125,33 @@
       "type": "string"
     },
     "teamMembers04Role": {
+      "type": "string"
+    },
+    "prototypeName": {
+      "type": "string"
+    },
+    "prototypeDescription": {
+      "type": "blocks"
+    },
+    "prototypeFeatures": {
+      "type": "blocks"
+    },
+    "prototypeInnovation": {
+      "type": "blocks"
+    },
+    "prototypeUniqueSolution": {
+      "type": "text"
+    },
+    "prototypeStage": {
+      "type": "string"
+    },
+    "prototypeDemoLink": {
+      "type": "string"
+    },
+    "prototypeImpact": {
+      "type": "string"
+    },
+    "prototypeAddressProblem": {
       "type": "string"
     }
   }

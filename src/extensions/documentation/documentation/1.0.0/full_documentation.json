@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-07-10T12:32:12.273Z"
+    "x-generation-date": "2025-07-10T13:24:22.470Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -35778,6 +35778,27 @@
               "teamMembers04Role": {
                 "type": "string"
               },
+              "prototypeName": {
+                "type": "string"
+              },
+              "prototypeDescription": {},
+              "prototypeFeatures": {},
+              "prototypeInnovation": {},
+              "prototypeUniqueSolution": {
+                "type": "string"
+              },
+              "prototypeStage": {
+                "type": "string"
+              },
+              "prototypeDemoLink": {
+                "type": "string"
+              },
+              "prototypeImpact": {
+                "type": "string"
+              },
+              "prototypeAddressProblem": {
+                "type": "string"
+              },
               "locale": {
                 "type": "string"
               },
@@ -36547,6 +36568,27 @@
           "teamMembers04Role": {
             "type": "string"
           },
+          "prototypeName": {
+            "type": "string"
+          },
+          "prototypeDescription": {},
+          "prototypeFeatures": {},
+          "prototypeInnovation": {},
+          "prototypeUniqueSolution": {
+            "type": "string"
+          },
+          "prototypeStage": {
+            "type": "string"
+          },
+          "prototypeDemoLink": {
+            "type": "string"
+          },
+          "prototypeImpact": {
+            "type": "string"
+          },
+          "prototypeAddressProblem": {
+            "type": "string"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -36828,6 +36870,27 @@
                   "type": "string"
                 },
                 "teamMembers04Role": {
+                  "type": "string"
+                },
+                "prototypeName": {
+                  "type": "string"
+                },
+                "prototypeDescription": {},
+                "prototypeFeatures": {},
+                "prototypeInnovation": {},
+                "prototypeUniqueSolution": {
+                  "type": "string"
+                },
+                "prototypeStage": {
+                  "type": "string"
+                },
+                "prototypeDemoLink": {
+                  "type": "string"
+                },
+                "prototypeImpact": {
+                  "type": "string"
+                },
+                "prototypeAddressProblem": {
                   "type": "string"
                 },
                 "createdAt": {
