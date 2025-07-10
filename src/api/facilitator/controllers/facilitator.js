@@ -666,7 +666,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
                 data: {
                   facilitatorId: existing.id,
                   passType: item.name,
-                  passPrice: item.price,
+                  passPrice: Number(item.subtotal) / item.quantity,
                 },
               });
               const confirmationId = `GFF25${String(newDelegate.id).padStart(6, '0')}`;
@@ -677,7 +677,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
               passes.push({
                 confirmationId: updatedDelegate.confirmationId,
                 passType: item.name,
-                price: item.price.toString(),
+                price: (Number(item.subtotal) / item.quantity).toString(),
               });
             }
           }

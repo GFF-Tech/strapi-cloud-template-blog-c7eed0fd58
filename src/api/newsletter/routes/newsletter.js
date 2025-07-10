@@ -4,6 +4,23 @@
  * newsletter router
  */
 
-const { createCoreRouter } = require('@strapi/strapi').factories;
-
-module.exports = createCoreRouter('api::newsletter.newsletter');
+module.exports = {
+    routes: [
+       {
+      method: 'GET',
+      path: '/newsletters-auth',
+      handler: 'newsletter.find',
+      config: {
+        policies: ['global::api-token-auth'],
+      },
+    },
+      {
+        method: 'POST',
+        path: '/newsletters',
+        handler: 'newsletter.create',
+        config: {
+          policies: [],
+        },
+      },
+    ],
+  };
