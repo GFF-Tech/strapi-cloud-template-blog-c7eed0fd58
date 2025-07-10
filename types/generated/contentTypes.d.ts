@@ -987,6 +987,8 @@ export interface ApiHotelInformationFormHotelInformationForm
     publishedAt: Schema.Attribute.DateTime;
     referralSource: Schema.Attribute.String;
     specialRequest: Schema.Attribute.String;
+    travellingFrom: Schema.Attribute.String;
+    travellingTo: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
