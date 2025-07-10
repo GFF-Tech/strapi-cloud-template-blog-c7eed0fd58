@@ -987,6 +987,8 @@ export interface ApiHotelInformationFormHotelInformationForm
     publishedAt: Schema.Attribute.DateTime;
     referralSource: Schema.Attribute.String;
     specialRequest: Schema.Attribute.String;
+    travellingFrom: Schema.Attribute.String;
+    travellingTo: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -2019,38 +2021,6 @@ export interface ApiSpeaker2024Speaker2024 extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiTestingqrcodeTestingqrcode
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'testingqrcodes';
-  info: {
-    description: '';
-    displayName: 'testingqrcode';
-    pluralName: 'testingqrcodes';
-    singularName: 'testingqrcode';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::testingqrcode.testingqrcode'
-    > &
-      Schema.Attribute.Private;
-    mobileNumber: Schema.Attribute.String;
-    name: Schema.Attribute.String;
-    publishedAt: Schema.Attribute.DateTime;
-    qrcodelink: Schema.Attribute.String;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiThoughtLeadershipReportFormThoughtLeadershipReportForm
   extends Struct.CollectionTypeSchema {
   collectionName: 'thought_leadership_report_forms';
@@ -2782,7 +2752,6 @@ declare module '@strapi/strapi' {
       'api::session-tag.session-tag': ApiSessionTagSessionTag;
       'api::speaker.speaker': ApiSpeakerSpeaker;
       'api::speaker2024.speaker2024': ApiSpeaker2024Speaker2024;
-      'api::testingqrcode.testingqrcode': ApiTestingqrcodeTestingqrcode;
       'api::thought-leadership-report-form.thought-leadership-report-form': ApiThoughtLeadershipReportFormThoughtLeadershipReportForm;
       'api::thought-leadership-report-format.thought-leadership-report-format': ApiThoughtLeadershipReportFormatThoughtLeadershipReportFormat;
       'api::thought-leadership-report-gff2025-track.thought-leadership-report-gff2025-track': ApiThoughtLeadershipReportGff2025TrackThoughtLeadershipReportGff2025Track;
