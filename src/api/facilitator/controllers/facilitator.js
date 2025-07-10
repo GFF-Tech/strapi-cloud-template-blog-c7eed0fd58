@@ -696,7 +696,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           const currencySymbol = wooOrder.currency === 'INR' ? '₹' : wooOrder.currency === 'USD' ? '$' : '';
 
           const taxableAmount = wooOrder.line_items.reduce(
-              (sum, item) => sum + Number(item.subtotal),
+              (sum, item) => sum + Number(item.total),
               0
             ).toString();
             const cgst = wooOrder.tax_lines.find(t => t.label.toLowerCase() === 'cgst')?.tax_total || '0';
