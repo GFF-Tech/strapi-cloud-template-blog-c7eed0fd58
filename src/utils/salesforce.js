@@ -136,7 +136,8 @@ async function updateSalesforceParticipant(delegatePayload) {
 
     if (!res.ok) {
       console.error('Salesforce Update Error:', parsed);
-      throw new Error('Salesforce update failed');
+      // throw new Error('Salesforce update failed');
+       throw new Error(typeof parsed === 'string' ? parsed : parsed?.error || 'Salesforce update failed');
     }
 
     return { retry: false, data: parsed };
