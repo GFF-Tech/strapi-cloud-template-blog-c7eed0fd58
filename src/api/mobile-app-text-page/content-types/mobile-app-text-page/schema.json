@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "mobile_app_text_pages",
+  "info": {
+    "singularName": "mobile-app-text-page",
+    "pluralName": "mobile-app-text-pages",
+    "displayName": "MobileAppTextPage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "MobileAppTextPageTitle": {
+      "type": "string"
+    },
+    "MobileAppTextPageContent": {
+      "type": "blocks"
+    },
+    "MobileAppTextPageUID": {
+      "type": "uid"
+    }
+  }
+}

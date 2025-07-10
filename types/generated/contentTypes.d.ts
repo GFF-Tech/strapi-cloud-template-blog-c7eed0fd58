@@ -906,6 +906,7 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
 export interface ApiFaqFaq extends Struct.CollectionTypeSchema {
   collectionName: 'faqs';
   info: {
+    description: '';
     displayName: 'FAQs';
     pluralName: 'faqs';
     singularName: 'faq';
@@ -938,6 +939,7 @@ export interface ApiFaqFaq extends Struct.CollectionTypeSchema {
     question: Schema.Attribute.String;
     showInMobileApp: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<true>;
+    showInRegPage: Schema.Attribute.Boolean;
     showInWeb: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1083,6 +1085,7 @@ export interface ApiMobileAppAreasofInterestMobileAppAreasofInterest
   extends Struct.CollectionTypeSchema {
   collectionName: 'mobile_app_areasof_interests';
   info: {
+    description: '';
     displayName: 'mobileAppAreasofInterests';
     pluralName: 'mobile-app-areasof-interests';
     singularName: 'mobile-app-areasof-interest';
@@ -1100,12 +1103,39 @@ export interface ApiMobileAppAreasofInterestMobileAppAreasofInterest
       'api::mobile-app-areasof-interest.mobile-app-areasof-interest'
     > &
       Schema.Attribute.Private;
-    mobileAppAreasofInterestsIcon: Schema.Attribute.Media<
-      'images' | 'files' | 'videos' | 'audios',
-      true
-    >;
     mobileAppAreasofInterestsID: Schema.Attribute.UID;
     mobileAppAreasofInterestsName: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiMobileAppTextPageMobileAppTextPage
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'mobile_app_text_pages';
+  info: {
+    displayName: 'MobileAppTextPage';
+    pluralName: 'mobile-app-text-pages';
+    singularName: 'mobile-app-text-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::mobile-app-text-page.mobile-app-text-page'
+    > &
+      Schema.Attribute.Private;
+    MobileAppTextPageContent: Schema.Attribute.Blocks;
+    MobileAppTextPageTitle: Schema.Attribute.String;
+    MobileAppTextPageUID: Schema.Attribute.UID;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -2684,6 +2714,7 @@ declare module '@strapi/strapi' {
       'api::log.log': ApiLogLog;
       'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
       'api::mobile-app-areasof-interest.mobile-app-areasof-interest': ApiMobileAppAreasofInterestMobileAppAreasofInterest;
+      'api::mobile-app-text-page.mobile-app-text-page': ApiMobileAppTextPageMobileAppTextPage;
       'api::nabard-hackathon.nabard-hackathon': ApiNabardHackathonNabardHackathon;
       'api::new-product-launch-form.new-product-launch-form': ApiNewProductLaunchFormNewProductLaunchForm;
       'api::newsletter.newsletter': ApiNewsletterNewsletter;
