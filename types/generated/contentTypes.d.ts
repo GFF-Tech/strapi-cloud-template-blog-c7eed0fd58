@@ -875,6 +875,8 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    delegateConvertedToFacilitator: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     delegates: Schema.Attribute.Relation<'oneToMany', 'api::delegate.delegate'>;
     gstDetails: Schema.Attribute.Component<'common.gst-details', false>;
     invoiceDetails: Schema.Attribute.Component<'common.invoice-details', true>;
