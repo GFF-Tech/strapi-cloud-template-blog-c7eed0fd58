@@ -66,6 +66,16 @@ module.exports = {
       },
     },
 
+    {
+      method: 'PUT',
+      path: '/facilitators/updateProfile/:id',
+      handler: 'facilitator.updateProfile',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+
     // DELETE a facilitator by ID
     {
       method: 'DELETE',
