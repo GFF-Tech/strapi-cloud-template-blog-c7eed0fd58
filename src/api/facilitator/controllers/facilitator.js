@@ -5,7 +5,7 @@ const { createCoreController } = require('@strapi/strapi').factories;
 const axios = require('axios');
 const crypto = require('crypto');
 // @ts-ignore
-const { insertIntoSalesforce, fetchInvoiceFromSalesforce } = require('../../../utils/salesforce');
+const { insertIntoSalesforce, fetchInvoiceFromSalesforce, updateSalesforceParticipant } = require('../../../utils/salesforce');
 const sendEmail = require('../../../utils/email');
 const log = require('../../../utils/logger');
 
@@ -13,7 +13,7 @@ const {
   // @ts-ignore
   CognitoIdentityProviderClient, SignUpCommand, ConfirmSignUpCommand, ResendConfirmationCodeCommand,
   // @ts-ignore
-  InitiateAuthCommand, RespondToAuthChallengeCommand, AdminDeleteUserCommand, AdminGetUserCommand, ListUsersCommand
+  InitiateAuthCommand, RespondToAuthChallengeCommand, AdminUpdateUserAttributesCommand, AdminDeleteUserCommand, AdminGetUserCommand, ListUsersCommand
 } = require('@aws-sdk/client-cognito-identity-provider');
 
 
@@ -1315,6 +1315,166 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       return ctx.internalServerError('OTP verification failed due to an unexpected error.');
     }
   },
+
+   async updateProfile(ctx) {
+  const { id } = ctx.params;
+  const { data } = ctx.request.body;
+
+  if (!id || typeof id !== 'string') {
+    return ctx.badRequest('Invalid ID');
+  }
+
+  try {
+    const country = await strapi.entityService.findOne('api::country.country', data.country, {
+      fields: ['countryCode'],
+    });
+
+    if (!country || !country.countryCode) {
+      return ctx.badRequest('Invalid or missing country code.');
+    }
+
+    const formattedPhoneNumber = `${country.countryCode}${data.mobileNumber}`;
+
+    const existing = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
+      populate: {
+        country: { fields: ['country', 'countryCode'] },
+        sector: { fields: ['name'] },
+      },
+    });
+
+    if (!existing) {
+      return ctx.notFound('Facilitator not found');
+    }
+
+    // ✅ Update Cognito if cognitoId is present
+    if (existing.cognitoId) {
+      const updateCommand = new AdminUpdateUserAttributesCommand({
+        UserPoolId: process.env.COGNITO_USER_POOL_ID,
+        Username: existing.cognitoId,
+        UserAttributes: [
+          { Name: 'custom:firstName', Value: data.firstName },
+          { Name: 'custom:lastName', Value: data.lastName },
+          { Name: 'phone_number', Value: formattedPhoneNumber },
+          { Name: 'custom:companyName', Value: data.companyName },
+        ],
+      });
+
+      await client.send(updateCommand);
+
+      // 🔍 Check if a delegate exists with the same cognitoId
+      const delegates = await strapi.entityService.findMany('api::delegate.delegate', {
+        filters: { cognitoId: existing.cognitoId },
+        fields: ['confirmationId', 'passType', 'passPrice'],
+        limit: 1,
+      });
+
+      const matchedDelegate = delegates?.[0];
+
+      // ✅ Only update Salesforce if a delegate is found
+      if (matchedDelegate) {
+        const confirmationId = matchedDelegate.confirmationId;
+        const passType = matchedDelegate.passType;
+        const passPrice = matchedDelegate.passPrice;
+
+        const salesforcePayload = {
+          upgrade: 'true',
+          email: data.officialEmailAddress,
+          mobilePhone: formattedPhoneNumber,
+          participantFirstName: data.firstName,
+          participantLastName: data.lastName,
+          company: data.companyName || 'INDIVIDUAL',
+          vertical: '',
+          level: '',
+          GenderIdentity: '',
+          title: '',
+          linkdinProfile: data.linkedinUrl || '',
+          twitterProfile: '',
+          instagramProfile: '',
+          personalEmail: '',
+          confirmationId: confirmationId,
+          passType: passType,
+          price: passPrice,
+          salutation: '',
+          marketServedByCompany: '',
+          shortBio: '',
+          participantCategory: '',
+          participationObjective: '',
+          eventYearsAttendedBefore: '',
+          city: '',
+          country: '',
+          networkingGoals: '',
+          languageSpoken: '',
+          preferredTracks: '',
+          interestAreas: '',
+        };
+
+        try {
+          await updateSalesforceParticipant(salesforcePayload);
+          strapi.log.info(`Salesforce updated for facilitator ${confirmationId}`);
+          await log({
+            logType: 'Success',
+            origin: 'facilitator.update',
+            message: 'Facilitator Salesforce update success',
+            additionalInfo: { confirmationId },
+            userType: 'Facilitator',
+            referenceId: existing.id || '',
+            cognitoId: existing.cognitoId || '',
+          });
+        } catch (error) {
+          strapi.log.error('Salesforce update failed:', error.message || error);
+          await log({
+            logType: 'Error',
+            origin: 'facilitator.update',
+            message: 'Facilitator Salesforce update failed',
+            additionalInfo: {
+              errorMessage: error?.message || '',
+              stack: error?.stack || '',
+            },
+            userType: 'Facilitator',
+            referenceId: existing.id || '',
+            cognitoId: existing.cognitoId || '',
+          });
+        }
+      }
+    }
+
+    // ✅ Finally, update facilitator in Strapi
+    const updatedFacilitator = await strapi.entityService.update('api::facilitator.facilitator', id, {
+      data: {
+        ...data
+      },
+      populate: {
+        country: true,
+        sector: true
+      }
+    });
+
+   return ctx.send({
+  ...updatedFacilitator,
+  firstName: data.firstName,
+  lastName: data.lastName,
+  mobileNumber: data.mobileNumber,
+  officialEmailAddress: data.officialEmailAddress,
+});
+
+  } catch (error) {
+    console.error('Update error:', error);
+    await log({
+      logType: 'Error',
+      origin: 'facilitator.updateProfile',
+      message: 'Unexpected error during facilitator update Profile',
+      additionalInfo: {
+        errorMessage: error?.message || '',
+        stack: error?.stack || '',
+      },
+      userType: 'Facilitator',
+      referenceId: '',
+      cognitoId: '',
+    });
+
+    return ctx.internalServerError('An error occurred while updating profile of the facilitator');
+  }
+},
 
   // async wooOrderSync(ctx) {
   //   try {
