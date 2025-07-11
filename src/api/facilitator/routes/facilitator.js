@@ -104,6 +104,24 @@ module.exports = {
         middlewares: [],
       },
     },
+    {
+      method: 'POST',
+      path: '/facilitators/delegateToFacilitator',
+      handler: 'facilitator.delegateToFacilitator',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
+      method: 'GET',
+      path: '/facilitators/getMyPass/:id',
+      handler: 'facilitator.getMyPass',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
     // {
     //   method: 'POST',
     //   path: '/facilitators/wooOrderSync',

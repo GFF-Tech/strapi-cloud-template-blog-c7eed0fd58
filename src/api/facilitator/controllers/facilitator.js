@@ -283,7 +283,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
             logType: 'Error',
             message: 'Blocked registration: email belongs to delegate',
             origin: 'facilitator.create',
-            additionalInfo: { },
+            additionalInfo: {},
             userType: 'Facilitator',
             referenceId: '',
             cognitoId: existingCognitoId || ''
@@ -303,10 +303,10 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
                 logType: 'Error',
                 message: 'Registration blocked: email already registered',
                 origin: 'facilitator.create',
-                additionalInfo: { },
+                additionalInfo: {},
                 userType: 'Facilitator',
                 referenceId: facilitator.id || '',
-                cognitoId:existingCognitoId || ''
+                cognitoId: existingCognitoId || ''
               });
               return ctx.badRequest('Email already registered.');
             }
@@ -374,10 +374,10 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         logType: 'Success',
         message: 'Facilitator created in Strapi',
         origin: 'facilitator.create',
-        additionalInfo: { },
+        additionalInfo: {},
         userType: 'Facilitator',
         referenceId: createdFacilitator.id || '',
-        cognitoId: cognitoId ||''
+        cognitoId: cognitoId || ''
       });
 
       return {
@@ -398,7 +398,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         additionalInfo: data,
         userType: 'Facilitator',
         referenceId: '',
-        cognitoId:''
+        cognitoId: ''
       });
       console.error('Unexpected error in facilitator creation:', error);
       return ctx.internalServerError('An unexpected error occurred while registering.');
@@ -437,10 +437,10 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           logType: 'Error',
           message: 'Cognito ID (sub) not found after OTP verification',
           origin: 'facilitator.verifyFacilitator',
-          additionalInfo: { },
+          additionalInfo: {},
           userType: 'Facilitator',
           referenceId: '',
-          cognitoId:''
+          cognitoId: ''
         });
         return ctx.internalServerError('Cognito ID not found for user');
       }
@@ -592,19 +592,19 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       const duplicateOrders = incomingWooOrders.filter(order => existingOrderIds.includes(order.wcOrderId));
 
       if (duplicateOrders.length > 0) {
-          await log({
-            logType: 'Error',
-            message: 'Duplicate WooCommerce order(s) detected in facilitator update',
-            origin: 'facilitator.update',
-            additionalInfo: {
-               duplicateOrderIds: duplicateOrders.map(o => o.wcOrderId),
-            },
-            userType: 'Facilitator',
+        await log({
+          logType: 'Error',
+          message: 'Duplicate WooCommerce order(s) detected in facilitator update',
+          origin: 'facilitator.update',
+          additionalInfo: {
+            duplicateOrderIds: duplicateOrders.map(o => o.wcOrderId),
+          },
+          userType: 'Facilitator',
           referenceId: id || '',
           cognitoId: existing.cognitoId || ''
-          });
-          return ctx.badRequest(`Duplicate WooCommerce order(s) found: ${duplicateOrders.map(o => o.wcOrderId).join(', ')}`);
-        }
+        });
+        return ctx.badRequest(`Duplicate WooCommerce order(s) found: ${duplicateOrders.map(o => o.wcOrderId).join(', ')}`);
+      }
 
       const addParticpant =
         existingWooOrders.length > 0 &&
@@ -624,8 +624,8 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           })),
         },
         userType: 'Facilitator',
-          referenceId: id || '',
-          cognitoId: existing.cognitoId || ''
+        referenceId: id || '',
+        cognitoId: existing.cognitoId || ''
       });
 
       const mergedWooOrders = [...existingWooOrders, ...incomingWooOrders];
@@ -696,11 +696,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           const currencySymbol = wooOrder.currency === 'INR' ? '₹' : wooOrder.currency === 'USD' ? '$' : '';
 
           const taxableAmount = wooOrder.line_items.reduce(
-              (sum, item) => sum + Number(item.total),
-              0
-            ).toString();
-            const cgst = wooOrder.tax_lines.find(t => t.label.toLowerCase() === 'cgst')?.tax_total || '0';
-            const sgst = wooOrder.tax_lines.find(t => t.label.toLowerCase() === 'sgst')?.tax_total || '0';
+            (sum, item) => sum + Number(item.total),
+            0
+          ).toString();
+          const cgst = wooOrder.tax_lines.find(t => t.label.toLowerCase() === 'cgst')?.tax_total || '0';
+          const sgst = wooOrder.tax_lines.find(t => t.label.toLowerCase() === 'sgst')?.tax_total || '0';
 
           const payload = {
             invoice: 'true',
@@ -720,7 +720,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
             linkdinProfile: updated.linkedinUrl || '',
             passes,
             gstInfo: {
-              companyName:updated?.gstDetails?.companyName || '',
+              companyName: updated?.gstDetails?.companyName || '',
               gstNumber: updated?.gstDetails?.companyGstNo || '',
               billingAdress: updated?.gstDetails?.billingAddress || '',
               companyAddress: updated?.gstDetails?.companyAddress || '',
@@ -757,10 +757,10 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
               });
 
               await strapi.entityService.update('api::facilitator.facilitator', id, {
-                data: { 
+                data: {
                   wooOrderDetails: updatedWooOrderDetails,
                   gstDetails: data.gstDetails ?? null,
-                 },
+                },
               });
 
               let invoiceDetails = null;
@@ -809,7 +809,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
                   message: 'Invoice fetch failed from Salesforce',
                   origin: 'facilitator.update',
                   additionalInfo: {
-                     registrationPaymentId: result?.registrationPaymentId || '',
+                    registrationPaymentId: result?.registrationPaymentId || '',
                     errorMessage: invoiceError?.message || '',
                     errorStack: invoiceError?.stack || ''
                   },
@@ -828,45 +828,45 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
                 const existingInvoiceDetails = updated.invoiceDetails || [];
                 const newInvoiceDetails = [
-                ...existingInvoiceDetails,
-                {
-                  wcOrderId: order.wcOrderId,
-                  paymentDate,
-                  invoiceNumber,
-                  amountPaid,
-                  invoiceLink,
-                },
-              ];
+                  ...existingInvoiceDetails,
+                  {
+                    wcOrderId: order.wcOrderId,
+                    paymentDate,
+                    invoiceNumber,
+                    amountPaid,
+                    invoiceLink,
+                  },
+                ];
 
-                 await strapi.entityService.update('api::facilitator.facilitator', id, {
-                data: { 
-                  invoiceDetails: newInvoiceDetails
-                 },
-              });
-
-              try{
-                await sendEmail({
-                  to: email,
-                  subject: 'Thank You for Your Payment for GFF 2025 Registration',
-                  templateName: 'payment-invoice',
-                  replacements: { firstName, lastName, invoiceNumber, amountPaid, paymentDate, passDetails, invoiceLink },
+                await strapi.entityService.update('api::facilitator.facilitator', id, {
+                  data: {
+                    invoiceDetails: newInvoiceDetails
+                  },
                 });
-              }catch (err) {
-              strapi.log.error('Failed to Send Invoice email:', err);
-               await log({
-              logType: 'Error',
-              message: 'Failed to Send Invoice Email',
-              origin: 'facilitator.update',
-              additionalInfo: {
-               errorMessage: err?.message || '',
-              stack: err?.stack || '',
-              },
-              userType: 'Facilitator',
-              referenceId: id || '',
-              cognitoId: existing.cognitoId || ''
-            });
-             }
-                
+
+                try {
+                  await sendEmail({
+                    to: email,
+                    subject: 'Thank You for Your Payment for GFF 2025 Registration',
+                    templateName: 'payment-invoice',
+                    replacements: { firstName, lastName, invoiceNumber, amountPaid, paymentDate, passDetails, invoiceLink },
+                  });
+                } catch (err) {
+                  strapi.log.error('Failed to Send Invoice email:', err);
+                  await log({
+                    logType: 'Error',
+                    message: 'Failed to Send Invoice Email',
+                    origin: 'facilitator.update',
+                    additionalInfo: {
+                      errorMessage: err?.message || '',
+                      stack: err?.stack || '',
+                    },
+                    userType: 'Facilitator',
+                    referenceId: id || '',
+                    cognitoId: existing.cognitoId || ''
+                  });
+                }
+
               }
 
             }
@@ -882,8 +882,8 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
               message: 'Salesforce insert failed',
               origin: 'facilitator.update',
               additionalInfo: {
-               message: err?.message || '',
-              stack: err?.stack || '',
+                message: err?.message || '',
+                stack: err?.stack || '',
               },
               userType: 'Facilitator',
               referenceId: id || '',
@@ -913,7 +913,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         logType: 'Error',
         message: 'Unexpected error during facilitator update',
         origin: 'facilitator.update',
-        additionalInfo: { 
+        additionalInfo: {
           errorMessage: error?.message || '',
           errorStack: error?.stack || '',
         },
@@ -977,7 +977,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           logType: 'Error',
           message: 'Blocked login: email belongs to delegate',
           origin: 'facilitator.login',
-          additionalInfo: { },
+          additionalInfo: {},
           userType: 'Facilitator',
           referenceId: '',
           cognitoId: cognitoId || ''
@@ -999,7 +999,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         await log({
           logType: 'Error',
           message: 'Blocked login: incomplete registration — user deleted',
-           origin: 'facilitator.login',
+          origin: 'facilitator.login',
           additionalInfo: { email: officialEmailAddress },
           userType: 'Facilitator',
           referenceId: '',
@@ -1010,21 +1010,91 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       }
 
       // 3. If user is UNCONFIRMED and facilitator is partially registered, delete both
-      if (userStatus === 'UNCONFIRMED' || facilitator?.passBought === false) {
-        // Delete user from Cognito
+      // if (userStatus === 'UNCONFIRMED' || facilitator?.passBought === false) {
+      //   // Delete user from Cognito
+      //   await client.send(new AdminDeleteUserCommand({
+      //     Username: officialEmailAddress,
+      //     UserPoolId: process.env.COGNITO_USER_POOL_ID,
+      //   }));
+
+      //   // Delete user from Strapi
+      //   await strapi.entityService.delete('api::facilitator.facilitator', facilitator.id);
+
+      //   await log({
+      //     logType: 'Error',
+      //     message: 'Blocked login: partially registered — user deleted',
+      //     origin: 'facilitator.login',
+      //     additionalInfo: { email: officialEmailAddress, reason: 'UNCONFIRMED or pass not bought' },
+      //     userType: 'Facilitator',
+      //     referenceId: '',
+      //     cognitoId: ''
+      //   });
+
+      //   return ctx.badRequest('Your registration was not completed. Please register again.');
+      // }
+
+      // Always delete if user is UNCONFIRMED
+      if (userStatus === 'UNCONFIRMED') {
+        // 🔒 Delete from Cognito
         await client.send(new AdminDeleteUserCommand({
           Username: officialEmailAddress,
           UserPoolId: process.env.COGNITO_USER_POOL_ID,
         }));
 
-        // Delete user from Strapi
+        // 🗑️ Delete from Strapi
+        if (facilitator?.id) {
+          await strapi.entityService.delete('api::facilitator.facilitator', facilitator.id);
+        }
+
+        await log({
+          logType: 'Error',
+          message: 'Blocked login: UNCONFIRMED — user deleted from Cognito and Strapi',
+          origin: 'facilitator.login',
+          additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: '',
+          cognitoId: ''
+        });
+
+        return ctx.badRequest('Your registration was not completed. Please register again.');
+      }
+
+      // ✅ Additional cleanup for confirmed users with incomplete registration
+      const passNotBought = facilitator.passBought;
+      const delegateConverted = facilitator.delegateConvertedToFacilitator;
+
+      if (passNotBought === false && delegateConverted === true) {
+        // 🗑️ Only delete from Strapi
         await strapi.entityService.delete('api::facilitator.facilitator', facilitator.id);
 
         await log({
           logType: 'Error',
-          message: 'Blocked login: partially registered — user deleted',
+          message: 'Partially registered user deleted from Strapi (delegateConverted = true)',
           origin: 'facilitator.login',
-          additionalInfo: { email: officialEmailAddress, reason: 'UNCONFIRMED or pass not bought' },
+          additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: '',
+          cognitoId: ''
+        });
+
+        return ctx.badRequest('This email is associated with a participant account. Please use the main contact email provided during registration to log in.');
+      }
+
+      if (passNotBought === false && delegateConverted === false) {
+        // 🔒 Delete from Cognito
+        await client.send(new AdminDeleteUserCommand({
+          Username: officialEmailAddress,
+          UserPoolId: process.env.COGNITO_USER_POOL_ID,
+        }));
+
+        // 🗑️ Delete from Strapi
+        await strapi.entityService.delete('api::facilitator.facilitator', facilitator.id);
+
+        await log({
+          logType: 'Error',
+          message: 'Partially registered user deleted from Cognito and Strapi (delegateConverted = false)',
+          origin: 'facilitator.login',
+          additionalInfo: { email: officialEmailAddress },
           userType: 'Facilitator',
           referenceId: '',
           cognitoId: ''
@@ -1069,9 +1139,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         logType: 'Error',
         message: 'Unexpected error during login',
         origin: 'facilitator.login',
-        additionalInfo: { email: officialEmailAddress,
-                          errorMessage: error?.message || '',
-                          errorStack: error?.stack || '' },
+        additionalInfo: {
+          email: officialEmailAddress,
+          errorMessage: error?.message || '',
+          errorStack: error?.stack || ''
+        },
         userType: 'Facilitator',
         referenceId: '',
         cognitoId: ''
@@ -1303,11 +1375,11 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         logType: 'Error',
         message: 'Unexpected error in OTP verification',
         origin: 'facilitator.verifyLoginOtp',
-        additionalInfo: { 
+        additionalInfo: {
           email: officialEmailAddress,
-           errorMessage: error?.message || '',
-           stack: error?.stack || ''
-          },
+          errorMessage: error?.message || '',
+          stack: error?.stack || ''
+        },
         userType: 'Facilitator',
         referenceId: '',
         cognitoId: ''
@@ -1316,165 +1388,336 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
     }
   },
 
-   async updateProfile(ctx) {
-  const { id } = ctx.params;
-  const { data } = ctx.request.body;
+  async updateProfile(ctx) {
+    const { id } = ctx.params;
+    const { data } = ctx.request.body;
 
-  if (!id || typeof id !== 'string') {
-    return ctx.badRequest('Invalid ID');
-  }
-
-  try {
-    const country = await strapi.entityService.findOne('api::country.country', data.country, {
-      fields: ['countryCode'],
-    });
-
-    if (!country || !country.countryCode) {
-      return ctx.badRequest('Invalid or missing country code.');
+    if (!id || typeof id !== 'string') {
+      return ctx.badRequest('Invalid ID');
     }
 
-    const formattedPhoneNumber = `${country.countryCode}${data.mobileNumber}`;
+    try {
+      const country = await strapi.entityService.findOne('api::country.country', data.country, {
+        fields: ['countryCode'],
+      });
 
-    const existing = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
-      populate: {
-        country: { fields: ['country', 'countryCode'] },
-        sector: { fields: ['name'] },
-      },
-    });
+      if (!country || !country.countryCode) {
+        return ctx.badRequest('Invalid or missing country code.');
+      }
 
-    if (!existing) {
-      return ctx.notFound('Facilitator not found');
+      const formattedPhoneNumber = `${country.countryCode}${data.mobileNumber}`;
+
+      const existing = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
+        populate: {
+          country: { fields: ['country', 'countryCode'] },
+          sector: { fields: ['name'] },
+        },
+      });
+
+      if (!existing) {
+        return ctx.notFound('Facilitator not found');
+      }
+
+      // ✅ Update Cognito if cognitoId is present
+      if (existing.cognitoId) {
+        const updateCommand = new AdminUpdateUserAttributesCommand({
+          UserPoolId: process.env.COGNITO_USER_POOL_ID,
+          Username: existing.cognitoId,
+          UserAttributes: [
+            { Name: 'custom:firstName', Value: data.firstName },
+            { Name: 'custom:lastName', Value: data.lastName },
+            { Name: 'phone_number', Value: formattedPhoneNumber },
+            { Name: 'custom:companyName', Value: data.companyName },
+          ],
+        });
+
+        await client.send(updateCommand);
+
+        // 🔍 Check if a delegate exists with the same cognitoId
+        const delegates = await strapi.entityService.findMany('api::delegate.delegate', {
+          filters: { cognitoId: existing.cognitoId },
+          fields: ['confirmationId', 'passType', 'passPrice'],
+          limit: 1,
+        });
+
+        const matchedDelegate = delegates?.[0];
+
+        // ✅ Only update Salesforce if a delegate is found
+        if (matchedDelegate) {
+          const confirmationId = matchedDelegate.confirmationId;
+          const passType = matchedDelegate.passType;
+          const passPrice = matchedDelegate.passPrice;
+
+          const salesforcePayload = {
+            upgrade: 'true',
+            email: data.officialEmailAddress,
+            mobilePhone: formattedPhoneNumber,
+            participantFirstName: data.firstName,
+            participantLastName: data.lastName,
+            company: data.companyName || 'INDIVIDUAL',
+            vertical: '',
+            level: '',
+            GenderIdentity: '',
+            title: '',
+            linkdinProfile: data.linkedinUrl || '',
+            twitterProfile: '',
+            instagramProfile: '',
+            personalEmail: '',
+            confirmationId: confirmationId,
+            passType: passType,
+            price: passPrice,
+            salutation: '',
+            marketServedByCompany: '',
+            shortBio: '',
+            participantCategory: '',
+            participationObjective: '',
+            eventYearsAttendedBefore: '',
+            city: '',
+            country: '',
+            networkingGoals: '',
+            languageSpoken: '',
+            preferredTracks: '',
+            interestAreas: '',
+          };
+
+          try {
+            await updateSalesforceParticipant(salesforcePayload);
+            strapi.log.info(`Salesforce updated for facilitator ${confirmationId}`);
+            await log({
+              logType: 'Success',
+              origin: 'facilitator.update',
+              message: 'Facilitator Salesforce update success',
+              additionalInfo: { confirmationId },
+              userType: 'Facilitator',
+              referenceId: existing.id || '',
+              cognitoId: existing.cognitoId || '',
+            });
+          } catch (error) {
+            strapi.log.error('Salesforce update failed:', error.message || error);
+            await log({
+              logType: 'Error',
+              origin: 'facilitator.update',
+              message: 'Facilitator Salesforce update failed',
+              additionalInfo: {
+                errorMessage: error?.message || '',
+                stack: error?.stack || '',
+              },
+              userType: 'Facilitator',
+              referenceId: existing.id || '',
+              cognitoId: existing.cognitoId || '',
+            });
+          }
+        }
+      }
+
+      // ✅ Finally, update facilitator in Strapi
+      const updatedFacilitator = await strapi.entityService.update('api::facilitator.facilitator', id, {
+        data: {
+          ...data
+        },
+        populate: {
+          country: true,
+          sector: true
+        }
+      });
+
+      return ctx.send({
+        ...updatedFacilitator,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        mobileNumber: data.mobileNumber,
+        officialEmailAddress: data.officialEmailAddress,
+      });
+
+    } catch (error) {
+      console.error('Update error:', error);
+      await log({
+        logType: 'Error',
+        origin: 'facilitator.updateProfile',
+        message: 'Unexpected error during facilitator update Profile',
+        additionalInfo: {
+          errorMessage: error?.message || '',
+          stack: error?.stack || '',
+        },
+        userType: 'Facilitator',
+        referenceId: '',
+        cognitoId: '',
+      });
+
+      return ctx.internalServerError('An error occurred while updating profile of the facilitator');
+    }
+  },
+
+  async delegateToFacilitator(ctx) {
+    const { cognitoId } = ctx.request.body.data;
+
+    if (!cognitoId) {
+      return ctx.badRequest('Missing cognitoId');
     }
 
-    // ✅ Update Cognito if cognitoId is present
-    if (existing.cognitoId) {
+    try {
+
+      const delegates = await strapi.entityService.findMany('api::delegate.delegate', {
+        filters: { cognitoId },
+        fields: ['pciFccMember', 'linkedinUrl'],
+        populate: {
+          country: { fields: ['id'] },
+          sector: { fields: ['id'] },
+        },
+        limit: 1,
+      });
+
+      const delegate = delegates?.[0];
+
+      if (!delegate) {
+        return ctx.notFound('Delegate not found for this cognitoId');
+      }
+
+      const countryId = delegate.country?.id || null;
+      const sectorId = delegate.sector?.id || null;
+
+      const newFacilitator = await strapi.entityService.create('api::facilitator.facilitator', {
+        data: {
+          cognitoId,
+          country: countryId,
+          sector: sectorId,
+          pciFccMember: delegate.pciFccMember || false,
+          registerAsIndividual: delegate.registerAsIndividual || false,
+          linkedinUrl: delegate.linkedinUrl || '',
+          isCognitoVerified: true,
+          passBought: false,
+          delegateConvertedToFacilitator: true,
+        },
+      });
+
+      const populatedFacilitator = await strapi.entityService.findOne(
+        'api::facilitator.facilitator',
+        newFacilitator.id,
+        {
+          populate: {
+            country: { fields: ['country', 'countryCode'] },
+            sector: { fields: ['name'] },
+          },
+        }
+      );
+
+      const cognitoUser = await getCognitoUserBySub(cognitoId);
+      console.log('cognitoUser = ', cognitoUser);
+      const firstName = cognitoUser?.firstName || '';
+      const lastName = cognitoUser?.lastName || '';
+      const officialEmailAddress = cognitoUser?.email || '';
+      const fullMobileNumber = cognitoUser?.phone_number || '';
+      const companyName = cognitoUser?.companyName || '';
+
       const updateCommand = new AdminUpdateUserAttributesCommand({
         UserPoolId: process.env.COGNITO_USER_POOL_ID,
-        Username: existing.cognitoId,
+        Username: cognitoId,
         UserAttributes: [
-          { Name: 'custom:firstName', Value: data.firstName },
-          { Name: 'custom:lastName', Value: data.lastName },
-          { Name: 'phone_number', Value: formattedPhoneNumber },
-          { Name: 'custom:companyName', Value: data.companyName },
+          { Name: 'custom:delegate', Value: 'false' }
         ],
       });
 
       await client.send(updateCommand);
 
-      // 🔍 Check if a delegate exists with the same cognitoId
-      const delegates = await strapi.entityService.findMany('api::delegate.delegate', {
-        filters: { cognitoId: existing.cognitoId },
-        fields: ['confirmationId', 'passType', 'passPrice'],
-        limit: 1,
+      let mobileNumber = fullMobileNumber;
+      if (fullMobileNumber && populatedFacilitator?.country?.countryCode) {
+        const code = populatedFacilitator.country.countryCode.replace('+', '');
+        mobileNumber = fullMobileNumber.replace(`+${code}`, '');
+      }
+
+      // return ctx.send({ facilitatorId: newFacilitator.id });
+      return ctx.send({
+        ...populatedFacilitator,
+        firstName,
+        lastName,
+        mobileNumber,
+        officialEmailAddress,
+        companyName
       });
 
-      const matchedDelegate = delegates?.[0];
 
-      // ✅ Only update Salesforce if a delegate is found
-      if (matchedDelegate) {
-        const confirmationId = matchedDelegate.confirmationId;
-        const passType = matchedDelegate.passType;
-        const passPrice = matchedDelegate.passPrice;
-
-        const salesforcePayload = {
-          upgrade: 'true',
-          email: data.officialEmailAddress,
-          mobilePhone: formattedPhoneNumber,
-          participantFirstName: data.firstName,
-          participantLastName: data.lastName,
-          company: data.companyName || 'INDIVIDUAL',
-          vertical: '',
-          level: '',
-          GenderIdentity: '',
-          title: '',
-          linkdinProfile: data.linkedinUrl || '',
-          twitterProfile: '',
-          instagramProfile: '',
-          personalEmail: '',
-          confirmationId: confirmationId,
-          passType: passType,
-          price: passPrice,
-          salutation: '',
-          marketServedByCompany: '',
-          shortBio: '',
-          participantCategory: '',
-          participationObjective: '',
-          eventYearsAttendedBefore: '',
-          city: '',
-          country: '',
-          networkingGoals: '',
-          languageSpoken: '',
-          preferredTracks: '',
-          interestAreas: '',
-        };
-
-        try {
-          await updateSalesforceParticipant(salesforcePayload);
-          strapi.log.info(`Salesforce updated for facilitator ${confirmationId}`);
-          await log({
-            logType: 'Success',
-            origin: 'facilitator.update',
-            message: 'Facilitator Salesforce update success',
-            additionalInfo: { confirmationId },
-            userType: 'Facilitator',
-            referenceId: existing.id || '',
-            cognitoId: existing.cognitoId || '',
-          });
-        } catch (error) {
-          strapi.log.error('Salesforce update failed:', error.message || error);
-          await log({
-            logType: 'Error',
-            origin: 'facilitator.update',
-            message: 'Facilitator Salesforce update failed',
-            additionalInfo: {
-              errorMessage: error?.message || '',
-              stack: error?.stack || '',
-            },
-            userType: 'Facilitator',
-            referenceId: existing.id || '',
-            cognitoId: existing.cognitoId || '',
-          });
-        }
-      }
+    } catch (error) {
+      console.error('Error in createFromDelegates:', error);
+      return ctx.internalServerError('Something went wrong while creating facilitator from delegates');
     }
 
-    // ✅ Finally, update facilitator in Strapi
-    const updatedFacilitator = await strapi.entityService.update('api::facilitator.facilitator', id, {
-      data: {
-        ...data
-      },
-      populate: {
-        country: true,
-        sector: true
+  },
+
+  async getMyPass(ctx) {
+    const { id } = ctx.params;
+
+    if (!id) {
+      return ctx.badRequest('Missing facilitator id');
+    }
+
+    try {
+      // 1. Get facilitator
+      const facilitator = await strapi.entityService.findOne('api::facilitator.facilitator', id, {
+        fields: ['cognitoId'],
+      });
+
+      if (!facilitator || !facilitator.cognitoId) {
+        return ctx.notFound('Facilitator or cognitoId not found');
       }
-    });
 
-   return ctx.send({
-  ...updatedFacilitator,
-  firstName: data.firstName,
-  lastName: data.lastName,
-  mobileNumber: data.mobileNumber,
-  officialEmailAddress: data.officialEmailAddress,
-});
+      const cognitoId = facilitator.cognitoId;
 
-  } catch (error) {
-    console.error('Update error:', error);
-    await log({
-      logType: 'Error',
-      origin: 'facilitator.updateProfile',
-      message: 'Unexpected error during facilitator update Profile',
-      additionalInfo: {
-        errorMessage: error?.message || '',
-        stack: error?.stack || '',
-      },
-      userType: 'Facilitator',
-      referenceId: '',
-      cognitoId: '',
-    });
+      // 2. Get delegates by cognitoId
+      const delegates = await strapi.db.query('api::delegate.delegate').findOne({
+        where: { cognitoId },
+        populate: {
+          sector: true,
+          country: true,
+        },
+      });
 
-    return ctx.internalServerError('An error occurred while updating profile of the facilitator');
-  }
-},
+      // 3. Get Cognito user profile
+      const cognitoResponse = await client.send(
+        new AdminGetUserCommand({
+          Username: cognitoId,
+          UserPoolId: process.env.COGNITO_USER_POOL_ID,
+        })
+      );
+
+      const attributes = cognitoResponse.UserAttributes || [];
+
+      const getAttr = (key) => attributes.find((a) => a.Name === key)?.Value || '';
+
+      const userProfile = {
+        firstName: getAttr('custom:firstName'),
+        lastName: getAttr('custom:lastName'),
+        mobileNumber: getAttr('phone_number'),
+        email: getAttr('email'),
+        companyName: getAttr('custom:companyName'),
+      };
+
+      const firstName = getAttr('custom:firstName');
+      const lastName = getAttr('custom:lastName');
+      const officialEmailAddress = getAttr('email');
+      const fullMobileNumber = getAttr('phone_number');
+      const companyName = getAttr('custom:companyName') || '';
+
+      let mobileNumber = fullMobileNumber;
+      if (fullMobileNumber && delegates?.country?.countryCode) {
+        const code = delegates.country.countryCode.replace('+', '');
+        mobileNumber = fullMobileNumber.replace(`+${code}`, '');
+      }
+
+      // 4. Return combined result
+      return ctx.send({
+        ...delegates,
+        firstName,
+        lastName,
+        mobileNumber,
+        officialEmailAddress,
+        companyName
+      });
+
+    } catch (error) {
+      console.error('getMyPass error:', error);
+      return ctx.internalServerError('Something went wrong while fetching your pass info');
+    }
+  },
 
   // async wooOrderSync(ctx) {
   //   try {
@@ -1549,9 +1792,9 @@ async function fetchWooOrder(wcOrderId) {
       message: 'WooCommerce order fetch failed',
       origin: 'facilitator.fetchWooOrder',
       additionalInfo: {
-          wcOrderId: wcOrderId,
-          errorMessage: err?.message || '',
-          stack: err?.stack || '',
+        wcOrderId: wcOrderId,
+        errorMessage: err?.message || '',
+        stack: err?.stack || '',
       },
       userType: 'Facilitator',
       referenceId: '',
@@ -1599,10 +1842,10 @@ async function getCognitoUserBySub(sub) {
         sub,
         errorMessage: err?.message || '',
         stack: err?.stack || '',
-     },
+      },
       userType: 'Facilitator',
-          referenceId: '',
-          cognitoId: ''
+      referenceId: '',
+      cognitoId: ''
     });
     return null;
   }
