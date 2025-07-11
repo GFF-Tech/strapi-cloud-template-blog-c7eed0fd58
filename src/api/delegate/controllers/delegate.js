@@ -155,7 +155,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
               stack: error?.stack || ''
             },
             userType: 'Delegate',
-            referenceId: '',
+            referenceId: null,
             cognitoId: ''
           });
           if (error.name === 'UsernameExistsException') {
@@ -299,7 +299,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
           stack: error?.stack || ''
         },
         userType: 'Delegate',
-          referenceId: '',
+          referenceId: null,
           cognitoId: ''
       });
       return ctx.internalServerError('Failed to create delegate');
@@ -445,7 +445,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
           stack: error?.stack || ''
         },
         userType: 'Delegate',
-          referenceId: '',
+          referenceId: null,
           cognitoId: ''
       });
       return ctx.internalServerError('An error occurred while updating the delegate');
@@ -499,7 +499,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
           message: 'User not found in Cognito',
           additionalInfo: { officialEmailAddress },
           userType: 'Delegate',
-          referenceId: '',
+          referenceId: null,
           cognitoId: ''
         });
         return ctx.notFound('User not found in Cognito');
@@ -542,7 +542,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
              message: msg,
               additionalInfo: { facilitatorId: facilitator.id },
               userType: 'Delegate',
-              referenceId: '',
+              referenceId: null,
               cognitoId: cognitoId || ''
             });
             strapi.log.warn(
@@ -556,7 +556,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
             message: 'Delegate or Facilitator not found',
             additionalInfo: { },
             userType: 'Delegate',
-            referenceId: '',
+            referenceId: null,
             cognitoId: cognitoId || ''
           });
           return ctx.notFound('Delegate or Facilitator not found');
@@ -579,7 +579,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         error: error.message || String(error),
         },
         userType: 'Delegate',
-        referenceId: '',
+        referenceId: null,
         cognitoId: ''
       });
       return ctx.internalServerError('Failed to process login');
@@ -678,7 +678,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
           error: error.message || String(error),
         },
         userType: 'Delegate',
-        referenceId: '',
+        referenceId: null,
         cognitoId: ''
       });
       return ctx.internalServerError('An unexpected error occurred');
@@ -717,7 +717,7 @@ async resendInviteMail(ctx) {
         stack: error?.stack || '',
       },
       userType: 'Delegate',
-      referenceId: '',
+      referenceId: null,
       cognitoId: '',
     });
     ctx.internalServerError('Failed to resend invite mail');
@@ -762,7 +762,7 @@ async function getCognitoUserBySub(sub) {
        origin: 'utils.getCognitoUserBySub',
       additionalInfo: { error: err.message || String(err) },
       userType: 'Delegate',
-          referenceId: '',
+          referenceId: null,
           cognitoId: sub || ''
     });
     return null;

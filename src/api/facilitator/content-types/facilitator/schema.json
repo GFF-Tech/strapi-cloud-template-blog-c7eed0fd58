@@ -69,6 +69,9 @@
     "delegateConvertedToFacilitator": {
       "type": "boolean",
       "default": false
+    },
+    "wcCustomerId": {
+      "type": "string"
     }
   }
 }

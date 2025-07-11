@@ -285,7 +285,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
             origin: 'facilitator.create',
             additionalInfo: {},
             userType: 'Facilitator',
-            referenceId: '',
+            referenceId: null,
             cognitoId: existingCognitoId || ''
           });
           return ctx.forbidden('This email is associated with a participant account. Please use other email to register.');
@@ -397,7 +397,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         origin: 'facilitator.create',
         additionalInfo: data,
         userType: 'Facilitator',
-        referenceId: '',
+        referenceId: null,
         cognitoId: ''
       });
       console.error('Unexpected error in facilitator creation:', error);
@@ -439,7 +439,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           origin: 'facilitator.verifyFacilitator',
           additionalInfo: {},
           userType: 'Facilitator',
-          referenceId: '',
+          referenceId: null,
           cognitoId: ''
         });
         return ctx.internalServerError('Cognito ID not found for user');
@@ -489,7 +489,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         origin: 'facilitator.verifyFacilitator',
         additionalInfo: { officialEmailAddress },
         userType: 'Facilitator',
-        referenceId: '',
+        referenceId: null,
         cognitoId: ''
       });
 
@@ -524,7 +524,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           origin: 'facilitator.resendFacilitatorOtp',
           additionalInfo: { officialEmailAddress },
           userType: 'Facilitator',
-          referenceId: '',
+          referenceId: null,
           cognitoId: ''
         });
 
@@ -538,7 +538,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           origin: 'facilitator.resendFacilitatorOtp',
           additionalInfo: { officialEmailAddress },
           userType: 'Facilitator',
-          referenceId: '',
+          referenceId: null,
           cognitoId: ''
         });
 
@@ -551,7 +551,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
         origin: 'facilitator.resendFacilitatorOtp',
         additionalInfo: { officialEmailAddress },
         userType: 'Facilitator',
-        referenceId: '',
+        referenceId: null,
         cognitoId: ''
       });
 
@@ -587,6 +587,35 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
 
       const existingWooOrders = existing.wooOrderDetails || [];
       const incomingWooOrders = data.wooOrderDetails || [];
+
+      let wcCustomerId = existing.wcCustomerId;
+
+      if (!wcCustomerId) {
+        const cognitoUser = await getCognitoUserBySub(existing.cognitoId);
+
+        const customerPayload = {
+          email: cognitoUser?.email || '',
+          first_name: cognitoUser?.firstName || '',
+          last_name: cognitoUser?.lastName || '',
+          username: cognitoUser?.email || '',
+          password: 'AutoGen!GFF2025',
+        };
+
+        const customerResult = await createCustomerInWoo(customerPayload);
+
+        if (customerResult?.customer_id) {
+          wcCustomerId = String(customerResult.customer_id);
+
+          await strapi.entityService.update('api::facilitator.facilitator', id, {
+            data: {
+              wcCustomerId,
+            },
+          });
+        } 
+      }
+
+      // Step 2: Link Woo order with customer
+      await updateWooOrderWithCustomerId(incomingWooOrders[0].wcOrderId, wcCustomerId);
 
       const existingOrderIds = existingWooOrders.map(order => order.wcOrderId);
       const duplicateOrders = incomingWooOrders.filter(order => existingOrderIds.includes(order.wcOrderId));
@@ -966,7 +995,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           origin: 'facilitator.login',
           additionalInfo: { email: officialEmailAddress },
           userType: 'Facilitator',
-          referenceId: '',
+          referenceId: null,
           cognitoId: ''
         });
         return ctx.notFound('Email is not registered. Please register first.');
@@ -979,7 +1008,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           origin: 'facilitator.login',
           additionalInfo: {},
           userType: 'Facilitator',
-          referenceId: '',
+          referenceId: null,
           cognitoId: cognitoId || ''
         });
         return ctx.forbidden('This email is associated with a participant account. Please use the main contact email provided during registration to log in.');
@@ -1002,7 +1031,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           origin: 'facilitator.login',
           additionalInfo: { email: officialEmailAddress },
           userType: 'Facilitator',
-          referenceId: '',
+          referenceId: null,
           cognitoId: ''
         });
 
@@ -1026,7 +1055,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
       //     origin: 'facilitator.login',
       //     additionalInfo: { email: officialEmailAddress, reason: 'UNCONFIRMED or pass not bought' },
       //     userType: 'Facilitator',
-      //     referenceId: '',
+      //     referenceId: null,
       //     cognitoId: ''
       //   });
 
@@ -1052,7 +1081,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           origin: 'facilitator.login',
           additionalInfo: { email: officialEmailAddress },
           userType: 'Facilitator',
-          referenceId: '',
+          referenceId: null,
           cognitoId: ''
         });
 
@@ -1073,7 +1102,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           origin: 'facilitator.login',
           additionalInfo: { email: officialEmailAddress },
           userType: 'Facilitator',
-          referenceId: '',
+          referenceId: null,
           cognitoId: ''
         });
 
@@ -1096,7 +1125,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           origin: 'facilitator.login',
           additionalInfo: { email: officialEmailAddress },
           userType: 'Facilitator',
-          referenceId: '',
+          referenceId: null,
           cognitoId: ''
         });
 
@@ -1129,7 +1158,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           origin: 'facilitator.login',
           additionalInfo: { email: officialEmailAddress },
           userType: 'Facilitator',
-          referenceId: '',
+          referenceId: null,
           cognitoId: ''
         });
         return ctx.notFound('Email is not registered. Please register first.');
@@ -1145,7 +1174,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           errorStack: error?.stack || ''
         },
         userType: 'Facilitator',
-        referenceId: '',
+        referenceId: null,
         cognitoId: ''
       });
 
@@ -1181,7 +1210,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           origin: 'facilitator.verifyLoginOtp',
           additionalInfo: { email: officialEmailAddress },
           userType: 'Facilitator',
-          referenceId: '',
+          referenceId: null,
           cognitoId: ''
         });
         return ctx.unauthorized('OTP verification failed.');
@@ -1214,7 +1243,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           origin: 'facilitator.verifyLoginOtp',
           additionalInfo: { email: officialEmailAddress },
           userType: 'Facilitator',
-          referenceId: '',
+          referenceId: null,
           cognitoId: ''
         });
         return ctx.internalServerError('Cognito ID missing');
@@ -1242,7 +1271,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           origin: 'facilitator.verifyLoginOtp',
           additionalInfo: { email: officialEmailAddress },
           userType: 'Facilitator',
-          referenceId: '',
+          referenceId: null,
           cognitoId: cognitoId || ''
         });
         return ctx.notFound('User not found in the system.');
@@ -1381,7 +1410,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           stack: error?.stack || ''
         },
         userType: 'Facilitator',
-        referenceId: '',
+        referenceId: null,
         cognitoId: ''
       });
       return ctx.internalServerError('OTP verification failed due to an unexpected error.');
@@ -1540,7 +1569,7 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           stack: error?.stack || '',
         },
         userType: 'Facilitator',
-        referenceId: '',
+        referenceId: null,
         cognitoId: '',
       });
 
@@ -1797,10 +1826,83 @@ async function fetchWooOrder(wcOrderId) {
         stack: err?.stack || '',
       },
       userType: 'Facilitator',
-      referenceId: '',
+      referenceId: null,
       cognitoId: ''
     });
     return { error: 'WooCommerce order fetch failed', details: err.message };
+  }
+}
+
+async function createCustomerInWoo(customerData) {
+  if (!customerData) return { error: 'No Customer Data' };
+  const baseURL = process.env.WC_BASE_URL;
+  const username = process.env.WC_CONSUMER_KEY;
+  const password = process.env.WC_CONSUMER_SECRET;
+
+  try {
+    const res = await axios.post(`${baseURL}/customers`,
+      customerData,
+      {
+        auth: {
+          username,
+          password
+        },
+      });
+    return { customer_id: res.data.id };
+
+  } catch (err) {
+    console.log('WooCommerce Create Customer failed = ',err);
+    await log({
+      logType: 'Error',
+      message: 'WooCommerce Create Customer failed',
+      origin: 'facilitator.createCustomerInWoo',
+      additionalInfo: {
+        errorMessage: err?.message || '',
+        stack: err?.stack || '',
+      },
+      userType: 'Facilitator',
+      referenceId: null,
+      cognitoId: ''
+    });
+    return { error: 'WooCommerce Create Customer failed', details: err.message };
+  }
+}
+
+async function updateWooOrderWithCustomerId(wcOrderId, wcCustomerId) {
+  if (!wcOrderId) return { error: 'No order ID' };
+  if (!wcCustomerId) return { error: 'No Customer ID' };
+  const baseURL = process.env.WC_BASE_URL;
+  const username = process.env.WC_CONSUMER_KEY;
+  const password = process.env.WC_CONSUMER_SECRET;
+
+  try {
+    const res = await axios.put(`${baseURL}/orders/${wcOrderId}`,
+      {
+        customer_id: wcCustomerId,
+      },
+      {
+        auth: {
+          username,
+          password
+        },
+      });
+    return res.data;
+
+  } catch (err) {
+    await log({
+      logType: 'Error',
+      message: 'WooCommerce order updated failed',
+      origin: 'facilitator.updateWooOrderWithCustomerId',
+      additionalInfo: {
+        wcOrderId: wcOrderId,
+        errorMessage: err?.message || '',
+        stack: err?.stack || '',
+      },
+      userType: 'Facilitator',
+      referenceId: null,
+      cognitoId: ''
+    });
+    return { error: 'WooCommerce order updated failed', details: err.message };
   }
 }
 
@@ -1844,7 +1946,7 @@ async function getCognitoUserBySub(sub) {
         stack: err?.stack || '',
       },
       userType: 'Facilitator',
-      referenceId: '',
+      referenceId: null,
       cognitoId: ''
     });
     return null;
