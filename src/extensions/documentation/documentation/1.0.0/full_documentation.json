@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-07-10T18:01:57.311Z"
+    "x-generation-date": "2025-07-12T17:14:26.917Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -5260,6 +5260,98 @@
         }
       }
     },
+    "/facilitators/updateProfile/{id}": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacilitatorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Facilitator"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "deprecated": false,
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "operationId": "put/facilitators/updateProfile/{id}",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacilitatorRequest"
+              }
+            }
+          }
+        }
+      }
+    },
     "/facilitators/login": {
       "post": {
         "responses": {
@@ -5420,6 +5512,169 @@
             }
           }
         }
+      }
+    },
+    "/facilitators/delegateToFacilitator": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacilitatorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Facilitator"
+        ],
+        "parameters": [],
+        "operationId": "post/facilitators/delegateToFacilitator",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacilitatorRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/facilitators/getMyPass/{id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacilitatorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Facilitator"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "deprecated": false,
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "operationId": "get/facilitators/getMyPass/{id}"
       }
     },
     "/faqs": {
@@ -22288,6 +22543,96 @@
               "session_desc": {
                 "type": "string"
               },
+              "session_tags_01": {
+                "type": "string"
+              },
+              "session_tags_02": {
+                "type": "string"
+              },
+              "session_tags_03": {
+                "type": "string"
+              },
+              "session_tags_04": {
+                "type": "string"
+              },
+              "session_tags_05": {
+                "type": "string"
+              },
+              "session_host_01_host_type": {
+                "type": "string"
+              },
+              "session_host_01": {
+                "type": "string"
+              },
+              "session_host_02_host_type": {
+                "type": "string"
+              },
+              "session_host_02": {
+                "type": "string"
+              },
+              "session_host_03_host_type": {
+                "type": "string"
+              },
+              "session_host_03": {
+                "type": "string"
+              },
+              "session_host_04_host_type": {
+                "type": "string"
+              },
+              "session_host_04": {
+                "type": "string"
+              },
+              "session_host_05_host_type": {
+                "type": "string"
+              },
+              "session_host_05": {
+                "type": "string"
+              },
+              "session_speakers_01": {
+                "type": "string"
+              },
+              "session_speakers_02": {
+                "type": "string"
+              },
+              "session_speakers_03": {
+                "type": "string"
+              },
+              "session_speakers_05": {
+                "type": "string"
+              },
+              "session_speakers_06": {
+                "type": "string"
+              },
+              "session_speakers_04": {
+                "type": "string"
+              },
+              "session_speakers_07": {
+                "type": "string"
+              },
+              "session_speakers_08": {
+                "type": "string"
+              },
+              "session_speakers_09": {
+                "type": "string"
+              },
+              "session_speakers_10": {
+                "type": "string"
+              },
+              "session_speakers_11": {
+                "type": "string"
+              },
+              "session_speakers_12": {
+                "type": "string"
+              },
+              "session_speakers_13": {
+                "type": "string"
+              },
+              "session_speakers_14": {
+                "type": "string"
+              },
+              "session_speakers_15": {
+                "type": "string"
+              },
               "locale": {
                 "type": "string"
               },
@@ -22390,6 +22735,96 @@
             "type": "string"
           },
           "session_desc": {
+            "type": "string"
+          },
+          "session_tags_01": {
+            "type": "string"
+          },
+          "session_tags_02": {
+            "type": "string"
+          },
+          "session_tags_03": {
+            "type": "string"
+          },
+          "session_tags_04": {
+            "type": "string"
+          },
+          "session_tags_05": {
+            "type": "string"
+          },
+          "session_host_01_host_type": {
+            "type": "string"
+          },
+          "session_host_01": {
+            "type": "string"
+          },
+          "session_host_02_host_type": {
+            "type": "string"
+          },
+          "session_host_02": {
+            "type": "string"
+          },
+          "session_host_03_host_type": {
+            "type": "string"
+          },
+          "session_host_03": {
+            "type": "string"
+          },
+          "session_host_04_host_type": {
+            "type": "string"
+          },
+          "session_host_04": {
+            "type": "string"
+          },
+          "session_host_05_host_type": {
+            "type": "string"
+          },
+          "session_host_05": {
+            "type": "string"
+          },
+          "session_speakers_01": {
+            "type": "string"
+          },
+          "session_speakers_02": {
+            "type": "string"
+          },
+          "session_speakers_03": {
+            "type": "string"
+          },
+          "session_speakers_05": {
+            "type": "string"
+          },
+          "session_speakers_06": {
+            "type": "string"
+          },
+          "session_speakers_04": {
+            "type": "string"
+          },
+          "session_speakers_07": {
+            "type": "string"
+          },
+          "session_speakers_08": {
+            "type": "string"
+          },
+          "session_speakers_09": {
+            "type": "string"
+          },
+          "session_speakers_10": {
+            "type": "string"
+          },
+          "session_speakers_11": {
+            "type": "string"
+          },
+          "session_speakers_12": {
+            "type": "string"
+          },
+          "session_speakers_13": {
+            "type": "string"
+          },
+          "session_speakers_14": {
+            "type": "string"
+          },
+          "session_speakers_15": {
             "type": "string"
           },
           "createdAt": {
@@ -22729,6 +23164,96 @@
                   "type": "string"
                 },
                 "session_desc": {
+                  "type": "string"
+                },
+                "session_tags_01": {
+                  "type": "string"
+                },
+                "session_tags_02": {
+                  "type": "string"
+                },
+                "session_tags_03": {
+                  "type": "string"
+                },
+                "session_tags_04": {
+                  "type": "string"
+                },
+                "session_tags_05": {
+                  "type": "string"
+                },
+                "session_host_01_host_type": {
+                  "type": "string"
+                },
+                "session_host_01": {
+                  "type": "string"
+                },
+                "session_host_02_host_type": {
+                  "type": "string"
+                },
+                "session_host_02": {
+                  "type": "string"
+                },
+                "session_host_03_host_type": {
+                  "type": "string"
+                },
+                "session_host_03": {
+                  "type": "string"
+                },
+                "session_host_04_host_type": {
+                  "type": "string"
+                },
+                "session_host_04": {
+                  "type": "string"
+                },
+                "session_host_05_host_type": {
+                  "type": "string"
+                },
+                "session_host_05": {
+                  "type": "string"
+                },
+                "session_speakers_01": {
+                  "type": "string"
+                },
+                "session_speakers_02": {
+                  "type": "string"
+                },
+                "session_speakers_03": {
+                  "type": "string"
+                },
+                "session_speakers_05": {
+                  "type": "string"
+                },
+                "session_speakers_06": {
+                  "type": "string"
+                },
+                "session_speakers_04": {
+                  "type": "string"
+                },
+                "session_speakers_07": {
+                  "type": "string"
+                },
+                "session_speakers_08": {
+                  "type": "string"
+                },
+                "session_speakers_09": {
+                  "type": "string"
+                },
+                "session_speakers_10": {
+                  "type": "string"
+                },
+                "session_speakers_11": {
+                  "type": "string"
+                },
+                "session_speakers_12": {
+                  "type": "string"
+                },
+                "session_speakers_13": {
+                  "type": "string"
+                },
+                "session_speakers_14": {
+                  "type": "string"
+                },
+                "session_speakers_15": {
                   "type": "string"
                 },
                 "createdAt": {
@@ -29689,6 +30214,12 @@
                   "$ref": "#/components/schemas/CommonInvoiceDetailsComponent"
                 }
               },
+              "delegateConvertedToFacilitator": {
+                "type": "boolean"
+              },
+              "wcCustomerId": {
+                "type": "string"
+              },
               "createdAt": {
                 "type": "string",
                 "format": "date-time"
@@ -31109,6 +31640,12 @@
                   "$ref": "#/components/schemas/CommonInvoiceDetailsComponent"
                 }
               },
+              "delegateConvertedToFacilitator": {
+                "type": "boolean"
+              },
+              "wcCustomerId": {
+                "type": "string"
+              },
               "locale": {
                 "type": "string"
               },
@@ -31698,6 +32235,12 @@
                         "$ref": "#/components/schemas/CommonInvoiceDetailsComponent"
                       }
                     },
+                    "delegateConvertedToFacilitator": {
+                      "type": "boolean"
+                    },
+                    "wcCustomerId": {
+                      "type": "string"
+                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -31861,6 +32404,12 @@
             "items": {
               "$ref": "#/components/schemas/CommonInvoiceDetailsComponent"
             }
+          },
+          "delegateConvertedToFacilitator": {
+            "type": "boolean"
+          },
+          "wcCustomerId": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
