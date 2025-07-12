@@ -49,6 +49,96 @@
     },
     "session_desc": {
       "type": "text"
+    },
+    "session_tags_01": {
+      "type": "string"
+    },
+    "session_tags_02": {
+      "type": "string"
+    },
+    "session_tags_03": {
+      "type": "string"
+    },
+    "session_tags_04": {
+      "type": "string"
+    },
+    "session_tags_05": {
+      "type": "string"
+    },
+    "session_host_01_host_type": {
+      "type": "string"
+    },
+    "session_host_01": {
+      "type": "string"
+    },
+    "session_host_02_host_type": {
+      "type": "string"
+    },
+    "session_host_02": {
+      "type": "string"
+    },
+    "session_host_03_host_type": {
+      "type": "string"
+    },
+    "session_host_03": {
+      "type": "string"
+    },
+    "session_host_04_host_type": {
+      "type": "string"
+    },
+    "session_host_04": {
+      "type": "string"
+    },
+    "session_host_05_host_type": {
+      "type": "string"
+    },
+    "session_host_05": {
+      "type": "string"
+    },
+    "session_speakers_01": {
+      "type": "string"
+    },
+    "session_speakers_02": {
+      "type": "string"
+    },
+    "session_speakers_03": {
+      "type": "string"
+    },
+    "session_speakers_05": {
+      "type": "string"
+    },
+    "session_speakers_06": {
+      "type": "string"
+    },
+    "session_speakers_04": {
+      "type": "string"
+    },
+    "session_speakers_07": {
+      "type": "string"
+    },
+    "session_speakers_08": {
+      "type": "string"
+    },
+    "session_speakers_09": {
+      "type": "string"
+    },
+    "session_speakers_10": {
+      "type": "string"
+    },
+    "session_speakers_11": {
+      "type": "string"
+    },
+    "session_speakers_12": {
+      "type": "string"
+    },
+    "session_speakers_13": {
+      "type": "string"
+    },
+    "session_speakers_14": {
+      "type": "string"
+    },
+    "session_speakers_15": {
+      "type": "string"
     }
   }
 }
