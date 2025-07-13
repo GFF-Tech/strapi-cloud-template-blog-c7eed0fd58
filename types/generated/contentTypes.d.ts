@@ -504,6 +504,8 @@ export interface ApiAgendaAgenda extends Struct.CollectionTypeSchema {
     session_tags_03: Schema.Attribute.String;
     session_tags_04: Schema.Attribute.String;
     session_tags_05: Schema.Attribute.String;
+    showInFront: Schema.Attribute.Enumeration<['Yes', 'No']> &
+      Schema.Attribute.DefaultTo<'Yes'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
