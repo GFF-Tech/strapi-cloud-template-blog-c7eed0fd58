@@ -469,11 +469,41 @@ export interface ApiAgendaAgenda extends Struct.CollectionTypeSchema {
     session_format: Schema.Attribute.String;
     session_hall: Schema.Attribute.String;
     session_host: Schema.Attribute.Text;
+    session_host_01: Schema.Attribute.String;
+    session_host_01_host_type: Schema.Attribute.String;
+    session_host_02: Schema.Attribute.String;
+    session_host_02_host_type: Schema.Attribute.String;
+    session_host_03: Schema.Attribute.String;
+    session_host_03_host_type: Schema.Attribute.String;
+    session_host_04: Schema.Attribute.String;
+    session_host_04_host_type: Schema.Attribute.String;
+    session_host_05: Schema.Attribute.String;
+    session_host_05_host_type: Schema.Attribute.String;
     session_name: Schema.Attribute.String;
     session_speakers: Schema.Attribute.Text;
+    session_speakers_01: Schema.Attribute.String;
+    session_speakers_02: Schema.Attribute.String;
+    session_speakers_03: Schema.Attribute.String;
+    session_speakers_04: Schema.Attribute.String;
+    session_speakers_05: Schema.Attribute.String;
+    session_speakers_06: Schema.Attribute.String;
+    session_speakers_07: Schema.Attribute.String;
+    session_speakers_08: Schema.Attribute.String;
+    session_speakers_09: Schema.Attribute.String;
+    session_speakers_10: Schema.Attribute.String;
+    session_speakers_11: Schema.Attribute.String;
+    session_speakers_12: Schema.Attribute.String;
+    session_speakers_13: Schema.Attribute.String;
+    session_speakers_14: Schema.Attribute.String;
+    session_speakers_15: Schema.Attribute.String;
     session_start_time: Schema.Attribute.String;
     session_sub_hall: Schema.Attribute.String;
     session_tags: Schema.Attribute.Text;
+    session_tags_01: Schema.Attribute.String;
+    session_tags_02: Schema.Attribute.String;
+    session_tags_03: Schema.Attribute.String;
+    session_tags_04: Schema.Attribute.String;
+    session_tags_05: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -875,6 +905,8 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    delegateConvertedToFacilitator: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     delegates: Schema.Attribute.Relation<'oneToMany', 'api::delegate.delegate'>;
     gstDetails: Schema.Attribute.Component<'common.gst-details', false>;
     invoiceDetails: Schema.Attribute.Component<'common.invoice-details', true>;
@@ -896,6 +928,7 @@ export interface ApiFacilitatorFacilitator extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    wcCustomerId: Schema.Attribute.String;
     wooOrderDetails: Schema.Attribute.Component<
       'common.woo-order-details',
       true

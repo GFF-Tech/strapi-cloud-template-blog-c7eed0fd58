@@ -66,6 +66,16 @@ module.exports = {
       },
     },
 
+    {
+      method: 'PUT',
+      path: '/facilitators/updateProfile/:id',
+      handler: 'facilitator.updateProfile',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+
     // DELETE a facilitator by ID
     {
       method: 'DELETE',
@@ -89,6 +99,24 @@ module.exports = {
       method: 'POST',
       path: '/facilitators/verifyLoginOtp',
       handler: 'facilitator.verifyLoginOtp',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
+      method: 'POST',
+      path: '/facilitators/delegateToFacilitator',
+      handler: 'facilitator.delegateToFacilitator',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
+      method: 'GET',
+      path: '/facilitators/getMyPass/:id',
+      handler: 'facilitator.getMyPass',
       config: {
         policies: [],
         middlewares: [],
