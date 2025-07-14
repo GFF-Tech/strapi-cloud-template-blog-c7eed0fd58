@@ -76,9 +76,7 @@ async function insertIntoSalesforce(payload) {
     // throw new Error('Salesforce insert failed');
     throw new Error(typeof parsed === 'string' ? parsed : parsed?.error || 'Salesforce insert failed');
   }
-  console.log('parsed = ',parsed);
-  
-
+ 
   return { retry: false, data: parsed };
 };
 
@@ -165,6 +163,8 @@ async function fetchInvoiceFromSalesforce(registrationPaymentId) {
     await getSalesforceToken();
   }
 
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
   const fetchInvoice = async () => {
     console.log('salesforceToken = ', salesforceToken);
     console.log('JSON.stringify({ registrationPaymentId }) = ', JSON.stringify({ registrationPaymentId }));
@@ -179,7 +179,6 @@ async function fetchInvoiceFromSalesforce(registrationPaymentId) {
     });
 
     const text = await res.text();
-    console.log('Salesforce raw response:', res.status, text);
 
     let parsed;
     try {
@@ -204,20 +203,26 @@ async function fetchInvoiceFromSalesforce(registrationPaymentId) {
 
   let result = await fetchInvoice();
 
-  // Retry once if non-token error occurred
   if (result.retry) {
-    console.warn('Salesforce invoice fetch failed. Retrying once...');
+    console.warn('Salesforce invoice fetch failed. Retrying after 5 seconds...');
+    await sleep(5000);
+    result = await fetchInvoice();
+  }
+
+  if (result.retry) {
+    console.warn('Salesforce invoice fetch failed again. Retrying a third time after 5 seconds...');
+    await sleep(5000);
     result = await fetchInvoice();
   }
 
   if (!result.ok) {
     console.error('Salesforce Invoice Fetch Final Error:', result.data);
-    throw new Error('Salesforce invoice fetch failed after retry');
+    // throw new Error('Salesforce invoice fetch failed after 3 attempts');
+    throw new Error(typeof result.data === 'string' ? result.data : result.data?.error || 'Salesforce invoice fetch failed after 3 attempts');
   }
 
   return result.data;
 }
-
 
 module.exports = {
   insertIntoSalesforce,
