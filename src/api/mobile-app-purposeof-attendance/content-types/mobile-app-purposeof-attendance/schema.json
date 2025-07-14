@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "mobile_app_purposeof_attendances",
+  "info": {
+    "singularName": "mobile-app-purposeof-attendance",
+    "pluralName": "mobile-app-purposeof-attendances",
+    "displayName": "MobileAppPurposeofAttendance"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "mobileAppPurposeofAttendancesID": {
+      "type": "uid"
+    },
+    "mobileAppPurposeofAttendancesName": {
+      "type": "string"
+    }
+  }
+}
