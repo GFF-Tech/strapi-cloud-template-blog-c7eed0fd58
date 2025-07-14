@@ -1151,6 +1151,66 @@ export interface ApiMobileAppAreasofInterestMobileAppAreasofInterest
   };
 }
 
+export interface ApiMobileAppNetworkingGoalMobileAppNetworkingGoal
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'mobile_app_networking_goals';
+  info: {
+    displayName: 'MobileAppNetworkingGoals';
+    pluralName: 'mobile-app-networking-goals';
+    singularName: 'mobile-app-networking-goal';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::mobile-app-networking-goal.mobile-app-networking-goal'
+    > &
+      Schema.Attribute.Private;
+    mobileAppNetworkingGoalsID: Schema.Attribute.UID;
+    mobileAppNetworkingGoalsName: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiMobileAppPurposeofAttendanceMobileAppPurposeofAttendance
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'mobile_app_purposeof_attendances';
+  info: {
+    displayName: 'MobileAppPurposeofAttendance';
+    pluralName: 'mobile-app-purposeof-attendances';
+    singularName: 'mobile-app-purposeof-attendance';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::mobile-app-purposeof-attendance.mobile-app-purposeof-attendance'
+    > &
+      Schema.Attribute.Private;
+    mobileAppPurposeofAttendancesID: Schema.Attribute.UID;
+    mobileAppPurposeofAttendancesName: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiMobileAppTextPageMobileAppTextPage
   extends Struct.CollectionTypeSchema {
   collectionName: 'mobile_app_text_pages';
@@ -1410,6 +1470,8 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
         'Gold Partners',
         'Spend Management Partner',
         'Silver Partners',
+        'Country Partner',
+        'Escrow Partner',
         'Mobile App Security Partner',
         'Bronze Partners',
         'VIP Lounge Partner',
@@ -2764,6 +2826,8 @@ declare module '@strapi/strapi' {
       'api::log.log': ApiLogLog;
       'api::micro-site-home-page.micro-site-home-page': ApiMicroSiteHomePageMicroSiteHomePage;
       'api::mobile-app-areasof-interest.mobile-app-areasof-interest': ApiMobileAppAreasofInterestMobileAppAreasofInterest;
+      'api::mobile-app-networking-goal.mobile-app-networking-goal': ApiMobileAppNetworkingGoalMobileAppNetworkingGoal;
+      'api::mobile-app-purposeof-attendance.mobile-app-purposeof-attendance': ApiMobileAppPurposeofAttendanceMobileAppPurposeofAttendance;
       'api::mobile-app-text-page.mobile-app-text-page': ApiMobileAppTextPageMobileAppTextPage;
       'api::nabard-hackathon.nabard-hackathon': ApiNabardHackathonNabardHackathon;
       'api::new-product-launch-form.new-product-launch-form': ApiNewProductLaunchFormNewProductLaunchForm;
