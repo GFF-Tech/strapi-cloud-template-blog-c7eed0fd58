@@ -479,7 +479,7 @@ export interface ApiAgendaAgenda extends Struct.CollectionTypeSchema {
     session_host_04_host_type: Schema.Attribute.String;
     session_host_05: Schema.Attribute.String;
     session_host_05_host_type: Schema.Attribute.String;
-    session_name: Schema.Attribute.String;
+    session_name: Schema.Attribute.Text;
     session_speakers: Schema.Attribute.Text;
     session_speakers_01: Schema.Attribute.String;
     session_speakers_02: Schema.Attribute.String;

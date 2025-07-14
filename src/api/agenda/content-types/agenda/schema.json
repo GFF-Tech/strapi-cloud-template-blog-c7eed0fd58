@@ -27,7 +27,7 @@
       "type": "string"
     },
     "session_name": {
-      "type": "string"
+      "type": "text"
     },
     "session_hall": {
       "type": "string"
