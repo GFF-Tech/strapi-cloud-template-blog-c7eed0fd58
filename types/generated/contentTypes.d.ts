@@ -1470,6 +1470,8 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
         'Gold Partners',
         'Spend Management Partner',
         'Silver Partners',
+        'Country Partner',
+        'Escrow Partner',
         'Mobile App Security Partner',
         'Bronze Partners',
         'VIP Lounge Partner',
