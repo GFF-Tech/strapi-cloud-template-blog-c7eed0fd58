@@ -27,7 +27,7 @@
       "type": "string"
     },
     "session_name": {
-      "type": "string"
+      "type": "text"
     },
     "session_hall": {
       "type": "string"
@@ -139,6 +139,14 @@
     },
     "session_speakers_15": {
       "type": "string"
+    },
+    "showInFront": {
+      "type": "enumeration",
+      "enum": [
+        "Yes",
+        "No"
+      ],
+      "default": "Yes"
     }
   }
 }

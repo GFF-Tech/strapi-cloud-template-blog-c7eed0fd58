@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "mobile_app_networking_goals",
+  "info": {
+    "singularName": "mobile-app-networking-goal",
+    "pluralName": "mobile-app-networking-goals",
+    "displayName": "MobileAppNetworkingGoals"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "mobileAppNetworkingGoalsID": {
+      "type": "uid"
+    },
+    "mobileAppNetworkingGoalsName": {
+      "type": "string"
+    }
+  }
+}
