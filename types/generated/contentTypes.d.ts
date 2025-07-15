@@ -797,6 +797,7 @@ export interface ApiDelegateDelegate extends Struct.CollectionTypeSchema {
     passType: Schema.Attribute.String;
     pciFccMember: Schema.Attribute.Boolean;
     publishedAt: Schema.Attribute.DateTime;
+    qrCode: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     registerAsIndividual: Schema.Attribute.Boolean;
     sector: Schema.Attribute.Relation<'oneToOne', 'api::sector.sector'>;
     updatedAt: Schema.Attribute.DateTime;
