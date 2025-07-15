@@ -17,7 +17,7 @@ module.exports = {
       const form = new FormData();
       form.append('files', fs.createReadStream(tempPath), {
         filename: `${cognitoId}.svg`,
-        contentType: 'image/svg',
+        contentType: 'image/svg+xml',
       });
 
       const strapi_url = process.env.STRAPI_URL;
