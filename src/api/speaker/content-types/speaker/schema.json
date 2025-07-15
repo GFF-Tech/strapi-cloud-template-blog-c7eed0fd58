@@ -79,7 +79,8 @@
       "enum": [
         "One - Tier 1",
         "Two - Category A",
-        "Three - Category B"
+        "Three - Category B",
+        "Four - Category C"
       ]
     },
     "agenda_dd": {
