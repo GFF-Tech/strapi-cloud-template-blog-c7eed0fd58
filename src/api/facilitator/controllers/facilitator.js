@@ -1834,24 +1834,33 @@ async function fetchWooOrder(wcOrderId) {
 }
 
 async function createCustomerInWoo(customerData) {
-  if (!customerData) return { error: 'No Customer Data' };
+  if (!customerData || !customerData.email) return { error: 'No Customer Data or Email' };
+
   const baseURL = process.env.WC_BASE_URL;
   const username = process.env.WC_CONSUMER_KEY;
   const password = process.env.WC_CONSUMER_SECRET;
 
   try {
-    const res = await axios.post(`${baseURL}/customers`,
-      customerData,
-      {
-        auth: {
-          username,
-          password
-        },
-      });
+    // Step 1: Check if customer already exists by email
+    const existingCustomerRes = await axios.get(`${baseURL}/customers`, {
+      auth: { username, password },
+      params: { email: customerData.email }
+    });
+
+    if (existingCustomerRes.data.length > 0) {
+      const existingCustomer = existingCustomerRes.data[0];
+      return { customer_id: existingCustomer.id };
+    }
+
+    // Step 2: Create new customer if not found
+    const res = await axios.post(`${baseURL}/customers`, customerData, {
+      auth: { username, password },
+    });
+
     return { customer_id: res.data.id };
 
   } catch (err) {
-    console.log('WooCommerce Create Customer failed = ',err);
+    console.log('WooCommerce Create Customer failed = ', err);
     await log({
       logType: 'Error',
       message: 'WooCommerce Create Customer failed',
@@ -1867,6 +1876,7 @@ async function createCustomerInWoo(customerData) {
     return { error: 'WooCommerce Create Customer failed', details: err.message };
   }
 }
+
 
 async function updateWooOrderWithCustomerId(wcOrderId, wcCustomerId) {
   if (!wcOrderId) return { error: 'No order ID' };
