@@ -12,6 +12,7 @@ const {
   InitiateAuthCommand, RespondToAuthChallengeCommand, AdminUpdateUserAttributesCommand, AdminGetUserCommand
 } = require('@aws-sdk/client-cognito-identity-provider');
 const facilitator = require('../../facilitator/controllers/facilitator');
+const { uploadQRToStrapi } = require('../../../utils/qr');
 
 // @ts-ignore
 const { createCoreController } = require('@strapi/strapi').factories;
@@ -723,6 +724,34 @@ async resendInviteMail(ctx) {
     ctx.internalServerError('Failed to resend invite mail');
   }
 },
+
+  async getQRCode(ctx) {
+    const { id } = ctx.params;
+    const delegate = await strapi.entityService.findOne('api::delegate.delegate', id, {
+      populate: ['qrCode'],
+    });
+
+    if (!delegate) return ctx.notFound('Delegate not found');
+
+    // ✅ Return existing QR code
+    if (delegate.qrCode && delegate.qrCode.url) {
+      return ctx.send({ qrCode: delegate.qrCode });
+    }
+
+    if (!delegate.cognitoId) {
+    return ctx.badRequest('Missing cognitoId for QR generation');
+  }
+
+    const qrFile = await uploadQRToStrapi(delegate.cognitoId);
+
+    const updatedDelegate = await strapi.entityService.update('api::delegate.delegate', id, {
+      data: { qrCode: qrFile.id },
+      populate: ['qrCode'], 
+    });
+
+    return ctx.send({ qrCode: updatedDelegate.qrCode });
+    
+  },
 
 }));
 
