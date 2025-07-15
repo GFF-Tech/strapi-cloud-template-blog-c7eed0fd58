@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "testimonials",
+  "info": {
+    "singularName": "testimonial",
+    "pluralName": "testimonials",
+    "displayName": "testimonial",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "testimonialTitle": {
+      "type": "string"
+    },
+    "testimonialText": {
+      "type": "blocks"
+    },
+    "testimonialCompanyLogo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "testimonialBy": {
+      "type": "string"
+    },
+    "testimonialByJobTitle": {
+      "type": "string"
+    },
+    "testimonialVideo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "testimonialId": {
+      "type": "string",
+      "unique": true
+    }
+  }
+}
