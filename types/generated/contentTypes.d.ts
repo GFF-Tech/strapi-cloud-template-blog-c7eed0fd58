@@ -2067,7 +2067,12 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
     speakerPriorityinHomePage: Schema.Attribute.Decimal;
     speakerPriorityinSpeakerPage: Schema.Attribute.Decimal;
     speakerType: Schema.Attribute.Enumeration<
-      ['One - Tier 1', 'Two - Category A', 'Three - Category B']
+      [
+        'One - Tier 1',
+        'Two - Category A',
+        'Three - Category B',
+        'Four - Category C',
+      ]
     > &
       Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
@@ -2109,6 +2114,45 @@ export interface ApiSpeaker2024Speaker2024 extends Struct.CollectionTypeSchema {
     rank: Schema.Attribute.Integer;
     salutation: Schema.Attribute.Enumeration<
       ['Mr.', 'Ms.', 'Mrs.', 'Dr.', 'Prof.', 'Shri', 'Smt.']
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiTestimonialTestimonial extends Struct.CollectionTypeSchema {
+  collectionName: 'testimonials';
+  info: {
+    description: '';
+    displayName: 'testimonial';
+    pluralName: 'testimonials';
+    singularName: 'testimonial';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::testimonial.testimonial'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    testimonialBy: Schema.Attribute.String;
+    testimonialByJobTitle: Schema.Attribute.String;
+    testimonialCompanyLogo: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
+    testimonialId: Schema.Attribute.String & Schema.Attribute.Unique;
+    testimonialText: Schema.Attribute.Blocks;
+    testimonialTitle: Schema.Attribute.String;
+    testimonialVideo: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
     >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -2849,6 +2893,7 @@ declare module '@strapi/strapi' {
       'api::session-tag.session-tag': ApiSessionTagSessionTag;
       'api::speaker.speaker': ApiSpeakerSpeaker;
       'api::speaker2024.speaker2024': ApiSpeaker2024Speaker2024;
+      'api::testimonial.testimonial': ApiTestimonialTestimonial;
       'api::thought-leadership-report-form.thought-leadership-report-form': ApiThoughtLeadershipReportFormThoughtLeadershipReportForm;
       'api::thought-leadership-report-format.thought-leadership-report-format': ApiThoughtLeadershipReportFormatThoughtLeadershipReportFormat;
       'api::thought-leadership-report-gff2025-track.thought-leadership-report-gff2025-track': ApiThoughtLeadershipReportGff2025TrackThoughtLeadershipReportGff2025Track;
