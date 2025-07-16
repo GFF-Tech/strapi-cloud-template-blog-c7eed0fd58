@@ -2052,10 +2052,12 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     desgination: Schema.Attribute.String;
+    facebookProfile: Schema.Attribute.String;
     featureinHomePage: Schema.Attribute.Boolean;
     fullName: Schema.Attribute.String & Schema.Attribute.Required;
     image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
       Schema.Attribute.Required;
+    instagramProfile: Schema.Attribute.String;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     linkedinProfile: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -2069,10 +2071,7 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
       ['Shri', 'Mr.', 'Ms.', 'Mrs', 'Dr.', 'Smt.', 'Lt']
     > &
       Schema.Attribute.Required;
-    speakerId: Schema.Attribute.UID;
-    speakerPriorityinHomePage: Schema.Attribute.Decimal;
-    speakerPriorityinSpeakerPage: Schema.Attribute.Decimal;
-    speakerType: Schema.Attribute.Enumeration<
+    speakerCategory: Schema.Attribute.Enumeration<
       [
         'One - Tier 1',
         'Two - Category A',
@@ -2081,6 +2080,10 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
       ]
     > &
       Schema.Attribute.Required;
+    speakerId: Schema.Attribute.UID;
+    speakerPriorityinHomePage: Schema.Attribute.Decimal;
+    speakerPriorityinSpeakerPage: Schema.Attribute.Decimal;
+    twitterProfile: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
