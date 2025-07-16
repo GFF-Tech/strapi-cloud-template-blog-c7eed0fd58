@@ -87,5 +87,23 @@ module.exports = {
         middlewares: [],
       },
     },
+      {
+      method: 'GET',
+      path: '/delegates/getQRCode/:id',
+      handler: 'delegate.getQRCode',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+     {
+      method: 'GET',
+      path: '/delegates/getDelegatesByCognitoId/:cognitoId',
+      handler: 'delegate.getDelegatesByCognitoId',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
   ],
 };

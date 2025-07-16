@@ -12,6 +12,7 @@ const {
   InitiateAuthCommand, RespondToAuthChallengeCommand, AdminUpdateUserAttributesCommand, AdminGetUserCommand
 } = require('@aws-sdk/client-cognito-identity-provider');
 const facilitator = require('../../facilitator/controllers/facilitator');
+const { uploadQRToStrapi } = require('../../../utils/qr');
 
 // @ts-ignore
 const { createCoreController } = require('@strapi/strapi').factories;
@@ -165,6 +166,13 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         }
       }
 
+      if(data.isFacilitator){
+           const facilitator = await strapi.entityService.findOne('api::facilitator.facilitator',
+        data.facilitatorId
+      );
+      cognitoId = facilitator?.cognitoId;
+      }
+
       updatedFields.cognitoId = cognitoId;
 
       // 6. Update delegate entry
@@ -176,9 +184,16 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         }
       );
 
+      const qrFile = await uploadQRToStrapi(updatedDelegate.cognitoId);
+
+       const updatedDelegateQrCode = await strapi.entityService.update('api::delegate.delegate', updatedDelegate.id, {
+      data: { qrCode: qrFile.id },
+    });
+
       // 8. Fetch full delegate record with relations
       const fullDelegate = await strapi.entityService.findOne('api::delegate.delegate', updatedDelegate.id, {
         populate: {
+          qrCode: true,
           country: { fields: ['country', 'countryCode'] },
           sector: { fields: ['name'] },
         },
@@ -190,29 +205,29 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       const email = data.officialEmailAddress;
       const passTypeForEmail = passType;
 
-      try{
-         await sendEmail({
-        to: email,
-        subject: 'Your Delegate Registration is Confirmed - Welcome to GFF 2025!',
-        templateName: 'delegate-confirmation',
-        replacements: { firstName, lastName },
-      });
-      }catch (err) {
-      strapi.log.error('Failed to Send Delegate Invite Email:', err);
-       await log({
+      try {
+        await sendEmail({
+          to: email,
+          subject: 'Your Delegate Registration is Confirmed - Welcome to GFF 2025!',
+          templateName: 'delegate-confirmation',
+          replacements: { firstName, lastName },
+        });
+      } catch (err) {
+        strapi.log.error('Failed to Send Delegate Invite Email:', err);
+        await log({
           logType: 'Error',
           message: 'Failed to Send Delegate Invite Email',
           origin: 'delegate.create',
           additionalInfo: {
-             errorMessage: err?.message || '',
+            errorMessage: err?.message || '',
             stack: err?.stack || ''
           },
           userType: 'Delegate',
           referenceId: fullDelegate.id || '',
           cognitoId: fullDelegate.cognitoId || ''
         });
-    }
-     
+      }
+
 
       const salesforcePayload = {
         upgrade: 'false',
@@ -224,26 +239,26 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         vertical: '',
         level: '',
         GenderIdentity: '',
-         title: '',
-         linkdinProfile: fullDelegate.linkedinUrl || '',
+        title: '',
+        linkdinProfile: fullDelegate.linkedinUrl || '',
         twitterProfile: '',
         instagramProfile: '',
-         personalEmail: '',
-         confirmationId: fullDelegate.confirmationId,
+        personalEmail: '',
+        confirmationId: fullDelegate.confirmationId,
         passType: passType,
         price: fullDelegate.passPrice,
-       salutation: '',
-       marketServedByCompany: '',
-       shortBio: '',
-       participantCategory: '',
-       participationObjective: '',
-       eventYearsAttendedBefore: '',
-       city: '',
-       country: '',
-       networkingGoals: '',
-       languageSpoken: '',
-       preferredTracks: '',
-       interestAreas: ''
+        salutation: '',
+        marketServedByCompany: '',
+        shortBio: '',
+        participantCategory: '',
+        participationObjective: '',
+        eventYearsAttendedBefore: '',
+        city: '',
+        country: '',
+        networkingGoals: '',
+        languageSpoken: '',
+        preferredTracks: '',
+        interestAreas: ''
       };
 
       try {
@@ -251,7 +266,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         await log({
           logType: 'Success',
           message: 'Salesforce update success for delegate',
-           origin: 'delegate.create',
+          origin: 'delegate.create',
           additionalInfo: { confirmationId: fullDelegate.confirmationId },
           userType: 'Delegate',
           referenceId: fullDelegate.id || '',
@@ -299,8 +314,8 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
           stack: error?.stack || ''
         },
         userType: 'Delegate',
-          referenceId: null,
-          cognitoId: ''
+        referenceId: null,
+        cognitoId: ''
       });
       return ctx.internalServerError('Failed to create delegate');
     }
@@ -358,10 +373,10 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         logType: 'Success',
         origin: 'delegate.update',
         message: 'Cognito user attributes updated',
-        additionalInfo: { },
+        additionalInfo: {},
         userType: 'Delegate',
-          referenceId: existing.id || '',
-          cognitoId: existing.cognitoId || ''
+        referenceId: existing.id || '',
+        cognitoId: existing.cognitoId || ''
       });
 
       const cognitoUser = await getCognitoUserBySub(existing.cognitoId);
@@ -373,7 +388,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         upgrade: 'true',
         email: email,
         mobilePhone: mobilePhone,
-         participantFirstName: data.firstName,
+        participantFirstName: data.firstName,
         participantLastName: data.lastName,
         company: companyName || 'INDIVIDUAL',
         vertical: '',
@@ -388,17 +403,17 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         passType: existing.passType,
         price: existing.passPrice,
         salutation: '',
-       marketServedByCompany: '',
-       shortBio: '',
-       participantCategory: '',
-       participationObjective: '',
-       eventYearsAttendedBefore: '',
-       city: '',
-       country: '',
-       networkingGoals: '',
-       languageSpoken: '',
-       preferredTracks: '',
-       interestAreas: ''
+        marketServedByCompany: '',
+        shortBio: '',
+        participantCategory: '',
+        participationObjective: '',
+        eventYearsAttendedBefore: '',
+        city: '',
+        country: '',
+        networkingGoals: '',
+        languageSpoken: '',
+        preferredTracks: '',
+        interestAreas: ''
       };
 
       console.log("salesforcePayload = ", salesforcePayload);
@@ -445,8 +460,8 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
           stack: error?.stack || ''
         },
         userType: 'Delegate',
-          referenceId: null,
-          cognitoId: ''
+        referenceId: null,
+        cognitoId: ''
       });
       return ctx.internalServerError('An error occurred while updating the delegate');
     }
@@ -539,7 +554,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
             await log({
               logType: 'Error',
               origin: 'delegate.login',
-             message: msg,
+              message: msg,
               additionalInfo: { facilitatorId: facilitator.id },
               userType: 'Delegate',
               referenceId: null,
@@ -554,7 +569,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
             logType: 'Error',
             origin: 'delegate.login',
             message: 'Delegate or Facilitator not found',
-            additionalInfo: { },
+            additionalInfo: {},
             userType: 'Delegate',
             referenceId: null,
             cognitoId: cognitoId || ''
@@ -576,7 +591,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         origin: 'delegate.login',
         message: 'Login failed',
         additionalInfo: {
-        error: error.message || String(error),
+          error: error.message || String(error),
         },
         userType: 'Delegate',
         referenceId: null,
@@ -635,7 +650,9 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
       // Find delegate in Strapi using Cognito ID
       const delegate = await strapi.db.query('api::delegate.delegate').findOne({
         where: { cognitoId },
+        
         populate: {
+          qrCode: true,
           sector: true,
           country: true,
         },
@@ -673,7 +690,7 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
         logType: 'Error',
         origin: 'delegate.verifyLoginOtp',
         message: 'OTP verification failed',
-         additionalInfo: {
+        additionalInfo: {
           officialEmailAddress,
           error: error.message || String(error),
         },
@@ -685,44 +702,125 @@ module.exports = createCoreController('api::delegate.delegate', ({ strapi }) => 
     }
   },
 
-async resendInviteMail(ctx) {
+  async resendInviteMail(ctx) {
 
-  const data = ctx.request.body?.data || {};
-  const officialEmailAddress = data.officialEmailAddress || '';
-  const firstName = data.firstName || '';
-  const lastName = data.lastName || '';
-  try {
-   
-    if (!officialEmailAddress || !firstName || !lastName) {
-      return ctx.badRequest('Missing required fields');
+    const data = ctx.request.body?.data || {};
+    const officialEmailAddress = data.officialEmailAddress || '';
+    const firstName = data.firstName || '';
+    const lastName = data.lastName || '';
+    try {
+
+      if (!officialEmailAddress || !firstName || !lastName) {
+        return ctx.badRequest('Missing required fields');
+      }
+
+      await sendEmail({
+        to: officialEmailAddress,
+        subject: 'Your Delegate Registration is Confirmed - Welcome to GFF 2025!',
+        templateName: 'delegate-confirmation',
+        replacements: { firstName, lastName },
+      });
+
+      ctx.send({ message: 'Invitation email resent successfully.' });
+    } catch (error) {
+      strapi.log.error('Failed to resend invite mail:', error);
+      await log({
+        logType: 'Error',
+        message: 'Failed to resend invite mail',
+        origin: 'delegate.resendInviteMail',
+        additionalInfo: {
+          email: data?.officialEmailAddress,
+          errorMessage: error?.message || '',
+          stack: error?.stack || '',
+        },
+        userType: 'Delegate',
+        referenceId: null,
+        cognitoId: '',
+      });
+      ctx.internalServerError('Failed to resend invite mail');
+    }
+  },
+
+  async getQRCode(ctx) {
+    const { id } = ctx.params;
+    const delegate = await strapi.entityService.findOne('api::delegate.delegate', id, {
+      populate: ['qrCode'],
+    });
+
+    if (!delegate) return ctx.notFound('Delegate not found');
+
+    // ✅ Return existing QR code
+    if (delegate.qrCode && delegate.qrCode.url) {
+      return ctx.send({ qrCode: delegate.qrCode });
     }
 
-    await sendEmail({
-      to: officialEmailAddress,
-      subject: 'Your Delegate Registration is Confirmed - Welcome to GFF 2025!',
-      templateName: 'delegate-confirmation',
-      replacements: { firstName, lastName },
+    if (!delegate.cognitoId) {
+      return ctx.badRequest('Missing cognitoId for QR generation');
+    }
+
+    const qrFile = await uploadQRToStrapi(delegate.cognitoId);
+
+    const updatedDelegate = await strapi.entityService.update('api::delegate.delegate', id, {
+      data: { qrCode: qrFile.id },
+      populate: ['qrCode'],
     });
 
-    ctx.send({ message: 'Invitation email resent successfully.' });
-  } catch (error) {
-    strapi.log.error('Failed to resend invite mail:', error);
-    await log({
-      logType: 'Error',
-      message: 'Failed to resend invite mail',
-      origin: 'delegate.resendInviteMail',
-      additionalInfo: {
-        email: data?.officialEmailAddress,
-        errorMessage: error?.message || '',
-        stack: error?.stack || '',
+    return ctx.send({ qrCode: updatedDelegate.qrCode });
+
+  },
+
+  async getDelegatesByCognitoId(ctx) {
+    const { cognitoId } = ctx.params;
+
+    if (!cognitoId) {
+      return ctx.notFound('CognitoId not present');
+    }
+
+    const delegates = await strapi.db.query('api::delegate.delegate').findOne({
+      where: { cognitoId },
+      populate: {
+        country: { fields: ['country', 'countryCode'] },
+        sector: { fields: ['name'] },
       },
-      userType: 'Delegate',
-      referenceId: null,
-      cognitoId: '',
     });
-    ctx.internalServerError('Failed to resend invite mail');
-  }
-},
+
+    if (!delegates) {
+      return ctx.notFound('Delegate not found');
+    }
+
+    const cognitoResponse = await client.send(
+      new AdminGetUserCommand({
+        Username: cognitoId,
+        UserPoolId: process.env.COGNITO_USER_POOL_ID,
+      })
+    );
+
+    const attributes = cognitoResponse.UserAttributes || [];
+
+    const getAttr = (key) => attributes.find((a) => a.Name === key)?.Value || '';
+
+    const firstName = getAttr('custom:firstName');
+    const lastName = getAttr('custom:lastName');
+    const officialEmailAddress = getAttr('email');
+    const fullMobileNumber = getAttr('phone_number');
+    const companyName = getAttr('custom:companyName') || '';
+
+    let mobileNumber = fullMobileNumber;
+    if (fullMobileNumber && delegates?.country?.countryCode) {
+      const code = delegates.country.countryCode.replace('+', '');
+      mobileNumber = fullMobileNumber.replace(`+${code}`, '');
+    }
+
+    return {
+      ...delegates,
+      firstName,
+      lastName,
+      officialEmailAddress,
+      mobileNumber,
+      companyName
+    };
+
+  },
 
 }));
 
@@ -759,11 +857,11 @@ async function getCognitoUserBySub(sub) {
     await log({
       logType: 'Error',
       message: 'Failed to fetch Delegate Cognito user by sub',
-       origin: 'utils.getCognitoUserBySub',
+      origin: 'utils.getCognitoUserBySub',
       additionalInfo: { error: err.message || String(err) },
       userType: 'Delegate',
-          referenceId: null,
-          cognitoId: sub || ''
+      referenceId: null,
+      cognitoId: sub || ''
     });
     return null;
   }

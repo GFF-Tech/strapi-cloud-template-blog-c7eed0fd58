@@ -797,6 +797,7 @@ export interface ApiDelegateDelegate extends Struct.CollectionTypeSchema {
     passType: Schema.Attribute.String;
     pciFccMember: Schema.Attribute.Boolean;
     publishedAt: Schema.Attribute.DateTime;
+    qrCode: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     registerAsIndividual: Schema.Attribute.Boolean;
     sector: Schema.Attribute.Relation<'oneToOne', 'api::sector.sector'>;
     updatedAt: Schema.Attribute.DateTime;
@@ -1458,12 +1459,15 @@ export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
         'Cloud Communications Partner',
         'Speaker Lounge Partner',
         'Banking Innovation Partner',
-        'By-Invite Dinner Partners',
+        'Banking Infrastructure Partner',
+        'By-Invite Dinner Partner',
         'Diamond Partners',
         'Credit Insights Partner',
         'Credit Innovation Partner',
         'Gourmet Partner',
         'Platinum Partner',
+        'Account Aggregator Partner',
+        'Analytics & Intelligence Partner',
         'Charging Station Partner',
         'Notepad Partner',
         'Caffeine Partner',

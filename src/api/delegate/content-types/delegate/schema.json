@@ -60,6 +60,16 @@
     },
     "pciFccMember": {
       "type": "boolean"
+    },
+    "qrCode": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

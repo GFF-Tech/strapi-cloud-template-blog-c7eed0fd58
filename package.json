@@ -25,6 +25,7 @@
     "fs-extra": "^10.0.0",
     "mime-types": "^2.1.27",
     "nodemailer": "^7.0.3",
+    "qrcode": "^1.5.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.30.1",
