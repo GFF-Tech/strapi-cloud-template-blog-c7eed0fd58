@@ -497,6 +497,119 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
     }
   },
 
+  async verifyFacilitatorCopy(ctx) {
+    const { officialEmailAddress, otp, orderId } = ctx.request.body;
+
+    const requiredFields = ['officialEmailAddress', 'otp', 'orderId'];
+    for (const field of requiredFields) {
+      if (!ctx.request.body[field]) return ctx.badRequest(`${field} is required.`);
+    }
+
+    try {
+      // 1. Confirm signup in Cognito
+      const confirmCommand = new ConfirmSignUpCommand({
+        ClientId: process.env.COGNITO_CLIENT_ID,
+        Username: officialEmailAddress,
+        ConfirmationCode: otp,
+      });
+
+      const confirmResponse = await client.send(confirmCommand);
+
+      // 2. Get user from Cognito to extract Cognito ID (sub)
+      const adminGetCommand = new AdminGetUserCommand({
+        Username: officialEmailAddress,
+        UserPoolId: process.env.COGNITO_USER_POOL_ID,
+      });
+
+      const userData = await client.send(adminGetCommand);
+      const subAttr = userData.UserAttributes.find(attr => attr.Name === 'sub');
+      const cognitoId = subAttr?.Value;
+
+      if (!cognitoId) {
+        await log({
+          logType: 'Error',
+          message: 'Cognito ID (sub) not found after OTP verification',
+          origin: 'facilitator.verifyFacilitator',
+          additionalInfo: {},
+          userType: 'Facilitator',
+          referenceId: null,
+          cognitoId: ''
+        });
+        return ctx.internalServerError('Cognito ID not found for user');
+      }
+
+      // 3. Update facilitator in Strapi by cognitoId
+      const existing = await strapi.db.query('api::facilitator.facilitator').findOne({
+        where: { cognitoId },
+      });
+
+      if (!existing) {
+        return ctx.badRequest('Facilitator not found for this Cognito ID.');
+      }
+
+      let wcCustomerId;
+      const cognitoUser = await getCognitoUserBySub(cognitoId);
+
+      const customerPayload = {
+        email: cognitoUser?.email || '',
+        first_name: cognitoUser?.firstName || '',
+        last_name: cognitoUser?.lastName || '',
+        username: cognitoUser?.email || '',
+        password: 'AutoGen!GFF2025',
+      };
+
+      const customerResult = await createCustomerInWoo(customerPayload);
+
+      if (customerResult?.customer_id) {
+        wcCustomerId = String(customerResult.customer_id);
+
+        await strapi.entityService.update('api::facilitator.facilitator', existing.id, {
+          data: {
+            wcCustomerId,
+          },
+        });
+      }
+
+      // Step 2: Link Woo order with customer
+      await updateWooOrderWithCustomerId(orderId, wcCustomerId);
+
+      if (existing) {
+        await strapi.entityService.update('api::facilitator.facilitator', existing.id, {
+          data: { isCognitoVerified: true },
+        });
+      }
+
+      return {
+        message: 'Facilitator verified successfully',
+        data: { id: existing?.id, cognitoId, wcCustomerId, confirmResponse },
+      };
+
+    } catch (error) {
+      let userMessage = 'Verification failed due to an unexpected error.';
+      let logMessage = 'Cognito verification error';
+
+      if (error.name === 'CodeMismatchException') {
+        userMessage = 'The provided OTP is incorrect.';
+        logMessage = 'OTP code mismatch';
+      } else if (error.name === 'ExpiredCodeException') {
+        userMessage = 'The OTP has expired. Please request a new one.';
+        logMessage = 'OTP expired';
+      }
+
+      await log({
+        logType: 'Error',
+        message: logMessage,
+        origin: 'facilitator.verifyFacilitatorCopy',
+        additionalInfo: { officialEmailAddress },
+        userType: 'Facilitator',
+        referenceId: null,
+        cognitoId: ''
+      });
+
+      return ctx.badRequest(userMessage);
+    }
+  },
+
   async resendFacilitatorOtp(ctx) {
     const { officialEmailAddress, session } = ctx.request.body;
 
