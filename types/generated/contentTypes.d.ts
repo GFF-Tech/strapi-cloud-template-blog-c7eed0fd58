@@ -2052,10 +2052,12 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     desgination: Schema.Attribute.String;
+    facebookProfile: Schema.Attribute.String;
     featureinHomePage: Schema.Attribute.Boolean;
     fullName: Schema.Attribute.String & Schema.Attribute.Required;
     image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
       Schema.Attribute.Required;
+    instagramProfile: Schema.Attribute.String;
     isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     linkedinProfile: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -2081,6 +2083,7 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
       ]
     > &
       Schema.Attribute.Required;
+    twitterProfile: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

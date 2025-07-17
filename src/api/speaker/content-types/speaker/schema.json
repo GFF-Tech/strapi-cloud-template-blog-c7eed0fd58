@@ -88,6 +88,15 @@
       "relation": "manyToOne",
       "target": "api::agenda-dd.agenda-dd",
       "inversedBy": "session_speakers"
+    },
+    "facebookProfile": {
+      "type": "string"
+    },
+    "twitterProfile": {
+      "type": "string"
+    },
+    "instagramProfile": {
+      "type": "string"
     }
   }
 }

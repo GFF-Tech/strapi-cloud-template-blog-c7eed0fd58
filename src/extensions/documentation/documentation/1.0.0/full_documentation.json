@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-07-16T12:39:26.451Z"
+    "x-generation-date": "2025-07-17T08:19:46.582Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -26208,6 +26208,15 @@
                       }
                     }
                   }
+                },
+                "facebookProfile": {
+                  "type": "string"
+                },
+                "twitterProfile": {
+                  "type": "string"
+                },
+                "instagramProfile": {
+                  "type": "string"
                 },
                 "createdAt": {
                   "type": "string",
@@ -54381,6 +54390,15 @@
                         }
                       }
                     },
+                    "facebookProfile": {
+                      "type": "string"
+                    },
+                    "twitterProfile": {
+                      "type": "string"
+                    },
+                    "instagramProfile": {
+                      "type": "string"
+                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -54745,6 +54763,15 @@
                   }
                 ],
                 "example": "string or id"
+              },
+              "facebookProfile": {
+                "type": "string"
+              },
+              "twitterProfile": {
+                "type": "string"
+              },
+              "instagramProfile": {
+                "type": "string"
               },
               "locale": {
                 "type": "string"
@@ -55822,6 +55849,15 @@
                         }
                       }
                     },
+                    "facebookProfile": {
+                      "type": "string"
+                    },
+                    "twitterProfile": {
+                      "type": "string"
+                    },
+                    "instagramProfile": {
+                      "type": "string"
+                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -56021,6 +56057,15 @@
                 }
               }
             }
+          },
+          "facebookProfile": {
+            "type": "string"
+          },
+          "twitterProfile": {
+            "type": "string"
+          },
+          "instagramProfile": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
