@@ -73,7 +73,7 @@
     "speakerPriorityinHomePage": {
       "type": "decimal"
     },
-    "speakerCategory": {
+    "speakerType": {
       "type": "enumeration",
       "required": true,
       "enum": [

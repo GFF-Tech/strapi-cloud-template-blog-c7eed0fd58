@@ -2071,7 +2071,10 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
       ['Shri', 'Mr.', 'Ms.', 'Mrs', 'Dr.', 'Smt.', 'Lt']
     > &
       Schema.Attribute.Required;
-    speakerCategory: Schema.Attribute.Enumeration<
+    speakerId: Schema.Attribute.UID;
+    speakerPriorityinHomePage: Schema.Attribute.Decimal;
+    speakerPriorityinSpeakerPage: Schema.Attribute.Decimal;
+    speakerType: Schema.Attribute.Enumeration<
       [
         'One - Tier 1',
         'Two - Category A',
@@ -2080,9 +2083,6 @@ export interface ApiSpeakerSpeaker extends Struct.CollectionTypeSchema {
       ]
     > &
       Schema.Attribute.Required;
-    speakerId: Schema.Attribute.UID;
-    speakerPriorityinHomePage: Schema.Attribute.Decimal;
-    speakerPriorityinSpeakerPage: Schema.Attribute.Decimal;
     twitterProfile: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
