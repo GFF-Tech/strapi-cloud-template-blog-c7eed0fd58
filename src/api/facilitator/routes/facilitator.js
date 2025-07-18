@@ -34,11 +34,19 @@ module.exports = {
         middlewares: [],
       },
     },
-
     {
       method: 'POST',
       path: '/facilitators/verify',
       handler: 'facilitator.verifyFacilitator',
+      config: {
+        policies: [],
+        middlewares: [],
+      }
+    },
+    {
+      method: 'POST',
+      path: '/facilitators/verifyCopy',
+      handler: 'facilitator.verifyFacilitatorCopy',
       config: {
         policies: [],
         middlewares: [],
@@ -97,8 +105,26 @@ module.exports = {
     },
     {
       method: 'POST',
+      path: '/facilitators/loginCopy',
+      handler: 'facilitator.loginCopy',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+    {
+      method: 'POST',
       path: '/facilitators/verifyLoginOtp',
       handler: 'facilitator.verifyLoginOtp',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+     {
+      method: 'POST',
+      path: '/facilitators/verifyLoginOtpCopy',
+      handler: 'facilitator.verifyLoginOtpCopy',
       config: {
         policies: [],
         middlewares: [],
