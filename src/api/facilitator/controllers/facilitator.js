@@ -1295,6 +1295,154 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
     }
   },
 
+  async loginCopy(ctx) {
+    const { officialEmailAddress } = ctx.request.body;
+
+    if (!officialEmailAddress) {
+      return ctx.badRequest('Email address is required.');
+    }
+
+    try {
+      // 1. Fetch Cognito user details
+      const userData = await client.send(new AdminGetUserCommand({
+        Username: officialEmailAddress,
+        UserPoolId: process.env.COGNITO_USER_POOL_ID,
+      }));
+
+      const attributes = userData.UserAttributes;
+      const subAttr = attributes.find(attr => attr.Name === 'sub');
+      const delegateAttr = attributes.find(attr => attr.Name === 'custom:delegate');
+      const userStatus = userData.UserStatus;
+
+      const cognitoId = subAttr?.Value;
+      const isDelegate = delegateAttr?.Value === 'true';
+
+      if (!cognitoId) {
+        await log({
+          logType: 'Error',
+          message: 'Login failed: Cognito ID not found',
+          origin: 'facilitator.login',
+          additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: null,
+          cognitoId: ''
+        });
+        return ctx.notFound('Email is not registered. Please register first.');
+      }
+
+      if (isDelegate) {
+        await log({
+          logType: 'Error',
+          message: 'Blocked login: email belongs to delegate',
+          origin: 'facilitator.login',
+          additionalInfo: {},
+          userType: 'Facilitator',
+          referenceId: null,
+          cognitoId: cognitoId || ''
+        });
+        return ctx.forbidden('This email is associated with a participant account. Please use the main contact email provided during registration to log in.');
+      }
+
+      // 2. Find facilitator in Strapi
+      const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
+        where: { cognitoId },
+      });
+
+      if (!facilitator) {
+        await client.send(new AdminDeleteUserCommand({
+          Username: officialEmailAddress,
+          UserPoolId: process.env.COGNITO_USER_POOL_ID,
+        }));
+
+        await log({
+          logType: 'Error',
+          message: 'Blocked login: incomplete registration — user deleted',
+          origin: 'facilitator.login',
+          additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: null,
+          cognitoId: ''
+        });
+
+        return ctx.badRequest('Your registration was not completed. Please register again.');
+      }
+
+      // Always delete if user is UNCONFIRMED
+      if (userStatus === 'UNCONFIRMED') {
+        // 🔒 Delete from Cognito
+        await client.send(new AdminDeleteUserCommand({
+          Username: officialEmailAddress,
+          UserPoolId: process.env.COGNITO_USER_POOL_ID,
+        }));
+
+        // 🗑️ Delete from Strapi
+        if (facilitator?.id) {
+          await strapi.entityService.delete('api::facilitator.facilitator', facilitator.id);
+        }
+
+        await log({
+          logType: 'Error',
+          message: 'Blocked login: UNCONFIRMED — user deleted from Cognito and Strapi',
+          origin: 'facilitator.login',
+          additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: null,
+          cognitoId: ''
+        });
+
+        return ctx.badRequest('Your registration was not completed. Please register again.');
+      }
+
+      // 4. Proceed to send OTP using custom auth flow
+      const authCommand = new InitiateAuthCommand({
+        AuthFlow: 'CUSTOM_AUTH',
+        ClientId: process.env.COGNITO_CLIENT_ID,
+        AuthParameters: {
+          USERNAME: officialEmailAddress,
+        },
+      });
+
+      const response = await client.send(authCommand);
+
+      return ctx.send({
+        message: 'OTP sent to email',
+        session: response.Session,
+      });
+
+    } catch (error) {
+      console.error('Login error:', error);
+
+      if (error.name === 'UserNotFoundException') {
+        await log({
+          logType: 'Error',
+          message: 'Login failed: Cognito user not found',
+          origin: 'facilitator.login',
+          additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: null,
+          cognitoId: ''
+        });
+        return ctx.notFound('Email is not registered. Please register first.');
+      }
+
+      await log({
+        logType: 'Error',
+        message: 'Unexpected error during login',
+        origin: 'facilitator.login',
+        additionalInfo: {
+          email: officialEmailAddress,
+          errorMessage: error?.message || '',
+          errorStack: error?.stack || ''
+        },
+        userType: 'Facilitator',
+        referenceId: null,
+        cognitoId: ''
+      });
+
+      return ctx.internalServerError('Failed to process login');
+    }
+  },
+
   async verifyLoginOtp(ctx) {
     const { officialEmailAddress, otp, session } = ctx.request.body;
 
@@ -1508,6 +1656,256 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
           wooOrderDetailsTest: {
             line_items: mergedLineItems,
           }
+        },
+      });
+
+    } catch (error) {
+      console.error('OTP verification failed:', error);
+      await log({
+        logType: 'Error',
+        message: 'Unexpected error in OTP verification',
+        origin: 'facilitator.verifyLoginOtp',
+        additionalInfo: {
+          email: officialEmailAddress,
+          errorMessage: error?.message || '',
+          stack: error?.stack || ''
+        },
+        userType: 'Facilitator',
+        referenceId: null,
+        cognitoId: ''
+      });
+      return ctx.internalServerError('OTP verification failed due to an unexpected error.');
+    }
+  },
+
+  async verifyLoginOtpCopy(ctx) {
+    const { officialEmailAddress, otp, session } = ctx.request.body;
+
+    if (!officialEmailAddress || !otp || !session) {
+      return ctx.badRequest('Email, OTP, and session are required.');
+    }
+
+    try {
+      // 1. Verify OTP with Cognito
+      const challengeCommand = new RespondToAuthChallengeCommand({
+        ClientId: process.env.COGNITO_CLIENT_ID,
+        ChallengeName: 'CUSTOM_CHALLENGE',
+        Session: session,
+        ChallengeResponses: {
+          USERNAME: officialEmailAddress,
+          ANSWER: otp,
+        },
+      });
+
+      const response = await client.send(challengeCommand);
+
+      if (!response.AuthenticationResult) {
+        await log({
+          logType: 'Error',
+          message: 'OTP verification failed',
+          origin: 'facilitator.verifyLoginOtp',
+          additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: null,
+          cognitoId: ''
+        });
+        return ctx.unauthorized('OTP verification failed.');
+      }
+
+      // 2. Get user profile from Cognito
+      const userCommand = new AdminGetUserCommand({
+        UserPoolId: process.env.COGNITO_USER_POOL_ID,
+        Username: officialEmailAddress,
+      });
+
+      const userResult = await client.send(userCommand);
+
+      const attributes = {};
+      userResult.UserAttributes.forEach(attr => {
+        attributes[attr.Name] = attr.Value;
+      });
+
+      const cognitoId = attributes['sub'];
+      const facilitatorFirstName = attributes['custom:firstName'];
+      const facilitatorLastName = attributes['custom:lastName'];
+      const facilitatorEmail = attributes['email'];
+      const facilitatorPhone = attributes['phone_number'];
+      const facilitatorCompany = attributes['custom:companyName'] || null;
+
+      if (!cognitoId) {
+        await log({
+          logType: 'Error',
+          message: 'Cognito ID missing after OTP verification',
+          origin: 'facilitator.verifyLoginOtp',
+          additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: null,
+          cognitoId: ''
+        });
+        return ctx.internalServerError('Cognito ID missing');
+      }
+
+      // 3. Find facilitator in Strapi using Cognito ID
+      const facilitator = await strapi.db.query('api::facilitator.facilitator').findOne({
+        where: { cognitoId },
+        populate: {
+          country: true,
+          sector: true,
+          wooOrderDetails: true,
+          invoiceDetails: true,
+          gstDetails: true,
+          delegates: {
+            populate: ['sector', 'country'],
+          },
+        },
+      });
+
+      if (!facilitator) {
+        await log({
+          logType: 'Error',
+          message: 'Facilitator not found in Strapi after successful OTP verification',
+          origin: 'facilitator.verifyLoginOtp',
+          additionalInfo: { email: officialEmailAddress },
+          userType: 'Facilitator',
+          referenceId: null,
+          cognitoId: cognitoId || ''
+        });
+        return ctx.notFound('User not found in the system.');
+      }
+
+      let mobileNumber = facilitatorPhone;
+      if (facilitatorPhone && facilitator?.country?.countryCode) {
+        const code = facilitator.country.countryCode.replace('+', '');
+        mobileNumber = facilitatorPhone.replace(`+${code}`, '');
+      }
+
+      // 4. Enrich delegates with Cognito details
+      const enrichedDelegates = [];
+
+      for (const delegate of facilitator.delegates || []) {
+        const cognitoDelegateId = delegate.cognitoId;
+        let firstName = null;
+        let lastName = null;
+        let officialEmailAddress = null;
+        let mobileNumber = null;
+        let companyName = null;
+
+        if (delegate.isFacilitator) {
+          firstName = facilitatorFirstName;
+          lastName = facilitatorLastName;
+          officialEmailAddress = facilitatorEmail;
+          companyName = facilitatorCompany;
+
+          if (facilitatorPhone && delegate?.country?.countryCode) {
+            const code = delegate.country.countryCode.replace('+', '');
+            mobileNumber = facilitatorPhone.replace(`+${code}`, '');
+          } else {
+            mobileNumber = facilitatorPhone;
+          }
+
+        } else if (delegate.cognitoId) {
+          // If not isFacilitator, fetch from Cognito
+          try {
+            const delegateUser = await client.send(new AdminGetUserCommand({
+              UserPoolId: process.env.COGNITO_USER_POOL_ID,
+              Username: delegate.cognitoId,
+            }));
+
+            const delegateAttrs = {};
+            delegateUser.UserAttributes.forEach(attr => {
+              delegateAttrs[attr.Name] = attr.Value;
+            });
+
+            firstName = delegateAttrs['custom:firstName'];
+            lastName = delegateAttrs['custom:lastName'];
+            officialEmailAddress = delegateAttrs['email'];
+            mobileNumber = delegateAttrs['phone_number'];
+            companyName = delegateAttrs['custom:companyName'] || null;
+
+            if (mobileNumber && delegate?.country?.countryCode) {
+              const code = delegate.country.countryCode.replace('+', '');
+              mobileNumber = mobileNumber.replace(`+${code}`, '');
+            }
+
+          } catch (e) {
+            console.warn(`Failed to fetch Cognito data for delegate ${delegate.cognitoId}:`, e.message);
+          }
+        }
+
+        enrichedDelegates.push({
+          ...delegate,
+          firstName,
+          lastName,
+          officialEmailAddress,
+          mobileNumber,
+          companyName,
+        });
+      }
+
+      // 5. Fetch WooCommerce order if present
+      const mergedLineItemsMap = new Map();
+
+      const completedOrders = await fetchWooOrdersCompleted(facilitator.wcCustomerId);
+
+      const storedCompletedIds = facilitator.wooOrderDetails
+        .filter(order => order.wcOrderStatus === 'completed')
+        .map(order => Number(order.wcOrderId));
+
+      // Cross-check which orders are missing in your storage
+      const missingOrders = completedOrders.filter(order => !storedCompletedIds.includes(order.id));
+
+      if (missingOrders.length > 0) {
+        console.log('Missing orders:', missingOrders.map(o => o.id));
+      } else {
+        console.log('All completed orders are synced');
+      }
+          
+      if (completedOrders && Array.isArray(completedOrders)) {
+        for (const order of completedOrders) {
+          if (Array.isArray(order.line_items)) {
+            for (const item of order.line_items) {
+              const { product_id, name, quantity } = item;
+              if (!product_id) continue;
+
+              if (mergedLineItemsMap.has(product_id)) {
+                const existing = mergedLineItemsMap.get(product_id);
+                existing.quantity += quantity;
+              } else {
+                mergedLineItemsMap.set(product_id, {
+                  product_id,
+                  name,
+                  quantity,
+                });
+              }
+            }
+          }
+        }
+      }
+
+      // Convert map back to array
+      const mergedLineItems = Array.from(mergedLineItemsMap.values());
+
+      const pendingOrders = await fetchWooOrdersPending(facilitator.wcCustomerId);
+
+      // 6. Return combined Cognito + Strapi data
+      return ctx.send({
+        message: 'Login successful',
+        idToken: response.AuthenticationResult?.IdToken,
+        accessToken: response.AuthenticationResult?.AccessToken,
+        refreshToken: response.AuthenticationResult?.RefreshToken,
+        data: {
+          cognitoId,
+          officialEmailAddress: facilitatorEmail,
+          mobileNumber,
+          firstName: facilitatorFirstName,
+          lastName: facilitatorLastName,
+          companyName: facilitatorCompany,
+          ...facilitator,
+          delegates: enrichedDelegates,
+          wooOrderDetailsTest: {
+            line_items: mergedLineItems,
+          },
+          pendingOrders
         },
       });
 
@@ -1912,6 +2310,72 @@ module.exports = createCoreController('api::facilitator.facilitator', ({ strapi 
   // },
 
 }));
+
+async function fetchWooOrdersCompleted(wcCustomerId) {
+  if (!wcCustomerId) return { error: 'No Customer ID' };
+  const baseURL = process.env.WC_BASE_URL;
+  const username = process.env.WC_CONSUMER_KEY;
+  const password = process.env.WC_CONSUMER_SECRET;
+
+  try {
+    const res = await axios.get(`${baseURL}/orders?customer=${wcCustomerId}&status=completed`, {
+      auth: {
+        username,
+        password
+      },
+    });
+    return res.data;
+
+  } catch (err) {
+    await log({
+      logType: 'Error',
+      message: 'WooCommerce completed orders fetch failed',
+      origin: 'facilitator.fetchWooOrder',
+      additionalInfo: {
+        wcCustomerId: wcCustomerId,
+        errorMessage: err?.message || '',
+        stack: err?.stack || '',
+      },
+      userType: 'Facilitator',
+      referenceId: null,
+      cognitoId: ''
+    });
+    return { error: 'WooCommerce completed orders fetch failed', details: err.message };
+  }
+}
+
+async function fetchWooOrdersPending(wcCustomerId) {
+  if (!wcCustomerId) return { error: 'No Customer ID' };
+  const baseURL = process.env.WC_BASE_URL;
+  const username = process.env.WC_CONSUMER_KEY;
+  const password = process.env.WC_CONSUMER_SECRET;
+
+  try {
+    const res = await axios.get(`${baseURL}/orders?customer=${wcCustomerId}&status=pending`, {
+      auth: {
+        username,
+        password
+      },
+    });
+    return res.data;
+
+  } catch (err) {
+    await log({
+      logType: 'Error',
+      message: 'WooCommerce pending orders fetch failed',
+      origin: 'facilitator.fetchWooOrder',
+      additionalInfo: {
+        wcCustomerId: wcCustomerId,
+        errorMessage: err?.message || '',
+        stack: err?.stack || '',
+      },
+      userType: 'Facilitator',
+      referenceId: null,
+      cognitoId: ''
+    });
+    return { error: 'WooCommerce pending orders fetch failed', details: err.message };
+  }
+}
 
 async function fetchWooOrder(wcOrderId) {
   if (!wcOrderId) return { error: 'No order ID' };
