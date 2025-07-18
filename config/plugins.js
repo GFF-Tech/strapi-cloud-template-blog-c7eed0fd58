@@ -9,7 +9,9 @@ module.exports = () => ({
         "api::confirmed-speaker.confirmed-speaker",
         "api::hotel-information-form.hotel-information-form",
         "api::plan-your-stay.plan-your-stay",
-        "api::nabard-hackathon.nabard-hackathon"
+        "api::nabard-hackathon.nabard-hackathon",
+        "api::new-product-launch-form.new-product-launch-form",
+        "api::thought-leadership-report-form.thought-leadership-report-form"
       ],
       // authorizedImports: ["api::become-a-speaker.become-a-speaker"]
       seo: {
