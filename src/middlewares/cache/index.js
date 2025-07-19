@@ -3,7 +3,10 @@ const Redis = require('ioredis');
 const redis = new Redis(process.env.REDIS_URL);
 
 const CACHE_TTL = 300; // in seconds
-const CACHE_ROUTES = ['/api/partners']; // customize as needed
+const CACHE_ROUTES = [
+  '/api/partners',
+  '/api/speakers',
+]; // customize as needed
 
 module.exports = (config, { strapi }) => {
   return async (ctx, next) => {
