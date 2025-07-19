@@ -1,3 +1,5 @@
+const path = require('path'); // ✅ Required for path.resolve()
+
 module.exports = [
   'strapi::logger',
   'strapi::errors',
@@ -9,4 +11,10 @@ module.exports = [
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
+
+  // ✅ Custom Redis Cache Middleware
+  {
+    resolve: path.resolve(__dirname, '../src/middlewares/cache'),
+    config: {},
+  },
 ];
