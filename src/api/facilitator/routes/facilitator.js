@@ -24,6 +24,16 @@ module.exports = {
       },
     },
 
+     {
+      method: 'GET',
+      path: '/facilitators/getFacilitatorCopy/:id',
+      handler: 'facilitator.findOneCopy',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+
     // POST create a facilitator
     {
       method: 'POST',
@@ -68,6 +78,16 @@ module.exports = {
       method: 'PUT',
       path: '/facilitators/:id',
       handler: 'facilitator.update',
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
+
+      {
+      method: 'PUT',
+      path: '/facilitators/updateCopy/:id',
+      handler: 'facilitator.updateCopy',
       config: {
         policies: [],
         middlewares: [],
@@ -130,10 +150,19 @@ module.exports = {
         middlewares: [],
       },
     },
+    // {
+    //   method: 'POST',
+    //   path: '/facilitators/delegateToFacilitator',
+    //   handler: 'facilitator.delegateToFacilitator',
+    //   config: {
+    //     policies: [],
+    //     middlewares: [],
+    //   },
+    // },
     {
       method: 'POST',
-      path: '/facilitators/delegateToFacilitator',
-      handler: 'facilitator.delegateToFacilitator',
+      path: '/facilitators/delegateToFacilitatorCopy',
+      handler: 'facilitator.delegateToFacilitatorCopy',
       config: {
         policies: [],
         middlewares: [],
@@ -148,15 +177,5 @@ module.exports = {
         middlewares: [],
       },
     },
-    // {
-    //   method: 'POST',
-    //   path: '/facilitators/wooOrderSync',
-    //   handler: 'facilitator.wooOrderSync',
-    //   config: {
-    //     policies: [],
-    //     middlewares: [],
-    //     auth: false
-    //   },
-    // },
   ],
 };
