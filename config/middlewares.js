@@ -1,3 +1,5 @@
+const path = require('path'); // ✅ Required for path.resolve()
+
 module.exports = [
   'strapi::logger',
   'strapi::errors',
@@ -9,21 +11,10 @@ module.exports = [
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
-];
-// redis cache
-const Redis = require('ioredis');
 
-module.exports = ({ env }) => ({
-  settings: {
-    cache: {
-      enabled: true,
-      type: 'redis',
-      routes: [
-        { method: 'GET', path: '/partners', ttl: 300 } // cache /api/partners
-      ],
-      redisConfig: {
-        client: new Redis(env('REDIS_URL')),
-      },
-    },
+  // ✅ Custom Redis Cache Middleware
+  {
+    resolve: path.resolve(__dirname, '../src/middlewares/cache'),
+    config: {},
   },
-});
+];
